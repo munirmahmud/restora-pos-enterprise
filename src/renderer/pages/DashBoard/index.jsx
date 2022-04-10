@@ -4,22 +4,24 @@ import { useEffect, useState } from 'react';
 import CountHistory from 'renderer/components/CountHistory';
 import Heading from 'renderer/components/Heading';
 import Header from 'renderer/components/partials/Header';
-import { Sidebar } from 'renderer/components/partials/Sidebar';
+import Sidebar from 'renderer/components/partials/Sidebar';
 import StatisticsRatio from '../../components/StatisticsRatio';
 
 const DashBoard = ({ settings }) => {
-  window.get_dashboard_data.send('get_dashboard_data', { 'status': true })
+  window.get_dashboard_data.send('get_dashboard_data', { status: true });
 
-  const [statisticsData, setStatisticsData] = useState(null)
-  const [totalCount, setTotalCount] = useState(null)
+  const [statisticsData, setStatisticsData] = useState(null);
+  const [totalCount, setTotalCount] = useState(null);
 
   useEffect(() => {
-    getDataFromDatabase('get_dashboard_data_response', window.get_dashboard_data).then((args) => {
-      setStatisticsData(args.slice(0, 2))
-      setTotalCount(args.slice(2, 6))
-    })
-  }, [])
-
+    getDataFromDatabase(
+      'get_dashboard_data_response',
+      window.get_dashboard_data
+    ).then((args) => {
+      setStatisticsData(args.slice(0, 2));
+      setTotalCount(args.slice(2, 6));
+    });
+  }, []);
 
   return (
     <div className="main_wrapper">

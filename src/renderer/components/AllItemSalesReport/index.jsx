@@ -154,7 +154,7 @@ const AllItemSalesReport = ({ settings }) => {
             columns={columns}
             bordered
             dataSource={itemSalesReports}
-            pagination={false}
+            pagination={true}
             rowKey={(record) => record.id}
           />
         </div>

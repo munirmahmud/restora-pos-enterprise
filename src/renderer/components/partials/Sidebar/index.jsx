@@ -156,7 +156,7 @@ export const Sidebar = ({ settings }) => {
               <Link to="/voucher_approval">Voucher Approval</Link>
             </Menu.Item>
 
-            <SubMenu key="hrm" title="Accounts Report">
+            <SubMenu key="accounts_reports" title="Accounts Report">
               <Menu.Item key="voucher_report:1">
                 <Link to="/voucher_report">Voucher Report</Link>
               </Menu.Item>

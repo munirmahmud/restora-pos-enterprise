@@ -1,0 +1,68 @@
+import { Col, Form, Input, Row, Select } from 'antd';
+
+const { Option } = Select;
+const { TextArea } = Input;
+
+const DebitVoucherHeader = () => {
+  const [form] = Form.useForm();
+
+  const handleSubmit = (value) => {
+    console.log('value', value);
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
+
+  return (
+    <div
+      className="accounts_head_area"
+      style={{
+        padding: '1.5rem 3rem',
+        boxShadow: 'rgb(99 99 99 / 20%) 0px 2px 8px 0px',
+      }}
+    >
+      <Form
+        form={form}
+        layout="vertical"
+        autoComplete="off"
+        onFinish={handleSubmit}
+        onFinishFailed={onFinishFailed}
+      >
+        <Row gutter={20}>
+          <Col lg={10} xl={10} xxl={10}>
+            <Form.Item
+              name="credit_account_head"
+              label="Credit Account Head"
+              style={{ marginBottom: '10px' }}
+            >
+              <Select placeholder="Select a option" size="large" allowClear>
+                <Option value="1">Bank</Option>
+                <Option value="2">Bkash</Option>
+                <Option value="3">City Bank</Option>
+              </Select>
+            </Form.Item>
+
+            <Form.Item
+              name="date"
+              label="Date"
+              style={{ marginBottom: '10px' }}
+            >
+              <Input placeholder="Head Name" size="large" />
+            </Form.Item>
+
+            <Form.Item
+              name="Remark"
+              label="Remark"
+              style={{ marginBottom: '10px' }}
+            >
+              <TextArea />
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
+    </div>
+  );
+};
+
+export default DebitVoucherHeader;
