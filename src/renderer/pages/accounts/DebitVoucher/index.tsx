@@ -1,10 +1,16 @@
 import { Col, ConfigProvider, Row } from 'antd';
+import { FC } from 'react';
 import DebitVoucherHeader from 'renderer/components/accounts/DebitVoucherHeader';
 import Sidebar from 'renderer/components/partials/Sidebar';
-import EditableTable from '../../../components/accounts//DebitVoucherHeader/DebitVoucherTable';
-import Heading from './../../../components/Heading';
+import DebitVoucherTable from '../../../components/accounts/DebitVoucherHeader/DebitVoucherTable';
+import Heading from '../../../components/Heading';
+import { SettingsProps } from '../../../types';
 
-const DebitVoucher = ({ settings }) => {
+type DebitVoucherProps = {
+  settings: SettingsProps;
+};
+
+const DebitVoucher: FC<DebitVoucherProps> = ({ settings }): JSX.Element => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">
@@ -20,7 +26,7 @@ const DebitVoucher = ({ settings }) => {
               <div style={{ margin: '0rem 1.5rem' }}>
                 <DebitVoucherHeader />
 
-                <EditableTable />
+                <DebitVoucherTable />
               </div>
             </Col>
           </Row>

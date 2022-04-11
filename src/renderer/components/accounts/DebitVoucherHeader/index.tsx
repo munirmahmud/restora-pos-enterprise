@@ -3,14 +3,20 @@ import { Col, Form, Input, Row, Select } from 'antd';
 const { Option } = Select;
 const { TextArea } = Input;
 
+type DebitVoucherTypes = {
+  head_name: string;
+  parent_head_name: number;
+  selected: [];
+};
+
 const DebitVoucherHeader = () => {
   const [form] = Form.useForm();
 
-  const handleSubmit = (value) => {
+  const handleSubmit = (value: DebitVoucherTypes) => {
     console.log('value', value);
   };
 
-  const onFinishFailed = (errorInfo) => {
+  const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
 

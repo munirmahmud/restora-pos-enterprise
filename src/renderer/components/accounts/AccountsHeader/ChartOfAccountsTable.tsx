@@ -3,8 +3,17 @@ import { Button, Col, Input, Row, Space, Table } from 'antd';
 import { useState } from 'react';
 import AccountEditModal from './AccountEditModal';
 
+type COAProps = {
+  head_code: number;
+  head_name: string;
+  head_type: string;
+  parent_head: string;
+  transaction: string;
+};
+
 const ChartOfAccountsTable = () => {
-  const [accountEditModal, setAccountEditModal] = useState(false);
+  const [accountEditModal, setAccountEditModal] = useState<boolean>(false);
+
   const columns = [
     {
       title: 'Head Code',
@@ -38,14 +47,18 @@ const ChartOfAccountsTable = () => {
     {
       title: 'Action',
       key: 'action',
-      render: (text, record) => (
+      render: (_: any, record: COAProps) => (
         <Space size="middle">
           <Button type="primary" onClick={() => handleEditAccountData(record)}>
             <EditOutlined />
             Edit
           </Button>
 
-          <Button type="danger" onClick={() => handleDeleteAccountData(record)}>
+          <Button
+            type="primary"
+            danger
+            onClick={() => handleDeleteAccountData(record)}
+          >
             <DeleteOutlined />
             Delete
           </Button>
@@ -81,11 +94,11 @@ const ChartOfAccountsTable = () => {
     },
   ];
 
-  const handleEditAccountData = (data) => {
+  const handleEditAccountData = (data: COAProps) => {
     console.log('edit data', data);
     setAccountEditModal(true);
   };
-  const handleDeleteAccountData = (data) => {
+  const handleDeleteAccountData = (data: COAProps) => {
     console.log('delete data', data);
   };
 
