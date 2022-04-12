@@ -289,7 +289,7 @@ const AllAddonsAssignList = () => {
           columns={columns}
           rowSelection={{ ...rowSelection, checkStrictly }}
           dataSource={addonsAssignList}
-          pagination={true}
+          pagination={addonsAssignList?.length > 10 ? true : false}
           rowKey={(record) => record?.id}
         />
       </div>

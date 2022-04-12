@@ -1,5 +1,7 @@
 import { Col, ConfigProvider, Row } from 'antd';
+import ContraVoucherHeader from 'renderer/components/accounts/ContraVoucherHeader';
 import Sidebar from 'renderer/components/partials/Sidebar';
+import ContraVoucherTable from './../../../components/accounts/ContraVoucherHeader/ContraVoucherTable';
 import Heading from './../../../components/Heading';
 
 const ContraVoucher = ({ settings }) => {
@@ -16,7 +18,8 @@ const ContraVoucher = ({ settings }) => {
               <Heading title="Contra Voucher" />
 
               <div style={{ margin: '0rem 1.5rem' }}>
-                <h1>Contra Voucher</h1>
+                <ContraVoucherHeader />
+                <ContraVoucherTable />
               </div>
             </Col>
           </Row>

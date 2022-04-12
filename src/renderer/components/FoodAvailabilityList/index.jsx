@@ -307,7 +307,7 @@ const FoodAvailabilityList = () => {
           columns={columns}
           rowSelection={{ ...rowSelection, checkStrictly }}
           dataSource={foodAvailabilityList}
-          pagination={true}
+          pagination={foodAvailabilityList?.length > 10 ? true : false}
           rowKey={(record) => record?.id}
         />
       </div>

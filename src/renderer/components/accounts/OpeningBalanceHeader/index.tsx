@@ -1,26 +1,29 @@
-import { Col, DatePicker, Form, Input, Row, Select } from 'antd';
-import moment from 'moment';
+import { Button, Col, Form, Input, Row, Select, Space } from 'antd';
 
 const { Option } = Select;
 const { TextArea } = Input;
-const dateFormat = 'YYYY-MM-DD';
 
 type DebitVoucherTypes = {
-  credit_account_head: string;
-  data: string;
+  head_of_account: string;
+  amount: string;
   remark: string;
 };
 
-const DebitVoucherHeader = () => {
+const OpeningBalanceHeader = () => {
   const [form] = Form.useForm();
-  const today = new Date();
 
   const handleSubmit = (value: DebitVoucherTypes) => {
     console.log('value', value);
+
+    form.resetFields();
   };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
+  };
+
+  const handleReset = () => {
+    form.resetFields();
   };
 
   return (
@@ -39,10 +42,10 @@ const DebitVoucherHeader = () => {
         onFinishFailed={onFinishFailed}
       >
         <Row gutter={20}>
-          <Col lg={10} xl={10} xxl={10}>
+          <Col lg={14} xl={14} xxl={14}>
             <Form.Item
-              name="credit_account_head"
-              label="Credit Account Head"
+              name="head_of_account"
+              label="Head of Account"
               style={{ marginBottom: '10px' }}
             >
               <Select placeholder="Select a option" size="large" allowClear>
@@ -53,17 +56,11 @@ const DebitVoucherHeader = () => {
             </Form.Item>
 
             <Form.Item
-              name="date"
-              label="Date"
+              name="amount"
+              label="Amount"
               style={{ marginBottom: '10px' }}
             >
-              <DatePicker
-                style={{ width: '100%' }}
-                defaultValue={moment(today, dateFormat)}
-                format={dateFormat}
-                showToday={false}
-                size="large"
-              />
+              <Input placeholder="Amount" size="large" />
             </Form.Item>
 
             <Form.Item
@@ -75,9 +72,18 @@ const DebitVoucherHeader = () => {
             </Form.Item>
           </Col>
         </Row>
+
+        <Space>
+          <Button type="primary" danger onClick={handleReset}>
+            Reset
+          </Button>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Space>
       </Form>
     </div>
   );
 };
 
-export default DebitVoucherHeader;
+export default OpeningBalanceHeader;

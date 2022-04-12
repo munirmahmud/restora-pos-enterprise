@@ -6,12 +6,11 @@ const { TextArea } = Input;
 const dateFormat = 'YYYY-MM-DD';
 
 type DebitVoucherTypes = {
-  credit_account_head: string;
   data: string;
   remark: string;
 };
 
-const DebitVoucherHeader = () => {
+const ContraVoucherHeader = () => {
   const [form] = Form.useForm();
   const today = new Date();
 
@@ -41,18 +40,6 @@ const DebitVoucherHeader = () => {
         <Row gutter={20}>
           <Col lg={10} xl={10} xxl={10}>
             <Form.Item
-              name="credit_account_head"
-              label="Credit Account Head"
-              style={{ marginBottom: '10px' }}
-            >
-              <Select placeholder="Select a option" size="large" allowClear>
-                <Option value="1">Bank</Option>
-                <Option value="2">Bkash</Option>
-                <Option value="3">City Bank</Option>
-              </Select>
-            </Form.Item>
-
-            <Form.Item
               name="date"
               label="Date"
               style={{ marginBottom: '10px' }}
@@ -80,4 +67,4 @@ const DebitVoucherHeader = () => {
   );
 };
 
-export default DebitVoucherHeader;
+export default ContraVoucherHeader;

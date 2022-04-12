@@ -231,7 +231,7 @@ const AllSalesReport = ({ settings }) => {
             columns={columns}
             bordered
             dataSource={allSalesReports}
-            pagination={true}
+            pagination={allSalesReports?.length > 10 ? true : false}
             rowKey={(record) => record.key}
             scroll={{ x: 1500 }}
             locale={{ emptyText: 'No sales data found. Please, search again.' }}

@@ -1,5 +1,7 @@
 import { Col, ConfigProvider, Row } from 'antd';
+import JournalVoucherHeader from 'renderer/components/accounts/JournalVoucherHeader';
 import Sidebar from 'renderer/components/partials/Sidebar';
+import JournalVoucherTable from './../../../components/accounts/JournalVoucherHeader/JournalVoucherTable';
 import Heading from './../../../components/Heading';
 
 const JournalVoucher = ({ settings }) => {
@@ -16,7 +18,8 @@ const JournalVoucher = ({ settings }) => {
               <Heading title="Journal Voucher" />
 
               <div style={{ margin: '0rem 1.5rem' }}>
-                <h1>Journal Voucher</h1>
+                <JournalVoucherHeader />
+                <JournalVoucherTable />
               </div>
             </Col>
           </Row>
