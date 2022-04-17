@@ -1,6 +1,4 @@
 import { Col, ConfigProvider, Row } from 'antd';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Heading from 'renderer/components/Heading';
 import ApplicationSetting from './../../../components/ApplicationSetting';
 import Sidebar from './../../../components/partials/Sidebar';
@@ -10,20 +8,8 @@ const ApplicationSettings = ({
   setReRenderOnSettings,
   reRenderOnSettings,
 }) => {
-  let navigate = useNavigate();
-
-  const [isRedirect, setRedirect] = useState(false);
-
-  useEffect(() => {
-    if (settings.isAppSetupDone) {
-      // setRedirect(true);
-    }
-  }, [isRedirect]);
-
   return (
     <>
-      {isRedirect && navigate('/')}
-
       <div className="main_wrapper">
         <div className="pos_system">
           <ConfigProvider direction={settings.site_align}>
