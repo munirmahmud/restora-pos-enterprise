@@ -5,7 +5,7 @@ import {
   Select,
   Space,
   Table,
-  Typography,
+  Typography
 } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';

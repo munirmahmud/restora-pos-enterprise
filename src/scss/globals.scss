@@ -59,12 +59,13 @@ img {
   cursor: not-allowed;
 }
 
+.printBtn,
 .reset_btn,
 .submit_btn {
   padding: 5px 40px;
   height: auto;
   font-size: 17px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .bulk_upload_btn {

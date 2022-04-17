@@ -3,6 +3,17 @@ import { useEffect, useState } from 'react';
 import { MemoryRouter as Router, Route, Routes } from 'react-router-dom';
 import SystemMenu from './components/partials/SystemMenu';
 import { ContextData } from './contextApi';
+import CashAdjustment from './pages/accounts/CashAdjustment';
+import ChartOfAccounts from './pages/accounts/ChartOfAccounts';
+import ContraVoucher from './pages/accounts/ContraVoucher';
+import CreditVoucher from './pages/accounts/CreditVoucher';
+import DebitVoucher from './pages/accounts/DebitVoucher/index';
+import FinancialYear from './pages/accounts/FinancialYear';
+import FinancialYearEnding from './pages/accounts/FinancialYearEnding';
+import JournalVoucher from './pages/accounts/JournalVoucher';
+import OpeningBalance from './pages/accounts/OpeningBalance';
+import SupplierPayment from './pages/accounts/SupplierPayment';
+import VoucherApproval from './pages/accounts/VoucherApproval';
 import Contact from './pages/Contact';
 import Currency from './pages/Currency';
 import DashBoard from './pages/DashBoard';
@@ -17,6 +28,10 @@ import FoodList from './pages/foodManagement/manageFood/FoodList';
 import FoodVariant from './pages/foodManagement/manageFood/FoodVariant';
 import MenuType from './pages/foodManagement/manageFood/MenuType';
 import Home from './pages/Home';
+import AddEmployee from './pages/hrm/AddEmployee';
+import Designation from './pages/hrm/Designation';
+import ManageEmployee from './pages/hrm/ManageEmployee/index';
+import ManageEmployeeSalary from './pages/hrm/ManageEmployeeSalary/index';
 import Language from './pages/Language/';
 import OnGoingOrder from './pages/OnGoingOrder';
 import ItemSalesReport from './pages/report/ItemSalesReport';
@@ -116,6 +131,70 @@ export default function App() {
           <Route
             path="/addons_assign_list"
             element={<AddonsAssignList settings={settings} />}
+          />
+
+          {/* Accounts */}
+          <Route
+            path="/financial_year"
+            element={<FinancialYear settings={settings} />}
+          />
+          <Route
+            path="/financial_year_ending"
+            element={<FinancialYearEnding settings={settings} />}
+          />
+          <Route
+            path="/opening_balance"
+            element={<OpeningBalance settings={settings} />}
+          />
+          <Route
+            path="/chart_of_accounts"
+            element={<ChartOfAccounts settings={settings} />}
+          />
+          <Route
+            path="/supplier_payment"
+            element={<SupplierPayment settings={settings} />}
+          />
+          <Route
+            path="/cash_adjustment"
+            element={<CashAdjustment settings={settings} />}
+          />
+          <Route
+            path="/debit_voucher"
+            element={<DebitVoucher settings={settings} />}
+          />
+          <Route
+            path="/credit_voucher"
+            element={<CreditVoucher settings={settings} />}
+          />
+          <Route
+            path="/contra_voucher"
+            element={<ContraVoucher settings={settings} />}
+          />
+          <Route
+            path="/journal_voucher"
+            element={<JournalVoucher settings={settings} />}
+          />
+          <Route
+            path="/voucher_approval"
+            element={<VoucherApproval settings={settings} />}
+          />
+
+          {/* Human Resource */}
+          <Route
+            path="/designation"
+            element={<Designation settings={settings} />}
+          />
+          <Route
+            path="/add_employee"
+            element={<AddEmployee settings={settings} />}
+          />
+          <Route
+            path="/manage_employee"
+            element={<ManageEmployee settings={settings} />}
+          />
+          <Route
+            path="/manage_employee_salary"
+            element={<ManageEmployeeSalary settings={settings} />}
           />
 
           {/* Application Settings */}
