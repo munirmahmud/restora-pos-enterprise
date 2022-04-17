@@ -1,22 +1,21 @@
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Popconfirm, Select } from 'antd';
 import { useRef } from 'react';
-import './DebitVoucherHeader.style.scss';
 
 const { Option } = Select;
 
-const DebitVoucherTable = () => {
+const JournalVoucherTable = () => {
   const defaultRowRef = useRef(null);
 
   function onChange(value) {
     console.log(`selected ${value}`);
   }
 
-  function onSearch(value) {
+  function onSearch(value: any) {
     console.log('search:', value);
   }
 
-  const onFinish = (values) => {
+  const onFinish = (values: any) => {
     console.log('Received values of form:', values);
   };
 
@@ -45,7 +44,8 @@ const DebitVoucherTable = () => {
             <tr>
               <th scope="col">Account Name</th>
               <th scope="col">Comments</th>
-              <th scope="col">Amount</th>
+              <th scope="col">Debit</th>
+              <th scope="col">Credit</th>
               <th scope="col">Action</th>
             </tr>
           </thead>
@@ -85,8 +85,14 @@ const DebitVoucherTable = () => {
                   </th>
 
                   <th>
-                    <Form.Item name={['amount']}>
-                      <Input size="large" placeholder="Amount" />
+                    <Form.Item name={['debit']}>
+                      <Input size="large" placeholder="Debit" />
+                    </Form.Item>
+                  </th>
+
+                  <th>
+                    <Form.Item name={['credit']}>
+                      <Input size="large" placeholder="Credit" />
                     </Form.Item>
                   </th>
 
@@ -138,8 +144,14 @@ const DebitVoucherTable = () => {
                     </th>
 
                     <th>
-                      <Form.Item {...restField} name={[name, 'amount']}>
-                        <Input size="large" placeholder="Amount" />
+                      <Form.Item {...restField} name={[name, 'debit']}>
+                        <Input size="large" placeholder="Debit" />
+                      </Form.Item>
+                    </th>
+
+                    <th>
+                      <Form.Item {...restField} name={[name, 'credit']}>
+                        <Input size="large" placeholder="Credit" />
                       </Form.Item>
                     </th>
 
@@ -191,4 +203,4 @@ const DebitVoucherTable = () => {
   );
 };
 
-export default DebitVoucherTable;
+export default JournalVoucherTable;

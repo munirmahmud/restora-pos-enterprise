@@ -1,11 +1,10 @@
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Popconfirm, Select } from 'antd';
 import { useRef } from 'react';
-import './DebitVoucherHeader.style.scss';
 
 const { Option } = Select;
 
-const DebitVoucherTable = () => {
+const CreditVoucherTable = () => {
   const defaultRowRef = useRef(null);
 
   function onChange(value) {
@@ -191,4 +190,4 @@ const DebitVoucherTable = () => {
   );
 };
 
-export default DebitVoucherTable;
+export default CreditVoucherTable;

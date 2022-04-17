@@ -132,6 +132,7 @@ const ChartOfAccountsTable = () => {
           </Col>
         </Row>
       </div>
+
       <Table
         bordered
         columns={columns}

@@ -171,7 +171,7 @@ const AllCategoryList = () => {
         columns={columns}
         rowSelection={{ ...rowSelection, checkStrictly }}
         dataSource={categories}
-        pagination={true}
+        pagination={categories?.length > 10 ? true : false}
         rowKey={(record) => record?.category_id}
         locale={{ emptyText: 'No category data found.' }}
       />

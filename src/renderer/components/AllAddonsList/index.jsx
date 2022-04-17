@@ -139,7 +139,7 @@ const AllAddonsList = () => {
         columns={columns}
         rowSelection={{ ...rowSelection, checkStrictly }}
         dataSource={addonsLists}
-        pagination={true}
+        pagination={addonsLists?.length > 10 ? true : false}
         rowKey={(record) => record?.add_on_id}
         locale={{ emptyText: 'No addons data found.' }}
       />

@@ -96,7 +96,7 @@ const LanguageList = () => {
         columns={columns}
         rowSelection={{ ...rowSelection, checkStrictly }}
         dataSource={data}
-        pagination={true}
+        pagination={data?.length > 10 ? true : false}
         rowKey={(record) => record.key}
         locale={{ emptyText: 'No language data found.' }}
       />

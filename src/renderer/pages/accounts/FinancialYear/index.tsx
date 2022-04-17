@@ -1,8 +1,16 @@
 import { Col, ConfigProvider, Row } from 'antd';
+import { FC } from 'react';
+import FinancialYearHeader from 'renderer/components/accounts/FinancialYearHeader';
 import Sidebar from 'renderer/components/partials/Sidebar';
-import Heading from './../../../components/Heading';
+import Heading from '../../../components/Heading';
+import { SettingsProps } from '../../../types';
+import FinancialYearTable from './../../../components/accounts/FinancialYearHeader/FinancialYearTable';
 
-const FinancialYear = ({ settings }) => {
+type FinancialYearProps = {
+  settings: SettingsProps;
+};
+
+const FinancialYear: FC<FinancialYearProps> = ({ settings }): JSX.Element => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">
@@ -16,7 +24,9 @@ const FinancialYear = ({ settings }) => {
               <Heading title="Financial Year" />
 
               <div style={{ margin: '0rem 1.5rem' }}>
-                <h1>Financial Year</h1>
+                <FinancialYearHeader />
+
+                <FinancialYearTable />
               </div>
             </Col>
           </Row>

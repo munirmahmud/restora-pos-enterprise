@@ -105,7 +105,7 @@ const TodaysOrder = ({ settings }) => {
           <Table
             columns={columns}
             dataSource={todaysOrders}
-            pagination={true}
+            pagination={todaysOrders?.length > 10 ? true : false}
             rowKey={(record) => record?.order_id}
             locale={{ emptyText: 'No todays data found.' }}
           />

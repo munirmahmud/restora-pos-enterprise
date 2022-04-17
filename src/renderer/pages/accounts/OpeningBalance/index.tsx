@@ -1,8 +1,15 @@
 import { Col, ConfigProvider, Row } from 'antd';
+import { FC } from 'react';
+import OpeningBalanceHeader from 'renderer/components/accounts/OpeningBalanceHeader';
 import Sidebar from 'renderer/components/partials/Sidebar';
-import Heading from './../../../components/Heading';
+import Heading from '../../../components/Heading';
+import { SettingsProps } from '../../../types';
 
-const OpeningBalance = ({ settings }) => {
+type OpeningBalanceProps = {
+  settings: SettingsProps;
+};
+
+const OpeningBalance: FC<OpeningBalanceProps> = ({ settings }): JSX.Element => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">
@@ -16,7 +23,7 @@ const OpeningBalance = ({ settings }) => {
               <Heading title="Opening Balance" />
 
               <div style={{ margin: '0rem 1.5rem' }}>
-                <h1>Opening Balance</h1>
+                <OpeningBalanceHeader />
               </div>
             </Col>
           </Row>

@@ -294,7 +294,7 @@ const MenuTypeList = () => {
           columns={columns}
           rowSelection={{ ...rowSelection, checkStrictly }}
           dataSource={menuTypesList}
-          pagination={true}
+          pagination={menuTypesList?.length > 10 ? true : false}
           rowKey={(record) => record.id}
           locale={{ emptyText: 'No menu type data found.' }}
         />
