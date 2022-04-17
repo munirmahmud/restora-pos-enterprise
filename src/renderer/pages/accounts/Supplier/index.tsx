@@ -1,10 +1,15 @@
 import { Col, ConfigProvider, Row } from 'antd';
-import SupplierPaymentTable from 'renderer/components/accounts/SupplierPayment/SupplierPaymentTable';
+import { FC } from 'react';
 import Sidebar from 'renderer/components/partials/Sidebar';
 import Heading from '../../../components/Heading';
-import SupplierPayment from './../SupplierPayment';
+import { SettingsProps } from '../../../types';
+import SupplierPayment from './SupplierPayment';
 
-const Supplier = ({ settings }) => {
+type SupplierProps = {
+  settings: SettingsProps;
+};
+
+const Supplier: FC<SupplierProps> = ({ settings }): JSX.Element => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">
@@ -19,7 +24,6 @@ const Supplier = ({ settings }) => {
 
               <div style={{ margin: '0rem 1.5rem' }}>
                 <SupplierPayment />
-                <SupplierPaymentTable />
               </div>
             </Col>
           </Row>

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { MemoryRouter as Router, Route, Routes } from 'react-router-dom';
 import SystemMenu from './components/partials/SystemMenu';
 import { ContextData } from './contextApi';
-import CashAdjustment from './pages/accounts/CashAdjustment';
+import Cash from './pages/accounts/Cash';
 import ChartOfAccounts from './pages/accounts/ChartOfAccounts';
 import ContraVoucher from './pages/accounts/ContraVoucher';
 import CreditVoucher from './pages/accounts/CreditVoucher';
@@ -154,7 +154,7 @@ export default function App() {
           />
           <Route
             path="/cash_adjustment"
-            element={<CashAdjustment settings={settings} />}
+            element={<Cash settings={settings} />}
           />
           <Route
             path="/debit_voucher"
