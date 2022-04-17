@@ -285,13 +285,18 @@ getListItems(
 ipcMain.on('get_settings', (event, args) => {
   let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
   let { status } = args;
-  let sql = `SELECT * FROM setting `;
+  let sql = `SELECT setting.*, currency.currency_icon, currency.position
+  FROM setting INNER JOIN currency ON setting.currency=currency.id`;
 
   if (status) {
     db.serialize(() => {
       db.all(sql, [], (err, rows) => {
         if (rows) {
-          const settingsData = { ...rows[0], isAppSetupDone: true };
+          const settingsData = {
+            ...rows[0],
+            isAppSetupDone: true,
+          };
+
           mainWindow.webContents.send('get_settings_response', settingsData);
         } else {
           mainWindow.webContents.send('get_settings_response', {
@@ -1120,14 +1125,15 @@ ipcMain.on('get_todays_completed_orders', (event, args) => {
 
 // Complete order info
 ipcMain.on('update_order_info_ongoing', (event, args) => {
-  let { order_id } = args;
+  let { order_id, grand_total, discount } = args;
 
   let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
-
+  // grand_total
+  // discount
   db.serialize(() => {
     db.run(
       `UPDATE orders
-        SET status = 2
+        SET status = 2, grand_total = ${grand_total}, discount = ${discount}
         WHERE order_id = ${order_id}`
     );
   });

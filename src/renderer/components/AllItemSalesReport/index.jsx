@@ -5,7 +5,8 @@ import {
   Select,
   Space,
   Table,
-  Typography,
+
+  Typography
 } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
@@ -166,7 +167,7 @@ const AllItemSalesReport = ({ settings }) => {
             columns={columns}
             bordered
             dataSource={itemSalesReports}
-            pagination={itemSalesReports?.length > 0 ? true : false}
+            pagination={true}
             locale={{ emptyText: 'No sales data found. Please, search again.' }}
             rowKey={(record) => record.id}
           />

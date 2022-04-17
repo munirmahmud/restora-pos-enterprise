@@ -173,6 +173,7 @@ const AllCategoryList = () => {
         dataSource={categories}
         pagination={categories?.length > 10 ? true : false}
         rowKey={(record) => record?.category_id}
+        locale={{ emptyText: 'No category data found.' }}
       />
     </div>
   );

@@ -291,6 +291,7 @@ const AllAddonsAssignList = () => {
           dataSource={addonsAssignList}
           pagination={addonsAssignList?.length > 10 ? true : false}
           rowKey={(record) => record?.id}
+          locale={{ emptyText: 'No addons assign data found.' }}
         />
       </div>
 

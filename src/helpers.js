@@ -138,28 +138,59 @@ export class CalculatePrice {
     }
   }
 
-  getDiscountAmount() {
+  getDiscountAmount(disco) {
     // calculate if it has discount type & amount
     // 1 = amount (fixed), 2 = percent (%)
+    let discountAmount = 0;
     if (this.settings.discount_type && this.settings.discountrate) {
       if (this.settings.discount_type === 1) {
-        return parseFloat(this.settings.discountrate.toFixed(2));
+        discountAmount = parseFloat(this.settings.discountrate.toFixed(2));
       } else if (this.settings.discount_type === 2) {
-        return parseFloat(
-          (this.getTotalPrice() * this.settings.discountrate.toFixed(2)) / 100
+        discountAmount = parseFloat(
+          (this.getTotalPrice() * parseInt(this.settings.discountrate)) / 100
         );
       }
-    } else {
-      return 0;
+    }
+
+    return discountAmount;
+  }
+
+  // 270 + 0 + 15
+
+  getGrandTotal() {
+    return parseFloat(this.getTotalPrice() + this.getVat());
+    // return parseFloat(
+    //   (this.getTotalPrice() + this.getVat() - this.getServiceCharge()).toFixed(
+    //     2
+    //   )
+    // );
+  }
+}
+
+export const getDiscountAmount = (settings, discountAmount, totalAmount) => {
+  // calculate if it has discount type & amount
+  // 1 = amount (fixed), 2 = percent (%)
+  let amount = discountAmount;
+  if (settings?.discount_type && settings?.discountrate) {
+    if (settings?.discount_type === 2) {
+      amount = parseFloat(
+        (totalAmount * parseInt(discountAmount)) / 100
+      ).toFixed(2);
     }
   }
 
-  getGrandTotal() {
-    return (
-      this.getTotalPrice() +
-      this.getVat() +
-      this.getServiceCharge() -
-      this.getDiscountAmount()
-    ).toFixed(2);
+  return parseFloat(amount);
+};
+
+export const getServiceCharge = (
+  settings,
+  serviceChargeAmount,
+  totalAmount
+) => {
+  let amount = serviceChargeAmount;
+  if (settings?.service_chargeType === 'percent') {
+    amount = parseFloat((totalAmount * serviceChargeAmount) / 100).toFixed(2);
   }
-}
+
+  return parseFloat(amount);
+};

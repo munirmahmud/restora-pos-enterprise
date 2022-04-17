@@ -170,12 +170,14 @@ const ConfirmOrderModal = (props) => {
         </Row>
       </Modal>
 
-      <QuickOrderModal
-        settings={settings}
-        openModal={openModal}
-        setOpenModal={setOpenModal}
-        foodItems={foodItems}
-      />
+      {openModal && (
+        <QuickOrderModal
+          settings={settings}
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          foodItems={foodItems}
+        />
+      )}
 
       <TokenModal
         cartItems={cartItems}

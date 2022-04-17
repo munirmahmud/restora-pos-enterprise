@@ -258,6 +258,7 @@ const FoodVariantList = () => {
           dataSource={foodVariantList}
           pagination={foodVariantList?.length > 10 ? true : false}
           rowKey={(record) => record?.id}
+          locale={{ emptyText: 'No food variant data found.' }}
         />
       </div>
 

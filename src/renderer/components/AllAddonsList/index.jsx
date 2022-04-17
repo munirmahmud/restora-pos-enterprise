@@ -141,6 +141,7 @@ const AllAddonsList = () => {
         dataSource={addonsLists}
         pagination={addonsLists?.length > 10 ? true : false}
         rowKey={(record) => record?.add_on_id}
+        locale={{ emptyText: 'No addons data found.' }}
       />
     </div>
   );

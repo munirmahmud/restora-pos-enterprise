@@ -6,15 +6,34 @@ import { useRef } from 'react';
 import restoraPosLogo from '../../../../assets/retora_pos.png';
 import './InVoiceGenerate.style.scss';
 
+const headingStyles = {
+  fontWeight: 700,
+  marginBottom: 0,
+  color: '#000',
+  fontSize: '12px',
+};
+const paragraphStyles = {
+  textAlign: 'center',
+  marginBottom: 0,
+  color: '#000',
+  fontSize: 12,
+};
+const spanStyles = {
+  fontWeight: 'normal',
+  color: '#000',
+  fontSize: 12,
+  marginBottom: 0,
+};
+
 const InVoiceGenerate = ({
   settings,
-  openModal,
-  setOpenModal,
-  openInvoice,
   foodItems,
   foodData,
-  invoicePrint,
+  invoicePrintDivId,
   customerName,
+  grandTotal,
+  customDiscountAmount,
+  serviceCharge,
 }) => {
   const date = new Date();
   const invoiceWrapperRef = useRef(null);
@@ -24,7 +43,7 @@ const InVoiceGenerate = ({
   return (
     <div
       className="inVoice_wrapper"
-      id={`${invoicePrint}`}
+      id={`${invoicePrintDivId}`}
       style={{
         padding: '0px 20px',
         margin: 0,
@@ -45,107 +64,34 @@ const InVoiceGenerate = ({
           />
         </div>
 
-        <h2
-          style={{
-            textAlign: 'center',
-            fontWeight: '700',
-            color: '#000',
-            marginBottom: 0,
-          }}
-        >
+        <h2 style={{ ...headingStyles, textAlign: 'center', fontSize: 40 }}>
           {settings.storename ? settings.storename : 'Restora POS'}
         </h2>
-        <p
-          style={{
-            textAlign: 'center',
-            marginBottom: 0,
-            color: '#000',
-            fontSize: '12px',
-          }}
-        >
-          {settings?.address}
-        </p>
+        <p style={paragraphStyles}>{settings?.address}</p>
 
         <div className="in_voice_info " style={{ marginTop: '0.2rem' }}>
           {foodData?.order_id && (
-            <h4
-              style={{
-                fontWeight: '700',
-                marginBottom: 0,
-                color: '#000',
-                fontSize: '12px',
-              }}
-            >
+            <h4 style={headingStyles}>
               Receipt No:{' '}
-              <span
-                style={{
-                  fontWeight: 'normal',
-                  color: '#000',
-                  fontSize: '12px',
-                }}
-              >
+              <span style={spanStyles}>
                 {checkTokenLength(receiptNo, foodData?.order_id)}
               </span>
             </h4>
           )}
-          <h4
-            style={{
-              fontWeight: '700',
-              marginBottom: 0,
-              color: '#000',
-              fontSize: '12px',
-            }}
-          >
+          <h4 style={headingStyles}>
             Date:{' '}
-            <span
-              style={{
-                fontWeight: 'normal',
-                color: '#000',
-                fontSize: '12px',
-              }}
-            >{`${moment(date).format('LLL')}`}</span>
+            <span style={spanStyles}>{`${moment(date).format('LLL')}`}</span>
           </h4>
 
           {/* Static payment method type */}
-          <h4
-            style={{
-              fontWeight: '700',
-              marginBottom: 0,
-              color: '#000',
-              fontSize: '12px',
-            }}
-          >
-            Payment Method:{' '}
-            <span
-              style={{
-                fontWeight: 'normal',
-                color: '#000',
-                fontSize: '12px',
-              }}
-            >
-              Cash
-            </span>
+          <h4 style={headingStyles}>
+            Payment Method: <span style={spanStyles}>Cash</span>
           </h4>
 
           {settings?.vattinno && (
-            <h4
-              style={{
-                fontWeight: '700',
-                marginBottom: 0,
-                color: '#000',
-                fontSize: '12px',
-              }}
-            >
+            <h4 style={headingStyles}>
               Tin Or Vat No:{' '}
-              <span
-                style={{
-                  fontWeight: 'normal',
-                  color: '#000',
-                  fontSize: '12px',
-                }}
-              >
-                {settings?.vattinno}
-              </span>
+              <span style={spanStyles}>{settings?.vattinno}</span>
             </h4>
           )}
         </div>
@@ -154,44 +100,17 @@ const InVoiceGenerate = ({
 
         <div>
           <div className="in_voice_info flex content_between">
-            <h4
-              style={{
-                fontWeight: '700',
-                marginBottom: 0,
-                color: '#000',
-                fontSize: '12px',
-              }}
-            >
-              Item
-            </h4>
-            <h4
-              style={{
-                fontWeight: '700',
-                marginBottom: 0,
-                color: '#000',
-                fontSize: '12px',
-              }}
-            >
-              Total
-            </h4>
+            <h4 style={headingStyles}>Item</h4>
+            <h4 style={headingStyles}>Total</h4>
           </div>
 
           {foodItems?.length > 0 &&
             foodItems?.map((item, index) => (
               <div key={index} className="in_voice_info flex content_between">
-                <p style={{ marginBottom: 0, color: '#000', fontSize: '12px' }}>
+                <p style={spanStyles}>
                   {item.product_name} {item.quantity} x {item.price}
                 </p>
-                <p
-                  style={{
-                    fontWeight: '700',
-                    marginBottom: 0,
-                    color: '#000',
-                    fontSize: '12px',
-                  }}
-                >
-                  {item.total_price}
-                </p>
+                <p style={headingStyles}>{item.total_price}</p>
               </div>
             ))}
         </div>
@@ -200,73 +119,32 @@ const InVoiceGenerate = ({
 
         <div>
           <div className="in_voice_info flex content_between">
-            <h4
-              style={{
-                fontWeight: '700',
-                marginBottom: 0,
-                color: '#000',
-                fontSize: '12px',
-              }}
-            >
-              Subtotal
-            </h4>
-            <h4
-              style={{
-                fontWeight: '700',
-                marginBottom: 0,
-                color: '#000',
-                fontSize: '12px',
-              }}
-            >
-              {settings.currency} {calc.getTotalPrice()}
+            <h4 style={headingStyles}>Subtotal</h4>
+            <h4 style={headingStyles}>
+              {settings.currency_icon} {grandTotal}
             </h4>
           </div>
 
           <div className="in_voice_info flex content_between">
-            <p style={{ marginBottom: 0, color: '#000', fontSize: '12px' }}>
+            <p style={{ ...spanStyles, marginBottom: 0 }}>
               Vat({settings.vat ? settings.vat : 0}%)
             </p>
-            <p
-              style={{
-                fontWeight: '700',
-                marginBottom: 0,
-                color: '#000',
-                fontSize: '12px',
-              }}
-            >
-              {settings.currency} {calc.getVat()}
+            <p style={headingStyles}>
+              {settings.currency_icon} {calc.getVat()}
             </p>
           </div>
 
           <div className="in_voice_info flex content_between">
-            <p style={{ marginBottom: 0, color: '#000', fontSize: '12px' }}>
-              Service Charge
-            </p>
-            <p
-              style={{
-                fontWeight: '700',
-                marginBottom: 0,
-                color: '#000',
-                fontSize: '12px',
-              }}
-            >
-              {settings.currency} {calc.getServiceCharge()}
+            <p style={spanStyles}>Service Charge</p>
+            <p style={headingStyles}>
+              {settings.currency_icon} {serviceCharge}
             </p>
           </div>
 
           <div className="in_voice_info flex content_between">
-            <p style={{ marginBottom: 0, color: '#000', fontSize: '12px' }}>
-              Discount
-            </p>
-            <p
-              style={{
-                fontWeight: '700',
-                marginBottom: 0,
-                color: '#000',
-                fontSize: '12px',
-              }}
-            >
-              {settings.currency} {calc.getDiscountAmount()}
+            <p style={spanStyles}>Discount</p>
+            <p style={headingStyles}>
+              {settings.currency_icon} {customDiscountAmount}
             </p>
           </div>
         </div>
@@ -275,85 +153,23 @@ const InVoiceGenerate = ({
 
         <div>
           <div className="in_voice_info flex content_between">
-            <h4
-              style={{
-                fontWeight: '700',
-                marginBottom: 0,
-                color: '#000',
-                fontSize: '12px',
-              }}
-            >
-              Total
-            </h4>
-            <h4
-              style={{
-                fontWeight: '700',
-                marginBottom: 0,
-                color: '#000',
-                fontSize: '12px',
-              }}
-            >
-              {settings.currency} {calc.getGrandTotal()}
+            <h4 style={headingStyles}>Total</h4>
+            <h4 style={headingStyles}>
+              {settings.currency_icon} {grandTotal}
             </h4>
           </div>
-
-          {/* <div className="in_voice_info flex content_between">
-              <p style={{ marginBottom: 0, color: '#000' }}>
-                Total Payable Amount
-              </p>
-              <p style={{ fontWeight: '700', marginBottom: 0, color: '#000' }}>
-                {settings.currency}
-                {calc.getGrandTotal()}
-              </p>
-            </div> */}
         </div>
 
         <div className="in_voice_info flex content_center">
-          <p
-            style={{
-              marginBottom: 0,
-              color: '#000',
-              marginTop: '0.5rem',
-              fontSize: '12px',
-            }}
-          >
-            Billing To: {customerName}
-          </p>
-          {/* <p>Bill By: Jone Doe</p> */}
+          <p style={headingStyles}>Billing To: {customerName}</p>
         </div>
 
-        <h3
-          style={{
-            textAlign: 'center',
-            fontWeight: '700',
-            marginBottom: 0,
-            color: '#000',
-            fontSize: '14px',
-          }}
-        >
+        <h3 style={{ ...paragraphStyles, fontWeight: '700', fontSize: '14px' }}>
           Thank you very mush
         </h3>
         <div style={{ border: '1px solid #000' }}></div>
-        <p
-          style={{
-            textAlign: 'center',
-            marginBottom: 0,
-            color: '#000',
-            fontSize: '12px',
-          }}
-        >
-          Powered By: Restora POS,
-        </p>
-        <p
-          style={{
-            textAlign: 'center',
-            marginBottom: 0,
-            color: '#000',
-            fontSize: '12px',
-          }}
-        >
-          https://restorapos.com/
-        </p>
+        <p style={paragraphStyles}>Powered By: Restora POS,</p>
+        <p style={paragraphStyles}>https://restorapos.com/</p>
       </div>
     </div>
   );

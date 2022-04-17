@@ -46,7 +46,11 @@ const FoodNoteModal = ({
         autoComplete="off"
       >
         <Form.Item label="Food Note" name="food_note">
-          <Input.TextArea size="large" rows={2} />
+          <Input.TextArea
+            size="large"
+            rows={2}
+            defaultValue={addFoodNoteToItem.note}
+          />
         </Form.Item>
 
         <div className="button_group">

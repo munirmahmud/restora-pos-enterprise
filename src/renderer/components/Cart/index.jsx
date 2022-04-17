@@ -23,7 +23,12 @@ import AddCustomerModal from '../AddCustomerModal';
 import Calculator from '../Calculator';
 import FoodNoteModal from '../FoodNoteModal';
 import PremiumVersion from '../partials/PremiumVersion';
-import { CalculatePrice, getDataFromDatabase } from './../../../helpers';
+import {
+  CalculatePrice,
+  getDataFromDatabase,
+  getDiscountAmount,
+  getServiceCharge,
+} from './../../../helpers';
 import './cart.styles.scss';
 import ConfirmOrderModal from './ConfirmOrderModal';
 import WarmingModal from './WarmingModal';
@@ -55,7 +60,15 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
     useState(null);
   const [foodNoteModal, setFoodNoteModal] = useState(false);
 
+  const [customDiscount, setCustomDiscount] = useState(0);
+  const [customServiceCharge, setCustomServiceCharge] = useState(0);
+  const [addFoodNoteToItem, setAddFoodNoteToItem] = useState({});
+
   useEffect(() => {
+    setCustomDiscount(settings?.discountrate);
+
+    setCustomServiceCharge(settings?.servicecharge);
+
     getDataFromDatabase(
       'get_customer_names_response',
       window.get_customer_names
@@ -77,20 +90,35 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
         name: ['customer_address'],
       },
     ]);
-  }, [reRender]);
+  }, [reRender, settings]);
 
   useEffect(() => {
     setCartData({ ...cartData, cartItems });
   }, [cartItems]);
+
+  const handleDiscount = (e) => {
+    const { value } = e.target;
+    if (value < 0) return;
+
+    setCustomDiscount(value);
+  };
+
+  const handleServiceCharge = (e) => {
+    const { value } = e.target;
+    if (value < 0) return;
+
+    setCustomServiceCharge(value);
+  };
 
   const selectTime = (time, timeString) => {
     console.log('Cooking time', timeString);
   };
 
   const handleDeleteItem = (item) => {
+    console.log('item cart', item);
     // CartItems is array
     const updateCart = cartItems.filter(
-      (cartItem) => cartItem.date_inserted !== item.date_inserted
+      (cartItem) => cartItem.cartId !== item.cartId
     );
 
     setCartItems(updateCart);
@@ -130,9 +158,17 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
       setWarmingModal(true);
     } else {
       const orderCalculateInfo = {
-        grandTotal: calcPrice.getGrandTotal(),
-        discount: calcPrice.getDiscountAmount(),
-        serviceCharge: calcPrice.getServiceCharge(),
+        grandTotal: getGrandTotalAmount(),
+        discount: getDiscountAmount(
+          settings,
+          customDiscount,
+          calcPrice.getTotalPrice()
+        ),
+        serviceCharge: getServiceCharge(
+          settings,
+          customServiceCharge,
+          calcPrice.getTotalPrice()
+        ),
         vat: calcPrice.getVat(),
       };
 
@@ -140,11 +176,15 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
         setConfirmBtn(data);
         setConfirmOrder(true);
 
-        setQuickOrderAdditionalData({
+        const customerOrder = {
           confirmBtn,
           customerId,
           ...orderCalculateInfo,
-        });
+        };
+
+        setQuickOrderAdditionalData(customerOrder);
+
+        localStorage.setItem('order', JSON.stringify(customerOrder));
 
         if (localStorage.getItem('order_id')) {
           localStorage.removeItem('order_id');
@@ -167,9 +207,17 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
       setConfirmBtn(orderBtn);
       setConfirmOrder(true);
       const orderCalculateInfo = {
-        grand_total: calcPrice.getGrandTotal(),
-        discount: calcPrice.getDiscountAmount(),
-        serviceCharge: calcPrice.getServiceCharge(),
+        grand_total: getGrandTotalAmount(),
+        discount: getDiscountAmount(
+          settings,
+          customDiscount,
+          calcPrice.getTotalPrice()
+        ),
+        serviceCharge: getServiceCharge(
+          settings,
+          customServiceCharge,
+          calcPrice.getTotalPrice()
+        ),
         vat: calcPrice.getVat(),
       };
 
@@ -195,7 +243,9 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
   };
 
   const handleFoodQuantity = (quantity, item) => {
-    const index = cartItems.findIndex((cartItem) => cartItem.id === item.id);
+    const index = cartItems.findIndex(
+      (cartItem) => cartItem.cartId === item.cartId
+    );
 
     setCartItems([
       ...cartItems.slice(0, index),
@@ -208,12 +258,18 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
     setCustomerId(value);
   };
 
-  const [addFoodNoteToItem, setAddFoodNoteToItem] = useState({});
-
-  const handleFoodNoteModal = (cartData) => {
-    setAddFoodNoteToItem(cartData);
+  const handleFoodNoteModal = (foodItem) => {
+    setAddFoodNoteToItem(foodItem);
     setFoodNoteModal(true);
   };
+
+  function getGrandTotalAmount() {
+    return (
+      calcPrice.getGrandTotal() -
+      getDiscountAmount(settings, customDiscount, calcPrice.getTotalPrice()) +
+      getServiceCharge(settings, customServiceCharge, calcPrice.getTotalPrice())
+    );
+  }
 
   return (
     <div className="cart_wrapper">
@@ -386,17 +442,23 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
                       cartItems.map((item, index) => {
                         return (
                           <tr key={index}>
-                            <th>
-                              <FileAddOutlined
-                                style={{
-                                  padding: '0rem 0.4rem 0rem 1rem',
-                                  color: '#0037ff',
-                                  fontSize: '20px',
-                                }}
-                                onClick={() => handleFoodNoteModal(item)}
-                              />
-                              {item.product_name}
-                            </th>
+                            {item?.add_on_id ? (
+                              <th style={{ paddingLeft: 60 }}>
+                                {item.product_name}
+                              </th>
+                            ) : (
+                              <th>
+                                <FileAddOutlined
+                                  style={{
+                                    padding: '0rem 0.4rem 0rem 1rem',
+                                    color: '#0037ff',
+                                    fontSize: '20px',
+                                  }}
+                                  onClick={() => handleFoodNoteModal(item)}
+                                />
+                                {item.product_name}
+                              </th>
+                            )}
                             <th>{item.foodVariant}</th>
                             <th>{item.price}</th>
 
@@ -437,9 +499,18 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
               </Col>
               <Col lg={settings?.discount_type ? 9 : 12}>
                 <b>Service Charge: </b>
-                {settings?.service_chargeType === 'amount' &&
-                  settings.currency}{' '}
-                <span
+                {settings?.position === 'left' && settings.currency_icon}{' '}
+                <input
+                  type="number"
+                  value={customServiceCharge}
+                  onChange={handleServiceCharge}
+                  style={{
+                    width: '55px',
+                    border: '1px solid #ddd',
+                    padding: 4,
+                  }}
+                />
+                {/* <span
                   contentEditable
                   style={{
                     width: '35px',
@@ -447,9 +518,10 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
                     textAlign: 'center',
                     border: '1px solid #ddd',
                   }}
-                >
-                  {settings?.servicecharge ? settings?.servicecharge : 0}
-                </span>
+                > */}
+                {/* {settings?.servicecharge ? settings?.servicecharge : 0} */}
+                {/* </span> */}
+                {settings?.position === 'right' && settings.currency_icon}{' '}
                 {settings?.service_chargeType !== 'amount' && '(%)'}
               </Col>
 
@@ -457,18 +529,17 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
               {settings?.discount_type && (
                 <Col lg={6}>
                   <b>Discount: </b>
-                  {settings?.discount_type === 1 && settings.currency}{' '}
-                  <span
-                    contentEditable
+                  {settings?.discount_type === 1 && settings.currency_icon}{' '}
+                  <input
+                    type="number"
+                    value={customDiscount}
+                    onChange={handleDiscount}
                     style={{
-                      width: '35px',
-                      display: 'inline-block',
-                      textAlign: 'center',
+                      width: '55px',
                       border: '1px solid #ddd',
+                      padding: 4,
                     }}
-                  >
-                    {settings?.discountrate ? settings?.discountrate : 0}
-                  </span>{' '}
+                  />
                   {settings?.discount_type === 2 && '(%)'}
                 </Col>
               )}
@@ -479,15 +550,18 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
             <div>
               <span>Grand Total</span>
             </div>
-
             <div>
               {cartItems?.length !== 0 ? (
                 <span>
-                  {settings.currency}
-                  {calcPrice.getGrandTotal()}
+                  {settings?.position === 'left' && settings.currency_icon}
+                  {getGrandTotalAmount()}
+                  {settings?.position === 'right' && settings.currency_icon}
                 </span>
               ) : (
-                <span>{settings.currency} 0.00</span>
+                <span>
+                  {settings?.position === 'left' && settings.currency_icon} 0.00{' '}
+                  {settings?.position === 'right' && settings.currency_icon}
+                </span>
               )}
             </div>
           </div>
@@ -570,11 +644,13 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
         setPremiumVersion={setPremiumVersion}
       />
 
-      <FoodNoteModal
-        foodNoteModal={foodNoteModal}
-        setFoodNoteModal={setFoodNoteModal}
-        addFoodNoteToItem={addFoodNoteToItem}
-      />
+      {foodNoteModal && (
+        <FoodNoteModal
+          foodNoteModal={foodNoteModal}
+          setFoodNoteModal={setFoodNoteModal}
+          addFoodNoteToItem={addFoodNoteToItem}
+        />
+      )}
 
       <Modal
         visible={openCalculator}

@@ -61,7 +61,9 @@ const Home = ({ settings }) => {
         let newFoods = [];
 
         foodNames?.forEach((food, index) => {
-          const newAddons = addons.filter((addon) => addon.food_id === food.id);
+          const newAddons = addons
+            .filter((addon) => addon.food_id === food.id)
+            .map((item) => ({ ...item, quantity: 1 }));
 
           const newVariants = variants.filter(
             (variant) => variant.food_id === food.id
