@@ -1,6 +1,6 @@
 {
-  "name": "restorapos-desktop",
-  "description": "Restorapos Desktop",
+  "name": "restorapos-desktop-premium",
+  "description": "Restora POS Desktop Premium",
   "scripts": {
     "build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",
     "build:main": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.main.prod.ts",
@@ -91,12 +91,12 @@
     "publish": {
       "provider": "github",
       "owner": "munirmahmud",
-      "repo": "bhojon-restora-pos"
+      "repo": "restora-pos-premium"
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/munirmahmud/bhojon-restora-pos.git"
+    "url": "https://munir_bdtask@bitbucket.org/bdtask-js2/restora-pos-premium.git"
   },
   "author": {
     "name": "Munir Mahmud",
@@ -108,11 +108,6 @@
       "name": "Rafiul",
       "email": "badhonngc@gmail.com",
       "url": "https://github.com/Rafiul585"
-    },
-    {
-      "name": "John Tran",
-      "email": "jptran318@gmail.com",
-      "url": "https://github.com/jooohhn"
     }
   ],
   "license": "MIT",
@@ -259,8 +254,7 @@
     "react-point": "^3.0.1",
     "react-router-dom": "^6.2.1",
     "react-to-print": "^2.14.4",
-    "regenerator-runtime": "^0.13.9",
-    "sqlite3": "^5.0.2"
+    "regenerator-runtime": "^0.13.9"
   },
   "browser": {
     "fs": false,

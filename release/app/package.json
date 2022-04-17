@@ -1,18 +1,20 @@
 {
-  "name": "electron-react-boilerplate",
+  "name": "restora-pos-desktop-premium",
   "version": "4.5.0",
-  "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
+  "description": "Restora POS Desktop Premium based on Electronjs, React, React Router, Webpack, React Hot Loader for rapid application development",
   "main": "./dist/main/main.js",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://github.com/electron-react-boilerplate"
+    "name": "Restora POS Desktop Premium",
+    "email": "munirmahmud6@gmail.com",
+    "url": "https://munir_bdtask@bitbucket.org/bdtask-js2/restora-pos-premium.git"
   },
   "scripts": {
     "electron-rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",
     "link-modules": "node -r ts-node/register ../../.erb/scripts/link-modules.ts",
     "postinstall": "npm run electron-rebuild && npm run link-modules"
   },
-  "dependencies": {},
+  "dependencies": {
+    "sqlite3": "^5.0.3"
+  },
   "license": "MIT"
 }
