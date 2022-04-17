@@ -1,8 +1,10 @@
 import { Col, ConfigProvider, Row } from 'antd';
+import SupplierPaymentTable from 'renderer/components/accounts/SupplierPayment/SupplierPaymentTable';
 import Sidebar from 'renderer/components/partials/Sidebar';
-import Heading from './../../../components/Heading';
+import Heading from '../../../components/Heading';
+import SupplierPayment from './../SupplierPayment';
 
-const SupplierPayment = ({ settings }) => {
+const Supplier = ({ settings }) => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">
@@ -13,10 +15,11 @@ const SupplierPayment = ({ settings }) => {
             </Col>
 
             <Col lg={19} xl={21} xxl={21}>
-              <Heading title="Financial Year" />
+              <Heading title="Supplier Payment" />
 
               <div style={{ margin: '0rem 1.5rem' }}>
-                <h1>Financial Year</h1>
+                <SupplierPayment />
+                <SupplierPaymentTable />
               </div>
             </Col>
           </Row>
@@ -26,4 +29,4 @@ const SupplierPayment = ({ settings }) => {
   );
 };
 
-export default SupplierPayment;
+export default Supplier;

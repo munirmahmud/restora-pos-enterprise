@@ -5,6 +5,10 @@ import './DebitVoucherHeader.style.scss';
 
 const { Option } = Select;
 
+const style = {
+  borderBottom: '1px solid #e0e0e0',
+};
+
 const DebitVoucherTable = () => {
   const defaultRowRef = useRef(null);
 
@@ -159,6 +163,16 @@ const DebitVoucherTable = () => {
                     </th>
                   </tr>
                 ))}
+
+                <tr style={style}>
+                  <th colspan="2">Total</th>
+
+                  <th>
+                    <Form.Item>
+                      <Input size="large" placeholder="0" />
+                    </Form.Item>
+                  </th>
+                </tr>
 
                 <Form.Item
                   style={{
