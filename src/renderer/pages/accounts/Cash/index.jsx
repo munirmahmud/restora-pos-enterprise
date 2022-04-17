@@ -1,8 +1,9 @@
 import { Col, ConfigProvider, Row } from 'antd';
 import Sidebar from 'renderer/components/partials/Sidebar';
-import Heading from './../../../components/Heading/index';
+import Heading from '../../../components/Heading/index';
+import CashAdjustment from './CashAdjustment';
 
-const CashAdjustment = ({ settings }) => {
+const Cash = ({ settings }) => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">
@@ -16,7 +17,7 @@ const CashAdjustment = ({ settings }) => {
               <Heading title="Cash Adjustment" />
 
               <div style={{ margin: '0rem 1.5rem' }}>
-                <h1>Cash Adjustment</h1>
+                <CashAdjustment />
               </div>
             </Col>
           </Row>
@@ -26,4 +27,4 @@ const CashAdjustment = ({ settings }) => {
   );
 };
 
-export default CashAdjustment;
+export default Cash;
