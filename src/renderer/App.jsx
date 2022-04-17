@@ -12,7 +12,7 @@ import FinancialYear from './pages/accounts/FinancialYear';
 import FinancialYearEnding from './pages/accounts/FinancialYearEnding';
 import Journal from './pages/accounts/Journal';
 import OpeningBalance from './pages/accounts/OpeningBalance';
-import SupplierPayment from './pages/accounts/SupplierPayment';
+import Supplier from './pages/accounts/Supplier';
 import VoucherApproval from './pages/accounts/VoucherApproval';
 import Contact from './pages/Contact';
 import Currency from './pages/Currency';
@@ -152,7 +152,7 @@ export default function App() {
           />
           <Route
             path="/supplier_payment"
-            element={<SupplierPayment settings={settings} />}
+            element={<Supplier settings={settings} />}
           />
           <Route
             path="/cash_adjustment"

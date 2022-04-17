@@ -1,6 +1,7 @@
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Popconfirm, Select } from 'antd';
 import { useRef } from 'react';
+import './JournalVoucher.style.scss';
 
 const { Option } = Select;
 
@@ -9,6 +10,10 @@ type JournalTableData = {
   comments: string;
   credit: string;
   debit: string;
+};
+
+const style = {
+  borderBottom: '1px solid #e0e0e0',
 };
 
 const JournalVoucherTable = ({ setDefaultTableData, defaultTableData }) => {
@@ -26,6 +31,7 @@ const JournalVoucherTable = ({ setDefaultTableData, defaultTableData }) => {
 
   return (
     <div
+      className="journal_voucher_table"
       style={{
         padding: '1.5rem 2rem',
         boxShadow: 'rgb(99 99 99 / 20%) 0px 2px 8px 0px',
@@ -193,6 +199,22 @@ const JournalVoucherTable = ({ setDefaultTableData, defaultTableData }) => {
                   </th>
                 </tr>
               ))}
+
+              <tr style={style}>
+                <th colspan="2">Total</th>
+
+                <th>
+                  <Form.Item>
+                    <Input size="large" placeholder="0" />
+                  </Form.Item>
+                </th>
+
+                <th>
+                  <Form.Item>
+                    <Input size="large" placeholder="0" />
+                  </Form.Item>
+                </th>
+              </tr>
 
               <Form.Item
                 style={{
