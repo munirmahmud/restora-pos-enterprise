@@ -164,15 +164,17 @@ const OnGoingFooter = ({
         setPremiumVersion={setPremiumVersion}
       />
 
-      <QuickOrderModal
-        settings={settings}
-        openModal={openModal}
-        setOpenModal={setOpenModal}
-        foodItems={orderData}
-        setReRender={setReRender}
-        ongoingOrders={ongoingOrders}
-        setOngoingOrders={setOngoingOrders}
-      />
+      {openModal && (
+        <QuickOrderModal
+          settings={settings}
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          foodItems={orderData}
+          setReRender={setReRender}
+          ongoingOrders={ongoingOrders}
+          setOngoingOrders={setOngoingOrders}
+        />
+      )}
     </>
   );
 };

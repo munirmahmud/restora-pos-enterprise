@@ -1125,14 +1125,15 @@ ipcMain.on('get_todays_completed_orders', (event, args) => {
 
 // Complete order info
 ipcMain.on('update_order_info_ongoing', (event, args) => {
-  let { order_id } = args;
+  let { order_id, grand_total, discount } = args;
 
   let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
-
+  // grand_total
+  // discount
   db.serialize(() => {
     db.run(
       `UPDATE orders
-        SET status = 2
+        SET status = 2, grand_total = ${grand_total}, discount = ${discount}
         WHERE order_id = ${order_id}`
     );
   });

@@ -2,7 +2,11 @@ import { Button, Col, Modal, Row, Space, Typography } from 'antd';
 import { useContext, useEffect, useState } from 'react';
 import InVoiceGenerate from 'renderer/components/InVoiceGenerate';
 import { ContextData } from 'renderer/contextApi';
-import { CalculatePrice, getDataFromDatabase } from '../../../../helpers';
+import {
+  CalculatePrice,
+  getDataFromDatabase,
+  getDiscountAmount,
+} from '../../../../helpers';
 import './QuickOrderModal.style.scss';
 
 const { Text, Title } = Typography;
@@ -27,9 +31,33 @@ const QuickOrderModal = ({
   const [customerName, setCustomerName] = useState('');
   const [foodData, setFoodData] = useState(null);
 
+  const [invoicePrintDivId] = useState('invoicePrintDivId');
+
+  const [invoiceData, setInvoiceData] = useState(null);
+  const [customDiscountAmount, setCustomDiscountAmount] = useState(0);
+  const [grandTotal, setGrandTotal] = useState();
+
   let calc = new CalculatePrice(settings, foodData);
 
   useEffect(() => {
+    const totalAmount =
+      calc.getTotalPrice() -
+      getDiscountAmount(settings, customDiscountAmount, calc.getTotalPrice()) +
+      (invoiceData?.serviceCharge ? invoiceData?.serviceCharge : 0) +
+      (invoiceData?.vat ? invoiceData?.vat : 0);
+
+    setGrandTotal(totalAmount);
+  }, [customDiscountAmount]);
+
+  useEffect(() => {
+    const orderData = localStorage.getItem('order');
+    if (orderData) {
+      const parsedData = JSON.parse(orderData);
+      setCustomDiscountAmount(parsedData.discount);
+      setInvoiceData(parsedData);
+      setGrandTotal(parsedData.grandTotal);
+    }
+
     if (foodItems?.order_info) {
       if (typeof foodItems?.order_info !== 'string') {
         setFoodData(foodItems?.order_info);
@@ -41,7 +69,6 @@ const QuickOrderModal = ({
     }
   }, [foodItems]);
 
-  // TODO: print customer name
   useEffect(() => {
     getDataFromDatabase(
       'get_customer_names_response',
@@ -73,11 +100,15 @@ const QuickOrderModal = ({
       if (foodItems.order_id) {
         window.update_order_info_ongoing.send('update_order_info_ongoing', {
           order_id: foodItems.order_id,
+          grand_total: grandTotal,
+          discount: customDiscountAmount,
         });
       } else {
         // Execute when click on quick order -> Pay now and print invoice
         window.update_order_info_ongoing.send('update_order_info_ongoing', {
           order_id: data[data.length - 1].order_id,
+          grand_total: grandTotal,
+          discount: customDiscountAmount,
         });
       }
 
@@ -103,10 +134,18 @@ const QuickOrderModal = ({
     // );
   };
 
-  const [invoicePrint, setInvoicePrint] = useState('invoicePrint');
+  const handleIncrement = () => {
+    setCustomDiscountAmount((prevState) => parseInt(prevState) + 1);
+  };
+
+  const handleDecrement = () => {
+    if (customDiscountAmount === 0) return;
+
+    setCustomDiscountAmount((prevState) => parseInt(prevState) - 1);
+  };
 
   const printInvoice = () => {
-    var printContents = document.getElementById(invoicePrint).innerHTML;
+    var printContents = document.getElementById(invoicePrintDivId).innerHTML;
     var originalContents = document.body.innerHTML;
     document.body.innerHTML = printContents;
     window.print();
@@ -138,7 +177,7 @@ const QuickOrderModal = ({
                   Your Cart: {Array.isArray(foodData) && foodData?.length}{' '}
                   item(s){' '}
                   <span style={{ float: 'right' }}>
-                    {settings.currency}
+                    {settings.currency_icon}
                     {calc.getTotalPrice()}
                   </span>
                 </Title>
@@ -179,7 +218,7 @@ const QuickOrderModal = ({
                   Subtotal{' '}
                   <span style={{ float: 'right' }}>
                     {settings?.position === 'left' && settings.currency_icon}{' '}
-                    {calc.getTotalPrice()}{' '}
+                    {grandTotal}{' '}
                     {settings?.position === 'right' && settings.currency_icon}
                   </span>
                 </Title>
@@ -187,7 +226,9 @@ const QuickOrderModal = ({
                   Service Charge{' '}
                   <span style={{ float: 'right' }}>
                     {settings?.position === 'left' && settings.currency_icon}{' '}
-                    {calc.getServiceCharge() ? calc.getServiceCharge() : '0.00'}{' '}
+                    {invoiceData?.serviceCharge
+                      ? invoiceData?.serviceCharge
+                      : '0.00'}{' '}
                     {settings?.position === 'right' && settings.currency_icon}
                   </span>
                 </Title>
@@ -204,24 +245,22 @@ const QuickOrderModal = ({
               <div className="total_order_discount">
                 <Title level={4} style={{ marginTop: '10px' }}>
                   Discount:
-                  <div style={{ float: 'right' }}>
-                    {settings?.position === 'left' && settings.currency_icon}{' '}
-                    <span
-                      contentEditable
-                      style={{
-                        width: '80px',
-                        display: 'inline-block',
-                        textAlign: 'center',
-                        border: '1px solid #ddd',
-                      }}
-                    >
-                      {calc.getDiscountAmount()
-                        ? calc.getDiscountAmount()
-                        : '0.00'}{' '}
-                    </span>
-                    {settings?.position === 'right' && settings.currency_icon}
-                  </div>
                 </Title>
+
+                <div className="discount_input_wrapper">
+                  {settings?.position === 'left' && settings.currency_icon}{' '}
+                  <input
+                    type="number"
+                    value={customDiscountAmount}
+                    onChange={(e) => setCustomDiscountAmount(e.target.value)}
+                    className="discount_input"
+                  />
+                  <div className="discount_buttons">
+                    <button onClick={handleIncrement}>+</button>
+                    <button onClick={handleDecrement}>-</button>
+                  </div>
+                  {settings?.position === 'right' && settings.currency_icon}
+                </div>
               </div>
 
               <div className="total_grand_item">
@@ -229,7 +268,7 @@ const QuickOrderModal = ({
                   Grand Total:
                   <span style={{ float: 'right' }}>
                     {settings?.position === 'left' && settings.currency_icon}{' '}
-                    {calc.getGrandTotal()}{' '}
+                    {grandTotal}{' '}
                     {settings?.position === 'right' && settings.currency_icon}
                   </span>
                 </Title>
@@ -271,7 +310,7 @@ const QuickOrderModal = ({
                 <Title level={4}>Total Payable Amount</Title>
                 <h3>
                   {settings?.position === 'left' && settings.currency_icon}{' '}
-                  {calc.getGrandTotal()}{' '}
+                  {grandTotal}{' '}
                   {settings?.position === 'right' && settings.currency_icon}
                 </h3>
               </div>
@@ -332,11 +371,13 @@ const QuickOrderModal = ({
 
       <InVoiceGenerate
         settings={settings}
-        setPrintInvoiceData={setPrintInvoiceData}
         foodItems={onGoingOrderData}
         foodData={foodItems}
-        invoicePrint={invoicePrint}
+        invoicePrintDivId={invoicePrintDivId}
         customerName={customerName}
+        grandTotal={grandTotal}
+        customDiscountAmount={customDiscountAmount}
+        serviceCharge={invoiceData?.serviceCharge | 0}
       />
     </>
   );

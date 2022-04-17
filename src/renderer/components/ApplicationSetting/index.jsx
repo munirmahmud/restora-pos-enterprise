@@ -210,18 +210,16 @@ const ApplicationSetting = ({ setReRenderOnSettings, reRenderOnSettings }) => {
       settingsValue.newLogo = false;
     }
 
-    settingsValue.discount_type =
-      settingsValue.discount_type === 'Amount'
-        ? 1
-        : settingsValue.discount_type === 'Percent'
-        ? 2
-        : 2;
+    if (settingsValue.discount_type === 'Amount') {
+      settingsValue.discount_type = 1;
+    } else if (settingsValue.discount_type === 'Percent') {
+      settingsValue.discount_type = 2;
+    } else if (parseInt(settingsValue.discount_type) === 1) {
+      settingsValue.discount_type = 1;
+    }
 
     settingsValue.opentime = restaurantTime?.openingTime;
     settingsValue.closetime = restaurantTime?.closingTime;
-
-    console.log('settingsValue', settingsValue);
-    // return;
 
     // send data to the main process
     window.insert_settings.send('insert_settings', settingsValue);
