@@ -1,10 +1,15 @@
 import { Col, ConfigProvider, Row } from 'antd';
-import JournalVoucherHeader from 'renderer/components/accounts/JournalVoucherHeader';
+import { FC } from 'react';
 import Sidebar from 'renderer/components/partials/Sidebar';
-import JournalVoucherTable from './../../../components/accounts/JournalVoucherHeader/JournalVoucherTable';
-import Heading from './../../../components/Heading';
+import Heading from '../../../components/Heading';
+import { SettingsProps } from '../../../types';
+import JournalVoucher from './JournalVoucher';
 
-const JournalVoucher = ({ settings }) => {
+type JournalProps = {
+  settings: SettingsProps;
+};
+
+const Journal: FC<JournalProps> = ({ settings }): JSX.Element => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">
@@ -18,8 +23,7 @@ const JournalVoucher = ({ settings }) => {
               <Heading title="Journal Voucher" />
 
               <div style={{ margin: '0rem 1.5rem' }}>
-                <JournalVoucherHeader />
-                <JournalVoucherTable />
+                <JournalVoucher />
               </div>
             </Col>
           </Row>
@@ -29,4 +33,4 @@ const JournalVoucher = ({ settings }) => {
   );
 };
 
-export default JournalVoucher;
+export default Journal;

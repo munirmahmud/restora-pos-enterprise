@@ -10,7 +10,7 @@ import CreditVoucher from './pages/accounts/CreditVoucher';
 import DebitVoucher from './pages/accounts/DebitVoucher/index';
 import FinancialYear from './pages/accounts/FinancialYear';
 import FinancialYearEnding from './pages/accounts/FinancialYearEnding';
-import JournalVoucher from './pages/accounts/JournalVoucher';
+import Journal from './pages/accounts/Journal';
 import OpeningBalance from './pages/accounts/OpeningBalance';
 import SupplierPayment from './pages/accounts/SupplierPayment';
 import VoucherApproval from './pages/accounts/VoucherApproval';
@@ -172,7 +172,7 @@ export default function App() {
           />
           <Route
             path="/journal_voucher"
-            element={<JournalVoucher settings={settings} />}
+            element={<Journal settings={settings} />}
           />
           <Route
             path="/voucher_approval"

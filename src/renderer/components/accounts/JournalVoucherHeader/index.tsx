@@ -1,69 +1,54 @@
-import { Col, DatePicker, Form, Input, Row, Select } from 'antd';
+import { Col, DatePicker, Form, Input, Row } from 'antd';
 import moment from 'moment';
 
-const { Option } = Select;
 const { TextArea } = Input;
-const dateFormat = 'YYYY-MM-DD';
 
-type DebitVoucherTypes = {
-  credit_account_head: string;
-  data: string;
+type JournalHeaderProps = {
+  date: string;
   remark: string;
 };
 
-const JournalVoucherHeader = () => {
-  const [form] = Form.useForm();
+const JournalVoucherHeader = ({ setJournalVoucherData }) => {
+  const dateFormat = 'YYYY-MM-DD';
   const today = new Date();
-
-  const handleSubmit = (value: DebitVoucherTypes) => {
-    console.log('value', value);
-  };
-
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
-  };
 
   return (
     <div
-      className="accounts_head_area"
       style={{
-        padding: '1.5rem 3rem',
+        padding: '1.5rem 2rem',
         boxShadow: 'rgb(99 99 99 / 20%) 0px 2px 8px 0px',
       }}
     >
-      <Form
-        form={form}
-        layout="vertical"
-        autoComplete="off"
-        onFinish={handleSubmit}
-        onFinishFailed={onFinishFailed}
-      >
-        <Row gutter={20}>
-          <Col lg={10} xl={10} xxl={10}>
-            <Form.Item
-              name="date"
-              label="Date"
-              style={{ marginBottom: '10px' }}
-            >
-              <DatePicker
-                style={{ width: '100%' }}
-                defaultValue={moment(today, dateFormat)}
-                format={dateFormat}
-                showToday={false}
-                size="large"
-              />
-            </Form.Item>
+      <Row gutter={20}>
+        <Col lg={10} xl={10} xxl={10}>
+          <Form.Item label="Date" style={{ marginBottom: '10px' }}>
+            <DatePicker
+              style={{ width: '100%' }}
+              defaultValue={moment(today, dateFormat)}
+              format={dateFormat}
+              onChange={(_date, dateString) =>
+                setJournalVoucherData((prevState: JournalHeaderProps) => ({
+                  ...prevState,
+                  date: dateString,
+                }))
+              }
+              showToday={false}
+              size="large"
+            />
+          </Form.Item>
 
-            <Form.Item
-              name="remark"
-              label="Remark"
-              style={{ marginBottom: '10px' }}
-            >
-              <TextArea />
-            </Form.Item>
-          </Col>
-        </Row>
-      </Form>
+          <Form.Item label="Remark" style={{ marginBottom: '10px' }}>
+            <TextArea
+              onChange={(e) =>
+                setJournalVoucherData((prevState: JournalHeaderProps) => ({
+                  ...prevState,
+                  remark: e.target.value,
+                }))
+              }
+            />
+          </Form.Item>
+        </Col>
+      </Row>
     </div>
   );
 };
