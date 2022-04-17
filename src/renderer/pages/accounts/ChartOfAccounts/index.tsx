@@ -1,10 +1,18 @@
 import { Col, ConfigProvider, Row } from 'antd';
+import { FC } from 'react';
 import AccountsHeader from 'renderer/components/accounts/AccountsHeader';
 import ChartOfAccountsTable from 'renderer/components/accounts/AccountsHeader/ChartOfAccountsTable';
 import Sidebar from 'renderer/components/partials/Sidebar';
-import Heading from './../../../components/Heading';
+import Heading from '../../../components/Heading';
+import { SettingsProps } from '../../../types';
 
-const ChartOfAccounts = ({ settings }) => {
+type ChartOfAccountsProps = {
+  settings: SettingsProps;
+};
+
+const ChartOfAccounts: FC<ChartOfAccountsProps> = ({
+  settings,
+}): JSX.Element => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">

@@ -2,20 +2,25 @@ import { Button, Checkbox, Col, Form, Input, Row, Select, Space } from 'antd';
 import { useState } from 'react';
 
 const { Option } = Select;
-const CheckboxGroup = Checkbox.Group;
+
+type COATypes = {
+  head_name: string;
+  parent_head_name: number;
+  selected: [];
+};
 
 const AccountsHeader = () => {
   const [form] = Form.useForm();
   const plainOptions = ['Active', 'GL'];
-  const [checkList, setCheckList] = useState(null);
+  const [checkList, setCheckList] = useState([]);
   const [isSubItem, setSubItem] = useState(false);
 
-  const onChange = (checkedValues) => {
+  const handleCheckBox = (checkedValues: []): void => {
     setCheckList(checkedValues);
   };
 
-  const handleSubmit = (values) => {
-    console.log(values);
+  const handleSubmit = (values: COATypes) => {
+    console.log('values', values);
 
     form.resetFields();
   };
@@ -24,7 +29,7 @@ const AccountsHeader = () => {
     form.resetFields();
   };
 
-  const onFinishFailed = (errorInfo) => {
+  const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
 
@@ -65,7 +70,7 @@ const AccountsHeader = () => {
                 <Checkbox.Group
                   options={plainOptions}
                   value={checkList}
-                  onChange={onChange}
+                  onChange={handleCheckBox}
                 />
               </Form.Item>
 
@@ -91,7 +96,8 @@ const AccountsHeader = () => {
 
             <Space>
               <Button
-                type="danger"
+                type="primary"
+                danger
                 htmlType="button"
                 className="reset_btn"
                 onClick={handleReset}

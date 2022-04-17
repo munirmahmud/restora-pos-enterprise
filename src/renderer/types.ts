@@ -1,0 +1,22 @@
+export type SettingsProps = {
+  storename: string;
+  address?: string;
+  email?: string;
+  phone?: number;
+  favIcon?: string;
+  logo?: string;
+  opentime?: number;
+  closetime?: number;
+  vat?: number;
+  vattinno?: number;
+  discount_type?: string;
+  discountrate?: number;
+  servicecharge?: number;
+  service_chargetype?: string;
+  currency?: string;
+  language?: string;
+  timezone?: string;
+  dateformat?: string;
+  site_align?: string;
+  powerbytxt?: string;
+};

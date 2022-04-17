@@ -1,6 +1,14 @@
 import { Modal } from 'antd';
+import { FC } from 'react';
+type EditAccountsType = {
+  accountEditModal: boolean;
+  setAccountEditModal: boolean;
+};
 
-const AccountEditModal = ({ accountEditModal, setAccountEditModal }) => {
+const AccountEditModal: FC<EditAccountsType> = ({
+  accountEditModal,
+  setAccountEditModal,
+}) => {
   return (
     <Modal
       title="Account Head"
