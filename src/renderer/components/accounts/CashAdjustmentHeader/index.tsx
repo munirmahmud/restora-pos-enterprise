@@ -18,8 +18,8 @@ const CashAdjustmentHeader = () => {
       <Row gutter={20}>
         <Col lg={10} xl={10} xxl={10}>
           <Form.Item
-            name="payment_type"
-            label="Payment Type"
+            name="adjustment_type"
+            label="Adjustment Type"
             style={{ marginBottom: '10px' }}
           >
             <Select

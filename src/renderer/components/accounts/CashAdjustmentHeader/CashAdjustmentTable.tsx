@@ -1,12 +1,6 @@
-import { Button, Form, Input, Select } from 'antd';
-
-const { Option } = Select;
+import { Button, Form, Input } from 'antd';
 
 const CashAdjustmentTable = () => {
-  function onSearch(value: any) {
-    console.log('search:', value);
-  }
-
   return (
     <div
       className="journal_voucher_table"

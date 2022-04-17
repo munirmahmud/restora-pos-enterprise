@@ -1,5 +1,6 @@
 import { Col, ConfigProvider, Row } from 'antd';
 import Sidebar from 'renderer/components/partials/Sidebar';
+import VoucherApprovalTable from './../../../components/accounts/VoucherApprovalTable';
 import Heading from './../../../components/Heading';
 
 const VoucherApproval = ({ settings }) => {
@@ -16,7 +17,7 @@ const VoucherApproval = ({ settings }) => {
               <Heading title="Voucher Approval" />
 
               <div style={{ margin: '0rem 1.5rem' }}>
-                <h1>Voucher Approval</h1>
+                <VoucherApprovalTable />
               </div>
             </Col>
           </Row>

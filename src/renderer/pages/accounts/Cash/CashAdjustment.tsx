@@ -3,8 +3,8 @@ import CashAdjustmentHeader from 'renderer/components/accounts/CashAdjustmentHea
 import CashAdjustmentTable from './../../../components/accounts/CashAdjustmentHeader/CashAdjustmentTable';
 
 type CashAdjustmentTypes = {
-  payment_type: string;
-  data: string;
+  adjustment_type: string;
+  date: string;
   remark: string;
 };
 
