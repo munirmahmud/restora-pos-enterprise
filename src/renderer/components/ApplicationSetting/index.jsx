@@ -493,7 +493,16 @@ const ApplicationSetting = ({ setReRenderOnSettings, reRenderOnSettings }) => {
               <Col lg={12}>
                 <Row gutter={20}>
                   <Col lg={20}>
-                    <Form.Item label="Currency" name="currency">
+                    <Form.Item
+                      label="Currency"
+                      name="currency"
+                      rules={[
+                        {
+                          required: true,
+                          message: `This is required. If not exist please add one by clicking on the plus button. `,
+                        },
+                      ]}
+                    >
                       <Select
                         placeholder="Select Currency"
                         size="large"
