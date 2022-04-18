@@ -1,5 +1,6 @@
 import { Col, DatePicker, Form, Input, Row } from 'antd';
 import moment from 'moment';
+import { ChangeEvent, FC } from 'react';
 
 const { TextArea } = Input;
 
@@ -8,7 +9,15 @@ type JournalHeaderProps = {
   remark: string;
 };
 
-const JournalVoucherHeader = ({ setJournalVoucherData }) => {
+type JournalProps = {
+  journalVoucherData: JournalHeaderProps;
+  setJournalVoucherData: (prevState: JournalHeaderProps) => void;
+};
+
+const JournalVoucherHeader: FC<JournalProps> = ({
+  journalVoucherData,
+  setJournalVoucherData,
+}) => {
   const dateFormat = 'YYYY-MM-DD';
   const today = new Date();
 
@@ -26,11 +35,11 @@ const JournalVoucherHeader = ({ setJournalVoucherData }) => {
               style={{ width: '100%' }}
               defaultValue={moment(today, dateFormat)}
               format={dateFormat}
-              onChange={(_date, dateString) =>
-                setJournalVoucherData((prevState: JournalHeaderProps) => ({
-                  ...prevState,
+              onChange={(_date, dateString: string) =>
+                setJournalVoucherData({
                   date: dateString,
-                }))
+                  remark: journalVoucherData.remark,
+                })
               }
               showToday={false}
               size="large"
@@ -39,11 +48,11 @@ const JournalVoucherHeader = ({ setJournalVoucherData }) => {
 
           <Form.Item label="Remark" style={{ marginBottom: '10px' }}>
             <TextArea
-              onChange={(e) =>
-                setJournalVoucherData((prevState: JournalHeaderProps) => ({
-                  ...prevState,
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+                setJournalVoucherData({
+                  date: journalVoucherData.date,
                   remark: e.target.value,
-                }))
+                })
               }
             />
           </Form.Item>

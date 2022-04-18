@@ -1,6 +1,6 @@
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Popconfirm, Select } from 'antd';
-import { useRef } from 'react';
+import { SyntheticEvent, useRef } from 'react';
 import './JournalVoucher.style.scss';
 
 const { Option } = Select;
@@ -17,14 +17,12 @@ const style = {
 };
 
 const JournalVoucherTable = ({ setDefaultTableData, defaultTableData }) => {
-  const defaultRowRef = useRef(null);
+  const defaultRowRef = useRef<HTMLTableRowElement>(null);
 
-  function onSearch(value: any) {
-    console.log('search:', value);
-  }
+  const handleRemove = (e: SyntheticEvent) => {
+    if (!defaultRowRef.current) return;
 
-  const handleRemove = (data) => {
-    if (data) {
+    if (e) {
       defaultRowRef.current.remove();
     }
   };
@@ -67,8 +65,7 @@ const JournalVoucherTable = ({ setDefaultTableData, defaultTableData }) => {
                           account_name: value,
                         }))
                       }
-                      onSearch={onSearch}
-                      filterOption={(input, option) =>
+                      filterOption={(input: string, option: any) =>
                         option.children
                           .toLowerCase()
                           .indexOf(input.toLowerCase()) >= 0

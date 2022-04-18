@@ -1,6 +1,6 @@
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Popconfirm, Select } from 'antd';
-import { useRef } from 'react';
+import { SyntheticEvent, useRef } from 'react';
 
 const { Option } = Select;
 
@@ -8,23 +8,32 @@ const style = {
   borderBottom: '1px solid #e0e0e0',
 };
 
-const ContraVoucherTable = () => {
-  const defaultRowRef = useRef(null);
+type SubmitTableDataProps = {
+  account_name: string;
+  comments: string;
+  credit: string;
+  debit: string;
+};
 
-  function onChange(value) {
+const ContraVoucherTable = () => {
+  const defaultRowRef = useRef<HTMLTableRowElement>(null);
+
+  function onChange(value: string) {
     console.log(`selected ${value}`);
   }
 
-  function onSearch(value) {
+  function onSearch(value: string) {
     console.log('search:', value);
   }
 
-  const onFinish = (values) => {
+  const onFinish = (values: SubmitTableDataProps) => {
     console.log('Received values of form:', values);
   };
 
-  const handleRemove = (data) => {
-    if (data) {
+  const handleRemove = (e?: SyntheticEvent): void => {
+    if (!defaultRowRef.current) return;
+
+    if (e) {
       defaultRowRef.current.remove();
     }
   };
@@ -69,7 +78,7 @@ const ContraVoucherTable = () => {
                         size="large"
                         onChange={onChange}
                         onSearch={onSearch}
-                        filterOption={(input, option) =>
+                        filterOption={(input: string, option: any) =>
                           option.children
                             .toLowerCase()
                             .indexOf(input.toLowerCase()) >= 0
@@ -128,7 +137,7 @@ const ContraVoucherTable = () => {
                           size="large"
                           onChange={onChange}
                           onSearch={onSearch}
-                          filterOption={(input, option) =>
+                          filterOption={(input: string, option: any) =>
                             option.children
                               .toLowerCase()
                               .indexOf(input.toLowerCase()) >= 0
@@ -177,7 +186,7 @@ const ContraVoucherTable = () => {
                 ))}
 
                 <tr style={style}>
-                  <th colspan="2">Total</th>
+                  <th colSpan={2}>Total</th>
 
                   <th>
                     <Form.Item>

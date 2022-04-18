@@ -5,8 +5,8 @@ import JournalVoucherHeader from 'renderer/components/accounts/JournalVoucherHea
 import JournalVoucherTable from './../../../components/accounts/JournalVoucherHeader/JournalVoucherTable';
 
 type JournalData = {
-  date: string;
-  remark: string;
+  date?: string;
+  remark?: string;
 };
 
 type JournalTableData = {
@@ -58,7 +58,10 @@ const JournalVoucher = () => {
       onFinish={handleSubmit}
       onFinishFailed={onFinishFailed}
     >
-      <JournalVoucherHeader setJournalVoucherData={setJournalVoucherData} />
+      <JournalVoucherHeader
+        journalVoucherData={journalVoucherData}
+        setJournalVoucherData={setJournalVoucherData}
+      />
 
       <JournalVoucherTable
         defaultTableData={defaultTableData}

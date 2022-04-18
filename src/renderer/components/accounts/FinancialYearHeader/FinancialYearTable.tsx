@@ -1,7 +1,15 @@
 import { Table } from 'antd';
 
+type ColumnObjectType = {
+  title: string;
+  dataIndex: string;
+  key: string;
+  width?: string | undefined;
+  align?: string | undefined;
+};
+
 const FinancialYearTable = () => {
-  const columns = [
+  const columns: ColumnObjectType | any = [
     {
       title: 'SL NO.',
       dataIndex: 'SL NO.',

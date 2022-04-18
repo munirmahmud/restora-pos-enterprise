@@ -1,7 +1,6 @@
-import { Col, DatePicker, Form, Input, Row, Select } from 'antd';
+import { Col, DatePicker, Form, Input, Row } from 'antd';
 import moment from 'moment';
 
-const { Option } = Select;
 const { TextArea } = Input;
 const dateFormat = 'YYYY-MM-DD';
 
