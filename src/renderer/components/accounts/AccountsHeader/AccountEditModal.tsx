@@ -1,21 +1,22 @@
 import { Modal } from 'antd';
 import { FC } from 'react';
+
 type EditAccountsType = {
-  accountEditModal: boolean;
-  setAccountEditModal: boolean;
+  isOpenAccountEditModal: boolean;
+  setOpenAccountEditModal: boolean;
 };
 
 const AccountEditModal: FC<EditAccountsType> = ({
-  accountEditModal,
-  setAccountEditModal,
+  isOpenAccountEditModal,
+  setOpenAccountEditModal,
 }) => {
   return (
     <Modal
       title="Account Head"
       centered
-      visible={accountEditModal}
-      onOk={() => setAccountEditModal(false)}
-      onCancel={() => setAccountEditModal(false)}
+      visible={isOpenAccountEditModal}
+      onOk={() => setOpenAccountEditModal(false)}
+      onCancel={() => setOpenAccountEditModal(false)}
       width={500}
       footer={null}
     >

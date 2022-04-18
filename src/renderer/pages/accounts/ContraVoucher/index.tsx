@@ -1,10 +1,16 @@
 import { Col, ConfigProvider, Row } from 'antd';
+import { FC } from 'react';
 import ContraVoucherHeader from 'renderer/components/accounts/ContraVoucherHeader';
 import Sidebar from 'renderer/components/partials/Sidebar';
-import ContraVoucherTable from './../../../components/accounts/ContraVoucherHeader/ContraVoucherTable';
-import Heading from './../../../components/Heading';
+import ContraVoucherTable from '../../../components/accounts/ContraVoucherHeader/ContraVoucherTable';
+import Heading from '../../../components/Heading';
+import { SettingsProps } from '../../../types';
 
-const ContraVoucher = ({ settings }) => {
+type ContraVoucherProps = {
+  settings: SettingsProps;
+};
+
+const ContraVoucher: FC<ContraVoucherProps> = ({ settings }): JSX.Element => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">
