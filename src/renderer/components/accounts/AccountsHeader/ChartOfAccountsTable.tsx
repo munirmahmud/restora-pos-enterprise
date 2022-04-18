@@ -12,7 +12,8 @@ type COAProps = {
 };
 
 const ChartOfAccountsTable = () => {
-  const [accountEditModal, setAccountEditModal] = useState<boolean>(false);
+  const [isOpenAccountEditModal, setOpenAccountEditModal] =
+    useState<boolean>(false);
 
   const columns = [
     {
@@ -96,7 +97,7 @@ const ChartOfAccountsTable = () => {
 
   const handleEditAccountData = (data: COAProps) => {
     console.log('edit data', data);
-    setAccountEditModal(true);
+    setOpenAccountEditModal(true);
   };
   const handleDeleteAccountData = (data: COAProps) => {
     console.log('delete data', data);
@@ -141,8 +142,8 @@ const ChartOfAccountsTable = () => {
       />
 
       <AccountEditModal
-        accountEditModal={accountEditModal}
-        setAccountEditModal={setAccountEditModal}
+        isOpenAccountEditModal={isOpenAccountEditModal}
+        setOpenAccountEditModal={setOpenAccountEditModal}
       />
     </div>
   );
