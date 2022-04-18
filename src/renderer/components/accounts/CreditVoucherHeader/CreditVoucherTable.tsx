@@ -1,6 +1,6 @@
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Popconfirm, Select } from 'antd';
-import { useRef } from 'react';
+import { SyntheticEvent, useRef } from 'react';
 
 const { Option } = Select;
 
@@ -9,22 +9,24 @@ const style = {
 };
 
 const CreditVoucherTable = () => {
-  const defaultRowRef = useRef(null);
+  const defaultRowRef = useRef<HTMLTableRowElement>(null);
 
-  function onChange(value) {
+  function onChange(value: string) {
     console.log(`selected ${value}`);
   }
 
-  function onSearch(value) {
+  function onSearch(value: string) {
     console.log('search:', value);
   }
 
-  const onFinish = (values) => {
+  const onFinish = (values: string) => {
     console.log('Received values of form:', values);
   };
 
-  const handleRemove = (data) => {
-    if (data) {
+  const handleRemove = (e?: SyntheticEvent) => {
+    if (!defaultRowRef.current) return;
+
+    if (e) {
       defaultRowRef.current.remove();
     }
   };
@@ -68,7 +70,7 @@ const CreditVoucherTable = () => {
                         size="large"
                         onChange={onChange}
                         onSearch={onSearch}
-                        filterOption={(input, option) =>
+                        filterOption={(input: string, option: any) =>
                           option.children
                             .toLowerCase()
                             .indexOf(input.toLowerCase()) >= 0
@@ -121,7 +123,7 @@ const CreditVoucherTable = () => {
                           size="large"
                           onChange={onChange}
                           onSearch={onSearch}
-                          filterOption={(input, option) =>
+                          filterOption={(input: string, option: any) =>
                             option.children
                               .toLowerCase()
                               .indexOf(input.toLowerCase()) >= 0
@@ -164,7 +166,7 @@ const CreditVoucherTable = () => {
                 ))}
 
                 <tr style={style}>
-                  <th colspan="2">Total</th>
+                  <th colSpan={2}>Total</th>
 
                   <th>
                     <Form.Item>

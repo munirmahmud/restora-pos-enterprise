@@ -24,10 +24,10 @@ const CashAdjustmentHeader = () => {
           >
             <Select
               showSearch
-              placeholder="Select a option"
+              placeholder="Select an option"
               size="large"
               allowClear
-              filterOption={(input, option) =>
+              filterOption={(input: string, option: any) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
             >
