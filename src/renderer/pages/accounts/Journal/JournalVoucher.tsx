@@ -5,15 +5,15 @@ import JournalVoucherHeader from 'renderer/components/accounts/JournalVoucherHea
 import JournalVoucherTable from './../../../components/accounts/JournalVoucherHeader/JournalVoucherTable';
 
 type JournalData = {
-  date?: string;
-  remark?: string;
+  date?: string | undefined;
+  remark?: string | undefined;
 };
 
 type JournalTableData = {
-  account_name: string;
-  comments: string;
-  credit: string;
-  debit: string;
+  account_name?: string | undefined;
+  comments?: string | undefined;
+  credit?: string | undefined;
+  debit?: string | undefined;
 };
 
 const JournalVoucher = () => {

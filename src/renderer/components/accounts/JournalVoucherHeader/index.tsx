@@ -5,8 +5,8 @@ import { ChangeEvent, FC } from 'react';
 const { TextArea } = Input;
 
 type JournalHeaderProps = {
-  date: string;
-  remark: string;
+  date?: string;
+  remark?: string;
 };
 
 type JournalProps = {
