@@ -14,7 +14,8 @@ type ColumnsType = {
   dataIndex: string;
   key: Key;
   align?: string;
-  width: string;
+  width?: string;
+  render?: (_text: string, record: DataType) => void;
 };
 type DataType = {
   key: Key;
@@ -23,12 +24,27 @@ type DataType = {
   details: string;
 };
 
+type FieldTypes = {
+  name: string | number | (string | number)[];
+  touched?: boolean;
+  validating?: boolean;
+  value?: any;
+  errors?: string[];
+  warnings?: string[];
+};
+
+type DesignationType = {
+  position?: string | undefined;
+  details?: string | undefined;
+};
+
 const DesignationTable = () => {
   const [form] = Form.useForm();
 
   const [isOpenDesignationModal, setOpenDesignationModal] = useState(false);
-  const [designationEditData, setDesignationEditData] = useState({});
-  const [addDesignation, setAddDesignation] = useState([]);
+  const [designationEditData, setDesignationEditData] =
+    useState<DesignationType>({});
+  const [addDesignation, setAddDesignation] = useState<FieldTypes[]>([]);
   const [reRender, setReRender] = useState(false);
 
   useEffect(() => {
@@ -49,17 +65,17 @@ const DesignationTable = () => {
     setOpenDesignationModal(true);
   };
 
-  const handleSubmit = () => {
-    const addNewDesignation = {};
+  const handleSubmit = (values: DesignationType) => {
+    console.log('values', values);
 
-    for (const data of addDesignation) {
-      addNewDesignation[data.name[0]] =
-        typeof data.value === 'string' ? data?.value?.trim() : data?.value;
-    }
+    // let addNewDesignation: any = {};
+
+    // for (const data of addDesignation) {
+    //   addNewDesignation[data.name[0]] =
+    //     typeof data.value === 'string' ? data?.value?.trim() : data?.value;
+    // }
 
     // addNewDesignation.id = designationEditData?.id;
-
-    console.log('addNewDesignation', addNewDesignation);
 
     message.success({
       content: 'Designation added successfully',
@@ -83,7 +99,7 @@ const DesignationTable = () => {
     console.log('Failed:', errorInfo);
   };
 
-  const columns: ColumnsType[] = [
+  const columns: any = [
     {
       title: 'SL No',
       dataIndex: 'sl_no',
@@ -208,9 +224,9 @@ const DesignationTable = () => {
           onFinish={handleSubmit}
           onFinishFailed={onFinishFailed}
           fields={addDesignation}
-          onFieldsChange={(_, allFields) => {
-            setAddDesignation(allFields);
-          }}
+          onFieldsChange={(_, allFields: FieldTypes[]): void =>
+            setAddDesignation(allFields)
+          }
           autoComplete="off"
         >
           <Form.Item
