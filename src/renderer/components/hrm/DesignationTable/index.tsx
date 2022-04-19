@@ -4,9 +4,8 @@ import {
   ExclamationCircleOutlined,
   PlusCircleOutlined,
 } from '@ant-design/icons';
-import { Button, message, Modal, Space, Table } from 'antd';
-import { Key, useState } from 'react';
-import DesignationAddModal from './DesignationAddModal';
+import { Button, Form, Input, message, Modal, Space, Table } from 'antd';
+import { Key, useEffect, useState } from 'react';
 
 const { confirm } = Modal;
 
@@ -25,9 +24,64 @@ type DataType = {
 };
 
 const DesignationTable = () => {
+  const [form] = Form.useForm();
+
   const [isOpenDesignationModal, setOpenDesignationModal] = useState(false);
   const [designationEditData, setDesignationEditData] = useState({});
+  const [addDesignation, setAddDesignation] = useState([]);
   const [reRender, setReRender] = useState(false);
+
+  useEffect(() => {
+    setAddDesignation([
+      {
+        name: ['position'],
+        value: designationEditData?.position,
+      },
+      {
+        name: ['details'],
+        value: designationEditData?.details,
+      },
+    ]);
+  }, [reRender]);
+
+  const handleOpenModal = () => {
+    form.resetFields();
+    setOpenDesignationModal(true);
+  };
+
+  const handleSubmit = () => {
+    const addNewDesignation = {};
+
+    for (const data of addDesignation) {
+      addNewDesignation[data.name[0]] =
+        typeof data.value === 'string' ? data?.value?.trim() : data?.value;
+    }
+
+    // addNewDesignation.id = designationEditData?.id;
+
+    console.log('addNewDesignation', addNewDesignation);
+
+    message.success({
+      content: 'Designation added successfully',
+      className: 'custom-class',
+      duration: 1,
+      style: {
+        marginTop: '5vh',
+        float: 'right',
+      },
+    });
+    form.resetFields();
+    setReRender((prevState) => !prevState);
+    setOpenDesignationModal(false);
+  };
+
+  const handleReset = () => {
+    form.resetFields();
+  };
+
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo);
+  };
 
   const columns: ColumnsType[] = [
     {
@@ -124,9 +178,6 @@ const DesignationTable = () => {
     });
   };
 
-  const handleOpenModal = () => {
-    setOpenDesignationModal(true);
-  };
   return (
     <div className="box_shadow">
       <Button
@@ -136,6 +187,7 @@ const DesignationTable = () => {
       >
         <PlusCircleOutlined /> Add Designation
       </Button>
+
       <Table
         bordered
         columns={columns}
@@ -143,13 +195,51 @@ const DesignationTable = () => {
         pagination={false}
       />
 
-      <DesignationAddModal
-        isOpenDesignationModal={isOpenDesignationModal}
-        setOpenDesignationModal={setOpenDesignationModal}
-        designationEditData={designationEditData}
-        reRender={reRender}
-        setReRender={setReRender}
-      />
+      <Modal
+        title="Add Designation"
+        visible={isOpenDesignationModal}
+        onOk={() => setOpenDesignationModal(false)}
+        onCancel={() => setOpenDesignationModal(false)}
+        footer={null}
+      >
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleSubmit}
+          onFinishFailed={onFinishFailed}
+          fields={addDesignation}
+          onFieldsChange={(_, allFields) => {
+            setAddDesignation(allFields);
+          }}
+          autoComplete="off"
+        >
+          <Form.Item
+            name="position"
+            label="Position"
+            rules={[{ required: true, message: 'Position is required' }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            name="details"
+            label="Details"
+            rules={[{ required: true, message: 'Details is required' }]}
+          >
+            <Input.TextArea />
+          </Form.Item>
+
+          <Space>
+            <Button type="primary" danger onClick={handleReset}>
+              Reset
+            </Button>
+
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Space>
+        </Form>
+      </Modal>
     </div>
   );
 };
