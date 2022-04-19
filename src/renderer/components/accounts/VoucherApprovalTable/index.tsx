@@ -1,12 +1,30 @@
 import { EditOutlined } from '@ant-design/icons';
 import { Button, Space, Table } from 'antd';
+import { Key, ReactNode } from 'react';
+
+type ColumnsTypes = {
+  title: string;
+  dataIndex: string;
+  width?: string;
+  align?: string;
+  render?: (_text: string, record: ColumnsTypes) => ReactNode;
+};
+
+type DataTypes = {
+  key: Key;
+  sl_no: string;
+  voucher_no: string;
+  remark: string;
+  debit: number;
+  credit: number;
+};
 
 const VoucherApprovalTable = () => {
-  const columns = [
+  const columns: any = [
     {
-      title: 'SL No',
-      dataIndex: 'sl_no',
-      width: '8%',
+      title: 'Name',
+      dataIndex: 'name',
+      render: (text: string) => <a>{text}</a>,
     },
     {
       title: 'Voucher No',
@@ -32,7 +50,7 @@ const VoucherApprovalTable = () => {
       title: 'Action',
       dataIndex: 'action',
       align: 'center',
-      render: (text, record) => (
+      render: (_text: string, record: DataTypes) => (
         <Space size="middle">
           <Button type="primary" onClick={() => handleEdit(record)}>
             <EditOutlined />
@@ -73,16 +91,16 @@ const VoucherApprovalTable = () => {
     },
   ];
 
-  const handleEdit = (data: any) => {
-    console.log('data', data);
+  const handleEdit = (data: DataTypes) => {
+    console.log('data ed', data);
   };
 
-  const handleApprove = (data: any) => {
-    console.log('data', data);
+  const handleApprove = (data: DataTypes) => {
+    console.log('data aa', data);
   };
 
   const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
+    onChange: (_selectedRowKeys: Key[], selectedRows: DataTypes[]) => {
       console.log('selectedRows*******: ', selectedRows);
     },
   };

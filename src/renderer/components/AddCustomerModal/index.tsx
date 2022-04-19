@@ -1,7 +1,28 @@
 import { Button, Col, Form, Input, message, Modal, Row } from 'antd';
 const { TextArea } = Input;
 
-const AddCustomerModal = ({ customerInfo }) => {
+type CustomerData = {
+  errors: [];
+  name: [];
+  touched: boolean;
+  validating: boolean;
+  value: string;
+  warnings: [];
+};
+
+type CustomerInfoProps = {
+  addCustomer: CustomerData[];
+  addCustomerModal: boolean;
+  setAddCustomer: (params: {}) => void;
+  setAddCustomerModal: (param: boolean) => void;
+  setReRender: (prevState: boolean) => void;
+};
+
+const AddCustomerModal = ({
+  customerInfo,
+}: {
+  customerInfo: CustomerInfoProps;
+}) => {
   const [addCustomerName] = Form.useForm();
 
   const handleClose = () => {
@@ -23,9 +44,9 @@ const AddCustomerModal = ({ customerInfo }) => {
     // Customer name insert response
     window.insert_customer_info.once(
       'insert_customer_info_response',
-      ({ status }) => {
+      ({ status }: { status: any }) => {
         if (status === 'inserted') {
-          customerInfo.setReRender((prevState) => !prevState);
+          customerInfo.setReRender((prevState: boolean) => !prevState);
           customerInfo.setAddCustomerModal(false);
           addCustomerName.resetFields();
 
@@ -43,7 +64,7 @@ const AddCustomerModal = ({ customerInfo }) => {
     );
   };
 
-  const onFinishFailed = (errorInfo) => {
+  const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
 

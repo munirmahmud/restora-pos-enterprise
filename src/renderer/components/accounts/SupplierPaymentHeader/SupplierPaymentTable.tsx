@@ -46,7 +46,7 @@ const SupplierPaymentTable = () => {
                   //   }))
                   // }
                   onSearch={onSearch}
-                  filterOption={(input, option) =>
+                  filterOption={(input: string, option: any) =>
                     option.children
                       .toLowerCase()
                       .indexOf(input.toLowerCase()) >= 0
@@ -73,7 +73,7 @@ const SupplierPaymentTable = () => {
           </tr>
 
           <tr style={style}>
-            <th colspan="2">Total</th>
+            <th colSpan={2}>Total</th>
 
             <th>
               <Form.Item>
