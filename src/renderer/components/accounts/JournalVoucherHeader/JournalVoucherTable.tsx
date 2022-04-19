@@ -1,30 +1,36 @@
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Popconfirm, Select } from 'antd';
-import { useRef } from 'react';
+import { ChangeEvent, FC, SyntheticEvent, useRef } from 'react';
 import './JournalVoucher.style.scss';
 
 const { Option } = Select;
 
 type JournalTableData = {
-  account_name: string;
-  comments: string;
-  credit: string;
-  debit: string;
+  account_name?: string;
+  comments?: string;
+  credit?: string;
+  debit?: string;
 };
 
 const style = {
   borderBottom: '1px solid #e0e0e0',
 };
 
-const JournalVoucherTable = ({ setDefaultTableData, defaultTableData }) => {
-  const defaultRowRef = useRef(null);
+type JournalVoucherTableProps = {
+  defaultTableData: JournalTableData;
+  setDefaultTableData: (args: JournalTableData) => void;
+};
 
-  function onSearch(value: any) {
-    console.log('search:', value);
-  }
+const JournalVoucherTable: FC<JournalVoucherTableProps> = ({
+  setDefaultTableData,
+  defaultTableData,
+}) => {
+  const defaultRowRef = useRef<HTMLTableRowElement>(null);
 
-  const handleRemove = (data) => {
-    if (data) {
+  const handleRemove = (e?: SyntheticEvent) => {
+    if (!defaultRowRef.current) return;
+
+    if (e) {
       defaultRowRef.current.remove();
     }
   };
@@ -61,14 +67,13 @@ const JournalVoucherTable = ({ setDefaultTableData, defaultTableData }) => {
                       optionFilterProp="children"
                       style={{ textAlign: 'left' }}
                       size="large"
-                      onChange={(value) =>
-                        setDefaultTableData((prevState: JournalTableData) => ({
-                          ...prevState,
+                      onChange={(value: string) =>
+                        setDefaultTableData({
+                          ...defaultTableData,
                           account_name: value,
-                        }))
+                        })
                       }
-                      onSearch={onSearch}
-                      filterOption={(input, option) =>
+                      filterOption={(input: string, option: any) =>
                         option.children
                           .toLowerCase()
                           .indexOf(input.toLowerCase()) >= 0
@@ -86,11 +91,11 @@ const JournalVoucherTable = ({ setDefaultTableData, defaultTableData }) => {
                     <Input
                       size="large"
                       placeholder="Comments"
-                      onChange={(e) =>
-                        setDefaultTableData((prevState: JournalTableData) => ({
-                          ...prevState,
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        setDefaultTableData({
+                          ...defaultTableData,
                           comments: e.target.value,
-                        }))
+                        })
                       }
                     />
                   </Form.Item>
@@ -101,11 +106,11 @@ const JournalVoucherTable = ({ setDefaultTableData, defaultTableData }) => {
                     <Input
                       size="large"
                       placeholder="Debit"
-                      onChange={(e) =>
-                        setDefaultTableData((prevState: JournalTableData) => ({
-                          ...prevState,
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        setDefaultTableData({
+                          ...defaultTableData,
                           debit: e.target.value,
-                        }))
+                        })
                       }
                       disabled={defaultTableData?.credit === '' ? false : true}
                     />
@@ -117,11 +122,11 @@ const JournalVoucherTable = ({ setDefaultTableData, defaultTableData }) => {
                     <Input
                       size="large"
                       placeholder="Credit"
-                      onChange={(e) =>
-                        setDefaultTableData((prevState: JournalTableData) => ({
-                          ...prevState,
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        setDefaultTableData({
+                          ...defaultTableData,
                           credit: e.target.value,
-                        }))
+                        })
                       }
                       disabled={defaultTableData?.debit === '' ? false : true}
                     />
@@ -151,8 +156,7 @@ const JournalVoucherTable = ({ setDefaultTableData, defaultTableData }) => {
                         optionFilterProp="children"
                         style={{ textAlign: 'left' }}
                         size="large"
-                        onSearch={onSearch}
-                        filterOption={(input, option) =>
+                        filterOption={(input: string, option: any) =>
                           option.children
                             .toLowerCase()
                             .indexOf(input.toLowerCase()) >= 0
@@ -201,7 +205,7 @@ const JournalVoucherTable = ({ setDefaultTableData, defaultTableData }) => {
               ))}
 
               <tr style={style}>
-                <th colspan="2">Total</th>
+                <th colSpan={2}>Total</th>
 
                 <th>
                   <Form.Item>

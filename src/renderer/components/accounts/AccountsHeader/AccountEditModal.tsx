@@ -3,13 +3,13 @@ import { FC } from 'react';
 
 type EditAccountsType = {
   isOpenAccountEditModal: boolean;
-  setOpenAccountEditModal: boolean;
+  setOpenAccountEditModal: (accountEditModal: boolean) => void;
 };
 
 const AccountEditModal: FC<EditAccountsType> = ({
   isOpenAccountEditModal,
   setOpenAccountEditModal,
-}) => {
+}): JSX.Element => {
   return (
     <Modal
       title="Account Head"

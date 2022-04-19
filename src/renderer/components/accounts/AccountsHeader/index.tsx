@@ -12,10 +12,10 @@ type COATypes = {
 const AccountsHeader = () => {
   const [form] = Form.useForm();
   const plainOptions = ['Active', 'GL'];
-  const [checkList, setCheckList] = useState([]);
+  const [checkList, setCheckList] = useState<string[]>([]);
   const [isSubItem, setSubItem] = useState(false);
 
-  const handleCheckBox = (checkedValues: []): void => {
+  const handleCheckBox = (checkedValues: string[] | any): void => {
     setCheckList(checkedValues);
   };
 
