@@ -38,7 +38,6 @@ const DashBoard = ({ settings }) => {
 
               <div style={{ margin: '0rem 1.5rem' }}>
                 <CountHistory totalCount={totalCount} />
-
                 <StatisticsRatio statisticsData={statisticsData} />
               </div>
             </Col>

@@ -1,5 +1,6 @@
 import { Modal } from 'antd';
 import { FC } from 'react';
+
 type EditAccountsType = {
   isOpenAccountEditModal: boolean;
   setOpenAccountEditModal: (accountEditModal: boolean) => void;

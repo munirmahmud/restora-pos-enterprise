@@ -3,7 +3,9 @@ import { useEffect, useState } from 'react';
 import { MemoryRouter as Router, Route, Routes } from 'react-router-dom';
 import SystemMenu from './components/partials/SystemMenu';
 import { ContextData } from './contextApi';
+import BankBook from './pages/accounts/BankBook';
 import Cash from './pages/accounts/Cash';
+import CashBook from './pages/accounts/CashBook';
 import ChartOfAccounts from './pages/accounts/ChartOfAccounts';
 import ContraVoucher from './pages/accounts/ContraVoucher';
 import CreditVoucher from './pages/accounts/CreditVoucher';
@@ -14,6 +16,7 @@ import Journal from './pages/accounts/Journal';
 import OpeningBalance from './pages/accounts/OpeningBalance';
 import Supplier from './pages/accounts/Supplier';
 import VoucherApproval from './pages/accounts/VoucherApproval';
+import VoucherReport from './pages/accounts/VoucherReport';
 import Contact from './pages/Contact';
 import Currency from './pages/Currency';
 import DashBoard from './pages/DashBoard';
@@ -176,6 +179,14 @@ export default function App() {
             path="/voucher_approval"
             element={<VoucherApproval settings={settings} />}
           />
+
+          {/* Accounts Reports */}
+          <Route
+            path="/voucher_report"
+            element={<VoucherReport settings={settings} />}
+          />
+          <Route path="/cash_book" element={<CashBook settings={settings} />} />
+          <Route path="/bank_book" element={<BankBook settings={settings} />} />
 
           {/* Human Resource */}
           <Route

@@ -41,7 +41,11 @@ const LanguageList = () => {
             <EditOutlined />
             Edit
           </Button>
-          <Button type="danger" onClick={() => handleDeleteLanguage(record)}>
+          <Button
+            type="primary"
+            danger
+            onClick={() => handleDeleteLanguage(record)}
+          >
             <DeleteOutlined />
             Delete
           </Button>

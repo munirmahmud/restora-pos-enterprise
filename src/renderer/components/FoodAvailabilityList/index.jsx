@@ -150,7 +150,8 @@ const FoodAvailabilityList = () => {
             Edit
           </Button>
           <Button
-            type="danger"
+            type="primary"
+            danger
             onClick={() => deleteFoodAvailabilityItem(record)}
           >
             <DeleteOutlined />
@@ -426,7 +427,8 @@ const FoodAvailabilityList = () => {
 
               <Form.Item>
                 <Button
-                  type="danger"
+                  type="primary"
+                  danger
                   style={{
                     marginRight: '1rem',
                   }}

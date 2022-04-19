@@ -1,10 +1,15 @@
 import { Col, ConfigProvider, Row } from 'antd';
-import CreditVoucherHeader from 'renderer/components/accounts/CreditVoucherHeader';
-import CreditVoucherTable from 'renderer/components/accounts/CreditVoucherHeader/CreditVoucherTable';
+import { FC } from 'react';
+import BankBookHeader from 'renderer/components/accounts/BankBookHeader';
+import Heading from 'renderer/components/Heading';
 import Sidebar from 'renderer/components/partials/Sidebar';
-import Heading from './../../../components/Heading/index';
+import { SettingsProps } from '../../../types';
 
-const CreditVoucher = ({ settings }) => {
+type BankBookProps = {
+  settings: SettingsProps;
+};
+
+const BankBook: FC<BankBookProps> = ({ settings }): JSX.Element => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">
@@ -15,12 +20,10 @@ const CreditVoucher = ({ settings }) => {
             </Col>
 
             <Col lg={19} xl={21} xxl={21}>
-              <Heading title="Credit Voucher" />
+              <Heading title="Bank Book" />
 
               <div style={{ margin: '0rem 1.5rem' }}>
-                <CreditVoucherHeader />
-
-                <CreditVoucherTable />
+                <BankBookHeader />
               </div>
             </Col>
           </Row>
@@ -30,4 +33,4 @@ const CreditVoucher = ({ settings }) => {
   );
 };
 
-export default CreditVoucher;
+export default BankBook;
