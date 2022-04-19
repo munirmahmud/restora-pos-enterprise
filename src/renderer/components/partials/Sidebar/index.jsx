@@ -214,11 +214,9 @@ export const Sidebar = ({ settings }) => {
               </Menu.Item>
             </SubMenu>
 
-            <SubMenu key="department" title="Department">
-              <Menu.Item key="add_department:1">
-                <Link to="/add_department">Add Department</Link>
-              </Menu.Item>
-            </SubMenu>
+            <Menu.Item key="departments">
+              <Link to="/departments">Departments</Link>
+            </Menu.Item>
 
             <SubMenu key="attendance" title="Attendance">
               <Menu.Item key="attendance_form:1">

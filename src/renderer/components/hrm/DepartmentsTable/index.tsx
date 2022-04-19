@@ -22,7 +22,7 @@ type DataType = {
   department_name: string;
 };
 
-const DepartmentTable = () => {
+const DepartmentsTable = () => {
   const [form] = Form.useForm();
 
   const [isOpenDepartmentModal, setOpenDepartmentModal] = useState(false);
@@ -220,4 +220,4 @@ const DepartmentTable = () => {
   );
 };
 
-export default DepartmentTable;
+export default DepartmentsTable;
