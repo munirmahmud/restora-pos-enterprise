@@ -9,13 +9,6 @@ import { Key, useEffect, useState } from 'react';
 
 const { confirm } = Modal;
 
-type ColumnsType = {
-  title: string;
-  dataIndex: string;
-  key: Key;
-  align?: string;
-  width: string;
-};
 type DataType = {
   key: Key;
   sl_no: number;
@@ -23,12 +16,27 @@ type DataType = {
   details: string;
 };
 
+type FieldTypes = {
+  name: string | number | (string | number)[];
+  touched?: boolean;
+  validating?: boolean;
+  value?: any;
+  errors?: string[];
+  warnings?: string[];
+};
+
+type DesignationType = {
+  position?: string | undefined;
+  details?: string | undefined;
+};
+
 const DesignationTable = () => {
   const [form] = Form.useForm();
 
   const [isOpenDesignationModal, setOpenDesignationModal] = useState(false);
-  const [updateDesignationData, setUpdateDesignationData] = useState({});
-  const [addDesignation, setAddDesignation] = useState([]);
+  const [addDesignation, setAddDesignation] = useState<FieldTypes[]>([]);
+  const [updateDesignationData, setUpdateDesignationData] =
+    useState<DesignationType>({});
   const [reRender, setReRender] = useState(false);
 
   useEffect(() => {
@@ -49,17 +57,10 @@ const DesignationTable = () => {
     setOpenDesignationModal(true);
   };
 
-  const handleSubmit = () => {
-    const addNewDesignation = {};
+  const handleSubmit = (values: DesignationType) => {
+    console.log('values', values);
 
-    for (const data of addDesignation) {
-      addNewDesignation[data.name[0]] =
-        typeof data.value === 'string' ? data?.value?.trim() : data?.value;
-    }
-
-    // addNewDesignation.id = updateDesignationData?.id;
-
-    console.log('addNewDesignation', addNewDesignation);
+    // addNewDesignation.id = designationEditData?.id;
 
     message.success({
       content: 'Designation added successfully',
@@ -83,7 +84,7 @@ const DesignationTable = () => {
     console.log('Failed:', errorInfo);
   };
 
-  const columns: ColumnsType[] = [
+  const columns: any = [
     {
       title: 'SL No',
       dataIndex: 'sl_no',
@@ -208,9 +209,9 @@ const DesignationTable = () => {
           onFinish={handleSubmit}
           onFinishFailed={onFinishFailed}
           fields={addDesignation}
-          onFieldsChange={(_, allFields) => {
-            setAddDesignation(allFields);
-          }}
+          onFieldsChange={(_, allFields: FieldTypes[]): void =>
+            setAddDesignation(allFields)
+          }
           autoComplete="off"
         >
           <Form.Item

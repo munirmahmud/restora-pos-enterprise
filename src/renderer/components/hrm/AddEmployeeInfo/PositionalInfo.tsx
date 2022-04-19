@@ -3,19 +3,19 @@ import './AddEmployeeInfo.style.scss';
 const { Option } = Select;
 
 const PositionalInfo = () => {
-  const onDateChange = (date, dateString) => {
+  const onDateChange = (date: any, dateString: any) => {
     console.log(date, dateString);
   };
 
-  const onHireDateChange = (date, dateString) => {
+  const onHireDateChange = (date: any, dateString: any) => {
     console.log(date, dateString);
   };
 
-  const onTerminationDateChange = (date, dateString) => {
+  const onTerminationDateChange = (date: any, dateString: any) => {
     console.log(date, dateString);
   };
 
-  const onReHireChange = (date, dateString) => {
+  const onReHireChange = (date: any, dateString: any) => {
     console.log(date, dateString);
   };
 
