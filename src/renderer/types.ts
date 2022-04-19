@@ -17,6 +17,6 @@ export type SettingsProps = {
   language?: string;
   timezone?: string;
   dateformat?: string;
-  site_align?: string;
+  site_align?: 'ltr' | 'rtl' | undefined;
   powerbytxt?: string;
 };
