@@ -9,14 +9,6 @@ import { Key, useEffect, useState } from 'react';
 
 const { confirm } = Modal;
 
-type ColumnsType = {
-  title: string;
-  dataIndex: string;
-  key: Key;
-  align?: string;
-  width?: string;
-  render?: (_text: string, record: DataType) => void;
-};
 type DataType = {
   key: Key;
   sl_no: number;

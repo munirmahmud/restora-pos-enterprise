@@ -4,7 +4,7 @@ import './AddEmployeeInfo.style.scss';
 const { Option } = Select;
 
 const Benefits = () => {
-  const onDateAccrualChange = (date, dateString) => {
+  const onDateAccrualChange = (date: any, dateString: any) => {
     console.log(date, dateString);
   };
 
