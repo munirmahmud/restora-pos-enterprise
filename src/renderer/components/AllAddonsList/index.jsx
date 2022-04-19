@@ -81,7 +81,11 @@ const AllAddonsList = () => {
             <EditOutlined />
             Edit
           </Button>
-          <Button type="danger" onClick={() => handleDeleteAddonsItem(record)}>
+          <Button
+            type="primary"
+            danger
+            onClick={() => handleDeleteAddonsItem(record)}
+          >
             <DeleteOutlined />
             Delete
           </Button>

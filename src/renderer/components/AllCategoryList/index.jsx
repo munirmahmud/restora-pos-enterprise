@@ -151,7 +151,11 @@ const AllCategoryList = () => {
             Edit
           </Button>
 
-          <Button type="danger" onClick={() => handleDeleteCategory(record)}>
+          <Button
+            type="primary"
+            danger
+            onClick={() => handleDeleteCategory(record)}
+          >
             <DeleteOutlined />
             Delete
           </Button>

@@ -26,7 +26,8 @@ const WarmingModal = ({ warmingModal, setWarmingModal }) => {
 
             <div className="flex content_center group_button">
               <Button
-                type="danger"
+                type="primary"
+                danger
                 style={{
                   marginRight: '1rem',
                 }}

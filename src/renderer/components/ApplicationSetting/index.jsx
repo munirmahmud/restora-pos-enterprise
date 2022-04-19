@@ -613,7 +613,8 @@ const ApplicationSetting = ({ setReRenderOnSettings, reRenderOnSettings }) => {
 
             <div className="button_group">
               <Button
-                type="danger"
+                type="primary"
+                danger
                 className="resetBtn"
                 style={{
                   marginRight: '0.6rem',

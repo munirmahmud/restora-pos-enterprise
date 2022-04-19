@@ -1,95 +1,128 @@
-import { PlusCircleOutlined } from '@ant-design/icons';
-import { Button, Table } from 'antd';
-import moment from 'moment';
-import { useState } from 'react';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  ExclamationCircleOutlined,
+  PlusCircleOutlined,
+} from '@ant-design/icons';
+import { Button, message, Modal, Space, Table } from 'antd';
+import { Key, useState } from 'react';
+import DesignationAddModal from './DesignationAddModal';
+
+const { confirm } = Modal;
+
+type ColumnsType = {
+  title: string;
+  dataIndex: string;
+  key: Key;
+  align?: string;
+  width: string;
+};
+type DataType = {
+  key: Key;
+  sl_no: number;
+  position: string;
+  details: string;
+};
 
 const DesignationTable = () => {
-  const format = 'YYYY-MM-DD';
-  const today = new Date();
-  const columns = [
+  const [isOpenDesignationModal, setOpenDesignationModal] = useState(false);
+  const [designationEditData, setDesignationEditData] = useState({});
+  const [reRender, setReRender] = useState(false);
+
+  const columns: ColumnsType[] = [
     {
       title: 'SL No',
       dataIndex: 'sl_no',
       key: 'sl_no',
+      width: '5%',
     },
     {
-      title: 'Date',
-      dataIndex: 'date',
-      key: 'date',
+      title: 'Position',
+      dataIndex: 'position',
+      key: 'position',
+      width: '20%',
     },
     {
-      title: 'Voucher No',
-      dataIndex: 'voucher_no',
-      key: 'voucher_no',
+      title: 'Details',
+      dataIndex: 'details',
+      key: 'details',
+      width: '60%',
     },
     {
-      title: 'Type',
-      dataIndex: 'type',
-      key: 'type',
-    },
-    {
-      title: 'Head of Account',
-      dataIndex: 'head_of_account',
-      key: 'head_of_account',
-      width: '25%',
-    },
-    {
-      title: 'Debit',
-      dataIndex: 'debit',
-      key: 'debit',
-      align: 'right',
-    },
-    {
-      title: 'Credit',
-      dataIndex: 'credit',
-      key: 'credit',
-      align: 'right',
-    },
-    {
-      title: 'Balance',
-      dataIndex: 'balance',
-      key: 'balance',
-      align: 'right',
+      title: 'Action',
+      dataIndex: 'action',
+      key: 'action',
+      align: 'center',
+      render: (_text: string, record: DataType): JSX.Element => (
+        <Space size="middle">
+          <Button type="primary" onClick={() => handleEditDesignation(record)}>
+            <EditOutlined />
+            Edit
+          </Button>
+          <Button
+            type="primary"
+            danger
+            onClick={() => handleDeleteDesignation(record)}
+          >
+            <DeleteOutlined />
+            Delete
+          </Button>
+        </Space>
+      ),
     },
   ];
 
-  const data = [
+  const designationData = [
     {
-      key: '1',
+      key: 1,
       sl_no: 1,
-      date: moment(today).format(format),
-      voucher_no: 'Dh-4',
-      type: 'CIV',
-      head_of_account: 'Cash In Hand',
-      debit: 125,
-      credit: 100,
-      balance: 558,
+      position: 'Counter server',
+      details: 'Play a key role in every restaurant.',
     },
     {
-      key: '2',
+      key: 2,
       sl_no: 2,
-      date: moment(today).format(format),
-      voucher_no: 'DV-8',
-      type: 'CIV',
-      head_of_account: 'Cash In Hand',
-      debit: 259,
-      credit: 350,
-      balance: 299,
+      position: 'Kitchen manager',
+      details:
+        'Oversee the successful running of a restaurant by hiring qualkklk;ified staff, monitoring customer satisfaction, and ensuring that all products and beverages are ordered in the correct quantities.',
     },
     {
-      key: '3',
+      key: 3,
       sl_no: 3,
-      date: moment(today).format(format),
-      voucher_no: 'DK-1',
-      type: 'CIV',
-      head_of_account: 'Cash In Hand',
-      debit: 489,
-      credit: 508,
-      balance: 789,
+      position: 'Salesman',
+      details:
+        'Most waiters and waitresses, also called servers, work in full-service restaurants. They greet customers, take food orders, bring food and drinks to the tables and take payment and make change.',
     },
   ];
 
-  const [isOpenDesignationModal, setOpenDesignationModal] = useState(false);
+  const handleEditDesignation = (data: DataType) => {
+    console.log('edit data', data);
+    setReRender((prevState) => !prevState);
+    setOpenDesignationModal(true);
+    setDesignationEditData(data);
+  };
+
+  const handleDeleteDesignation = (data: DataType) => {
+    console.log('delete data', data);
+    confirm({
+      title: 'Are you sure to delete this item?',
+      icon: <ExclamationCircleOutlined />,
+      content:
+        'If you click on the ok button the item will be deleted permanently from the database. Undo is not possible.',
+      onOk() {
+        message.success({
+          content: 'Category deleted successfully',
+          className: 'custom-class',
+          duration: 1,
+          style: {
+            marginTop: '5vh',
+            float: 'right',
+          },
+        });
+      },
+      onCancel() {},
+    });
+  };
 
   const handleOpenModal = () => {
     setOpenDesignationModal(true);
@@ -103,7 +136,20 @@ const DesignationTable = () => {
       >
         <PlusCircleOutlined /> Add Designation
       </Button>
-      <Table bordered columns={columns} dataSource={data} pagination={false} />
+      <Table
+        bordered
+        columns={columns}
+        dataSource={designationData}
+        pagination={false}
+      />
+
+      <DesignationAddModal
+        isOpenDesignationModal={isOpenDesignationModal}
+        setOpenDesignationModal={setOpenDesignationModal}
+        designationEditData={designationEditData}
+        reRender={reRender}
+        setReRender={setReRender}
+      />
     </div>
   );
 };
