@@ -1,8 +1,15 @@
 import { Col, ConfigProvider, Row } from 'antd';
+import { FC } from 'react';
+import DesignationTable from 'renderer/components/hrm/DesignationTable';
 import Sidebar from 'renderer/components/partials/Sidebar';
-import Heading from './../../../components/Heading';
+import Heading from '../../../components/Heading';
+import { SettingsProps } from '../../../types';
 
-const AddEmployee = ({ settings }) => {
+type VoucherReportProps = {
+  settings: SettingsProps;
+};
+
+const Designation: FC<VoucherReportProps> = ({ settings }): JSX.Element => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">
@@ -13,10 +20,10 @@ const AddEmployee = ({ settings }) => {
             </Col>
 
             <Col lg={19} xl={21} xxl={21}>
-              <Heading title="Add Employee" />
+              <Heading title="Designation" />
 
               <div style={{ margin: '0rem 1.5rem' }}>
-                <h1>Add Employee</h1>
+                <DesignationTable />
               </div>
             </Col>
           </Row>
@@ -26,4 +33,4 @@ const AddEmployee = ({ settings }) => {
   );
 };
 
-export default AddEmployee;
+export default Designation;

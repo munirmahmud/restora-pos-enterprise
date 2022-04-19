@@ -1,9 +1,9 @@
 import { Col, ConfigProvider, Row } from 'antd';
-import DesignationTable from 'renderer/components/hrm/DesignationTable';
+import DepartmentsTable from 'renderer/components/hrm/DepartmentsTable';
 import Sidebar from 'renderer/components/partials/Sidebar';
-import Heading from './../../../components/Heading';
+import Heading from '../../../components/Heading';
 
-const Designation = ({ settings }) => {
+const Departments = ({ settings }) => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">
@@ -14,10 +14,10 @@ const Designation = ({ settings }) => {
             </Col>
 
             <Col lg={19} xl={21} xxl={21}>
-              <Heading title="Designation" />
+              <Heading title="Department" />
 
               <div style={{ margin: '0rem 1.5rem' }}>
-                <DesignationTable />
+                <DepartmentsTable />
               </div>
             </Col>
           </Row>
@@ -27,4 +27,4 @@ const Designation = ({ settings }) => {
   );
 };
 
-export default Designation;
+export default Departments;
