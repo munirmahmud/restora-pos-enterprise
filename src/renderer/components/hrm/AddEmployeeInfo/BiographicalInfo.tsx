@@ -21,7 +21,7 @@ const BiographicalInfo = () => {
         // message.error(`${info.file.name} file upload failed.`);
       }
     },
-    onDrop(e) {
+    onDrop(e: any) {
       console.log('Dropped files', e.dataTransfer.files);
     },
   };
