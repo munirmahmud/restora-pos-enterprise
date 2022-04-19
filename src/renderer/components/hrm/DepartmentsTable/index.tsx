@@ -14,64 +14,50 @@ type ColumnsType = {
   dataIndex: string;
   key: Key;
   align?: string;
-  width?: string;
-  render?: (_text: string, record: DataType) => void;
+  width: string;
 };
 type DataType = {
   key: Key;
   sl_no: number;
-  position: string;
-  details: string;
+  department_name: string;
 };
 
-type FieldTypes = {
-  name: string | number | (string | number)[];
-  touched?: boolean;
-  validating?: boolean;
-  value?: any;
-  errors?: string[];
-  warnings?: string[];
-};
-
-type DesignationType = {
-  position?: string | undefined;
-  details?: string | undefined;
-};
-
-const DesignationTable = () => {
+const DepartmentsTable = () => {
   const [form] = Form.useForm();
 
-  const [isOpenDesignationModal, setOpenDesignationModal] = useState(false);
-  const [addDesignation, setAddDesignation] = useState<FieldTypes[]>([]);
-  const [updateDesignationData, setUpdateDesignationData] =
-    useState<DesignationType>({});
+  const [isOpenDepartmentModal, setOpenDepartmentModal] = useState(false);
+  const [updateDepartmentData, setUpdateDepartmentData] = useState({});
+  const [addDepartment, setAddDepartment] = useState([]);
   const [reRender, setReRender] = useState(false);
 
   useEffect(() => {
-    setAddDesignation([
+    setAddDepartment([
       {
-        name: ['position'],
-        value: updateDesignationData?.position,
-      },
-      {
-        name: ['details'],
-        value: updateDesignationData?.details,
+        name: ['department_name'],
+        value: updateDepartmentData?.department_name,
       },
     ]);
   }, [reRender]);
 
   const handleOpenModal = () => {
     form.resetFields();
-    setOpenDesignationModal(true);
+    setOpenDepartmentModal(true);
   };
 
-  const handleSubmit = (values: DesignationType) => {
-    console.log('values', values);
+  const handleSubmit = () => {
+    const addNewDepartment = {};
 
-    // addNewDesignation.id = designationEditData?.id;
+    for (const data of addDepartment) {
+      addNewDepartment[data.name[0]] =
+        typeof data.value === 'string' ? data?.value?.trim() : data?.value;
+    }
+
+    // addNewDepartment.id = updateDepartmentData?.id;
+
+    console.log('addNewDepartment', addNewDepartment);
 
     message.success({
-      content: 'Designation added successfully',
+      content: 'Department added successfully',
       className: 'custom-class',
       duration: 1,
       style: {
@@ -81,7 +67,7 @@ const DesignationTable = () => {
     });
     form.resetFields();
     setReRender((prevState) => !prevState);
-    setOpenDesignationModal(false);
+    setOpenDepartmentModal(false);
   };
 
   const handleReset = () => {
@@ -92,24 +78,18 @@ const DesignationTable = () => {
     console.log('Failed:', errorInfo);
   };
 
-  const columns: any = [
+  const columns: ColumnsType[] = [
     {
       title: 'SL No',
       dataIndex: 'sl_no',
       key: 'sl_no',
-      width: '5%',
+      width: '15%',
     },
     {
-      title: 'Position',
-      dataIndex: 'position',
-      key: 'position',
-      width: '20%',
-    },
-    {
-      title: 'Details',
-      dataIndex: 'details',
-      key: 'details',
-      width: '60%',
+      title: 'Department Name',
+      dataIndex: 'department_name',
+      key: 'department_name',
+      width: '70%',
     },
     {
       title: 'Action',
@@ -118,14 +98,14 @@ const DesignationTable = () => {
       align: 'center',
       render: (_text: string, record: DataType): JSX.Element => (
         <Space size="middle">
-          <Button type="primary" onClick={() => handleEditDesignation(record)}>
+          <Button type="primary" onClick={() => handleEditDepartment(record)}>
             <EditOutlined />
             Edit
           </Button>
           <Button
             type="primary"
             danger
-            onClick={() => handleDeleteDesignation(record)}
+            onClick={() => handleDeleteDepartment(record)}
           >
             <DeleteOutlined />
             Delete
@@ -139,33 +119,28 @@ const DesignationTable = () => {
     {
       key: 1,
       sl_no: 1,
-      position: 'Counter server',
-      details: 'Play a key role in every restaurant.',
+      department_name: 'Sales Manager',
     },
     {
       key: 2,
       sl_no: 2,
-      position: 'Kitchen manager',
-      details:
-        'Oversee the successful running of a restaurant by hiring qualkklk;ified staff, monitoring customer satisfaction, and ensuring that all products and beverages are ordered in the correct quantities.',
+      department_name: 'Senior Accountant',
     },
     {
       key: 3,
       sl_no: 3,
-      position: 'Salesman',
-      details:
-        'Most waiters and waitresses, also called servers, work in full-service restaurants. They greet customers, take food orders, bring food and drinks to the tables and take payment and make change.',
+      department_name: 'Human Resource',
     },
   ];
 
-  const handleEditDesignation = (data: DataType) => {
+  const handleEditDepartment = (data: DataType) => {
     console.log('edit data', data);
     setReRender((prevState) => !prevState);
-    setOpenDesignationModal(true);
-    setUpdateDesignationData(data);
+    setOpenDepartmentModal(true);
+    setUpdateDepartmentData(data);
   };
 
-  const handleDeleteDesignation = (data: DataType) => {
+  const handleDeleteDepartment = (data: DataType) => {
     console.log('delete data', data);
     confirm({
       title: 'Are you sure to delete this item?',
@@ -174,7 +149,7 @@ const DesignationTable = () => {
         'If you click on the ok button the item will be deleted permanently from the database. Undo is not possible.',
       onOk() {
         message.success({
-          content: 'Category deleted successfully',
+          content: 'Department deleted successfully',
           className: 'custom-class',
           duration: 1,
           style: {
@@ -205,10 +180,10 @@ const DesignationTable = () => {
       />
 
       <Modal
-        title="Add Designation"
-        visible={isOpenDesignationModal}
-        onOk={() => setOpenDesignationModal(false)}
-        onCancel={() => setOpenDesignationModal(false)}
+        title="Department Form"
+        visible={isOpenDepartmentModal}
+        onOk={() => setOpenDepartmentModal(false)}
+        onCancel={() => setOpenDepartmentModal(false)}
         footer={null}
       >
         <Form
@@ -216,26 +191,18 @@ const DesignationTable = () => {
           layout="vertical"
           onFinish={handleSubmit}
           onFinishFailed={onFinishFailed}
-          fields={addDesignation}
-          onFieldsChange={(_, allFields: FieldTypes[]): void =>
-            setAddDesignation(allFields)
-          }
+          fields={addDepartment}
+          onFieldsChange={(_, allFields) => {
+            setAddDepartment(allFields);
+          }}
           autoComplete="off"
         >
           <Form.Item
-            name="position"
-            label="Position"
-            rules={[{ required: true, message: 'Position is required' }]}
+            name="department_name"
+            label="Department Name"
+            rules={[{ required: true, message: 'Department Name is required' }]}
           >
-            <Input size="large" placeholder="Position" />
-          </Form.Item>
-
-          <Form.Item
-            name="details"
-            label="Details"
-            rules={[{ required: true, message: 'Details is required' }]}
-          >
-            <Input.TextArea size="large" placeholder="Details" />
+            <Input size="large" placeholder="Department Name" />
           </Form.Item>
 
           <Space>
@@ -253,4 +220,4 @@ const DesignationTable = () => {
   );
 };
 
-export default DesignationTable;
+export default DepartmentsTable;
