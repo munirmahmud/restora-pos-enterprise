@@ -1,9 +1,15 @@
 import { Col, ConfigProvider, Row } from 'antd';
+import { FC } from 'react';
 import DesignationTable from 'renderer/components/hrm/DesignationTable';
 import Sidebar from 'renderer/components/partials/Sidebar';
-import Heading from './../../../components/Heading';
+import Heading from '../../../components/Heading';
+import { SettingsProps } from '../../../types';
 
-const Designation = ({ settings }) => {
+type VoucherReportProps = {
+  settings: SettingsProps;
+};
+
+const Designation: FC<VoucherReportProps> = ({ settings }): JSX.Element => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">

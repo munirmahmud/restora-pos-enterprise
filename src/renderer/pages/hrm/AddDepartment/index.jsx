@@ -1,8 +1,9 @@
 import { Col, ConfigProvider, Row } from 'antd';
+import DepartmentTable from 'renderer/components/hrm/DepartmentTable';
 import Sidebar from 'renderer/components/partials/Sidebar';
-import Heading from './../../../components/Heading';
+import Heading from '../../../components/Heading';
 
-const ManageEmployeeSalary = ({ settings }) => {
+const AddDepartment = ({ settings }) => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">
@@ -13,10 +14,10 @@ const ManageEmployeeSalary = ({ settings }) => {
             </Col>
 
             <Col lg={19} xl={21} xxl={21}>
-              <Heading title="Manage Employee Salary" />
+              <Heading title="Add Department" />
 
               <div style={{ margin: '0rem 1.5rem' }}>
-                <h1>Manage Employee Salary</h1>
+                <DepartmentTable />
               </div>
             </Col>
           </Row>
@@ -26,4 +27,4 @@ const ManageEmployeeSalary = ({ settings }) => {
   );
 };
 
-export default ManageEmployeeSalary;
+export default AddDepartment;

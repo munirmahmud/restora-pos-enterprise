@@ -31,10 +31,10 @@ import FoodList from './pages/foodManagement/manageFood/FoodList';
 import FoodVariant from './pages/foodManagement/manageFood/FoodVariant';
 import MenuType from './pages/foodManagement/manageFood/MenuType';
 import Home from './pages/Home';
+import AddDepartment from './pages/hrm/AddDepartment';
 import AddEmployee from './pages/hrm/AddEmployee';
 import Designation from './pages/hrm/Designation';
-import ManageEmployee from './pages/hrm/ManageEmployee/index';
-import ManageEmployeeSalary from './pages/hrm/ManageEmployeeSalary/index';
+import ManageEmployee from './pages/hrm/ManageEmployee';
 import Language from './pages/Language/';
 import OnGoingOrder from './pages/OnGoingOrder';
 import ItemSalesReport from './pages/report/ItemSalesReport';
@@ -202,8 +202,8 @@ export default function App() {
             element={<ManageEmployee settings={settings} />}
           />
           <Route
-            path="/manage_employee_salary"
-            element={<ManageEmployeeSalary settings={settings} />}
+            path="/add_department"
+            element={<AddDepartment settings={settings} />}
           />
 
           {/* Application Settings */}

@@ -208,6 +208,16 @@ export const Sidebar = ({ settings }) => {
               <Menu.Item key="add_employee:2">
                 <Link to="/add_employee">Add Employee</Link>
               </Menu.Item>
+
+              <Menu.Item key="manage_employee:3">
+                <Link to="/manage_employee">Manage Employee</Link>
+              </Menu.Item>
+            </SubMenu>
+
+            <SubMenu key="department" title="Department">
+              <Menu.Item key="add_department:1">
+                <Link to="/add_department">Add Department</Link>
+              </Menu.Item>
             </SubMenu>
 
             <SubMenu key="attendance" title="Attendance">
