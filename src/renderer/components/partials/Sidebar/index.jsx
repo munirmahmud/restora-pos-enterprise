@@ -200,21 +200,13 @@ export const Sidebar = ({ settings }) => {
             title="Human Resource"
             icon={<FontAwesomeIcon icon={faUser} />}
           >
-            <SubMenu key="hrm" title="HRM">
+            <SubMenu key="employee" title="Employee">
               <Menu.Item key="designation:1">
                 <Link to="/designation">Designation</Link>
               </Menu.Item>
 
               <Menu.Item key="add_employee:2">
                 <Link to="/add_employee">Add Employee</Link>
-              </Menu.Item>
-
-              <Menu.Item key="manage_employee:3">
-                <Link to="/manage_employee">Manage Employee</Link>
-              </Menu.Item>
-
-              <Menu.Item key="manage_employee_salary:4">
-                <Link to="/manage_employee_salary">Manage Employee Salary</Link>
               </Menu.Item>
             </SubMenu>
 
@@ -223,30 +215,44 @@ export const Sidebar = ({ settings }) => {
                 <Link to="/attendance_form">Attendance Form</Link>
               </Menu.Item>
 
-              <Menu.Item key="attendance_report:2">
+              {/* <Menu.Item key="attendance_report:2">
                 <Link to="/attendance_report">Attendance Report</Link>
+              </Menu.Item> */}
+            </SubMenu>
+
+            <SubMenu key="leave" title="Leave">
+              <Menu.Item key="leave_application:1">
+                <Link to="/leave_application">Leave Application</Link>
+              </Menu.Item>
+              <Menu.Item key="leave_balance:2">
+                <Link to="/leave_balance">Leave Balance</Link>
+              </Menu.Item>
+              <Menu.Item key="holiday:3">
+                <Link to="/holiday">Holiday</Link>
               </Menu.Item>
             </SubMenu>
 
-            <SubMenu key="expense" title="Expense">
-              <Menu.Item key="add_expense_item:1">
-                <Link to="/add_expense_item">Add Expense Item</Link>
+            <SubMenu key="pay_roll" title="Pay Roll">
+              <Menu.Item key="advance_salary:1">
+                <Link to="/advance_salary">Advance Salary</Link>
               </Menu.Item>
-
-              <Menu.Item key="manage_expense_item:2">
-                <Link to="/manage_expense_item">Manage Expense Item</Link>
+              <Menu.Item key="monthly_deduction:2">
+                <Link to="/monthly_deduction">Monthly Deduction</Link>
               </Menu.Item>
-
-              <Menu.Item key="add_expense:3">
-                <Link to="/add_expense">Add Expense</Link>
+              <Menu.Item key="salary_generate:3">
+                <Link to="/salary_generate">Salary Generate</Link>
               </Menu.Item>
+            </SubMenu>
 
-              <Menu.Item key="manage_expense:4">
-                <Link to="/manage_expense">Manage Expense</Link>
+            <SubMenu key="loan" title="Loan">
+              <Menu.Item key="grant_loan:1">
+                <Link to="/grant_loan">Grant Loan</Link>
               </Menu.Item>
+            </SubMenu>
 
-              <Menu.Item key="expense_statement:5">
-                <Link to="/expense_statement">Expense Statement</Link>
+            <SubMenu key="kitchen" title="Kitchen">
+              <Menu.Item key="add_kitchen:1">
+                <Link to="/add_kitchen">Add Kitchen</Link>
               </Menu.Item>
             </SubMenu>
           </SubMenu>

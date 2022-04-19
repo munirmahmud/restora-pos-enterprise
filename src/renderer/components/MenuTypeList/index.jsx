@@ -133,7 +133,11 @@ const MenuTypeList = () => {
             <EditOutlined />
             Edit
           </Button>
-          <Button type="danger" onClick={() => handleDeleteMenuType(record)}>
+          <Button
+            type="primary"
+            danger
+            onClick={() => handleDeleteMenuType(record)}
+          >
             <DeleteOutlined />
             Delete
           </Button>
@@ -393,7 +397,8 @@ const MenuTypeList = () => {
 
               <Form.Item>
                 <Button
-                  type="danger"
+                  type="primary"
+                  danger
                   style={{
                     marginRight: '1rem',
                   }}

@@ -153,7 +153,8 @@ const CurrencyModal = ({
 
             <Form.Item>
               <Button
-                type="danger"
+                type="primary"
+                danger
                 style={{
                   marginRight: '1rem',
                 }}

@@ -114,7 +114,11 @@ const CurrencyList = () => {
             <EditOutlined />
             Edit
           </Button>
-          <Button type="danger" onClick={() => handleDeleteCurrency(record)}>
+          <Button
+            type="primary"
+            danger
+            onClick={() => handleDeleteCurrency(record)}
+          >
             <DeleteOutlined />
             Delete
           </Button>

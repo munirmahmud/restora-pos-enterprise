@@ -1,9 +1,17 @@
 import { Col, ConfigProvider, Row } from 'antd';
+import { FC } from 'react';
 import Sidebar from 'renderer/components/partials/Sidebar';
-import VoucherApprovalTable from './../../../components/accounts/VoucherApprovalTable';
-import Heading from './../../../components/Heading';
+import VoucherApprovalTable from '../../../components/accounts/VoucherApprovalTable';
+import Heading from '../../../components/Heading';
+import { SettingsProps } from '../../../types';
 
-const VoucherApproval = ({ settings }) => {
+type VoucherApprovalProps = {
+  settings: SettingsProps;
+};
+
+const VoucherApproval: FC<VoucherApprovalProps> = ({
+  settings,
+}): JSX.Element => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">

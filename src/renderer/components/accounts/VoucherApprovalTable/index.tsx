@@ -1,42 +1,85 @@
-import { Table } from 'antd';
+import { EditOutlined } from '@ant-design/icons';
+import { Button, Space, Table } from 'antd';
 
 const VoucherApprovalTable = () => {
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      render: (text) => <a>{text}</a>,
+      title: 'SL No',
+      dataIndex: 'sl_no',
+      width: '8%',
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
+      title: 'Voucher No',
+      dataIndex: 'voucher_no',
+      width: '15%',
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
+      title: 'Remark',
+      dataIndex: 'remark',
+      width: '30%',
+    },
+    {
+      title: 'Debit',
+      dataIndex: 'debit',
+      width: '15%',
+    },
+    {
+      title: 'Credit',
+      dataIndex: 'credit',
+      width: '15%',
+    },
+    {
+      title: 'Action',
+      dataIndex: 'action',
+      align: 'center',
+      render: (text, record) => (
+        <Space size="middle">
+          <Button type="primary" onClick={() => handleEdit(record)}>
+            <EditOutlined />
+            Edit
+          </Button>
+          <Button type="primary" onClick={() => handleApprove(record)}>
+            Approve
+          </Button>
+        </Space>
+      ),
     },
   ];
 
   const data = [
     {
       key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
+      sl_no: '1',
+      voucher_no: 'DV-1',
+      remark: 'New York No. 1 Lake Park',
+      debit: 32,
+      credit: 32,
     },
     {
       key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
+      sl_no: '2',
+      voucher_no: 'DV-1',
+      remark: 'London No. 1 Lake Park',
+      debit: 42,
+      credit: 42,
     },
     {
       key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
+      sl_no: '3',
+      voucher_no: 'DV-1',
+      remark: 'Sidney No. 1 Lake Park',
+      debit: 32,
+      credit: 32,
     },
   ];
+
+  const handleEdit = (data: any) => {
+    console.log('data', data);
+  };
+
+  const handleApprove = (data: any) => {
+    console.log('data', data);
+  };
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
@@ -44,14 +87,10 @@ const VoucherApprovalTable = () => {
     },
   };
 
+  const handleApproveMultiple = () => {};
+
   return (
-    <div
-      style={{
-        padding: '1.5rem',
-        boxShadow: 'rgb(99 99 99 / 20%) 0px 2px 8px 0px',
-        marginTop: '1.5rem',
-      }}
-    >
+    <div className="box_shadow">
       <Table
         bordered
         rowSelection={{
@@ -61,6 +100,12 @@ const VoucherApprovalTable = () => {
         dataSource={data}
         pagination={false}
       />
+
+      <div style={{ marginTop: '1rem' }}>
+        <Button type="primary" onClick={handleApproveMultiple}>
+          Approve
+        </Button>
+      </div>
     </div>
   );
 };

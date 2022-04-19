@@ -105,7 +105,11 @@ const AllFoodList = () => {
             <EditOutlined />
             Edit
           </Button>
-          <Button type="danger" onClick={() => handleDeleteFoodItem(record)}>
+          <Button
+            type="primary"
+            danger
+            onClick={() => handleDeleteFoodItem(record)}
+          >
             <DeleteOutlined />
             Delete
           </Button>

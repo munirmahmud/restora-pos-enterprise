@@ -563,7 +563,8 @@ const AddNewFood = ({ state, settings }) => {
 
             <div className="button_group">
               <Button
-                type="danger"
+                type="primary"
+                danger
                 style={{
                   marginRight: '1rem',
                 }}

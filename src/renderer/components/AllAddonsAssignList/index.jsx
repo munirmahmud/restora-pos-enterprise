@@ -141,7 +141,11 @@ const AllAddonsAssignList = () => {
             <EditOutlined />
             Edit
           </Button>
-          <Button type="danger" onClick={() => deleteAddonsAssignItem(record)}>
+          <Button
+            type="primary"
+            danger
+            onClick={() => deleteAddonsAssignItem(record)}
+          >
             <DeleteOutlined />
             Delete
           </Button>
@@ -356,7 +360,8 @@ const AllAddonsAssignList = () => {
 
               <Form.Item>
                 <Button
-                  type="danger"
+                  type="primary"
+                  danger
                   style={{
                     marginRight: '1rem',
                   }}

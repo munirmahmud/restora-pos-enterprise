@@ -1,9 +1,15 @@
 import { Col, ConfigProvider, Row } from 'antd';
-import DesignationTable from 'renderer/components/hrm/DesignationTable';
+import { FC } from 'react';
+import CashBookHeader from 'renderer/components/accounts/CashBookHeader';
+import Heading from 'renderer/components/Heading';
 import Sidebar from 'renderer/components/partials/Sidebar';
-import Heading from './../../../components/Heading';
+import { SettingsProps } from '../../../types';
 
-const Designation = ({ settings }) => {
+type CashBookProps = {
+  settings: SettingsProps;
+};
+
+const CashBook: FC<CashBookProps> = ({ settings }): JSX.Element => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">
@@ -14,10 +20,10 @@ const Designation = ({ settings }) => {
             </Col>
 
             <Col lg={19} xl={21} xxl={21}>
-              <Heading title="Designation" />
+              <Heading title="Cash Book" />
 
               <div style={{ margin: '0rem 1.5rem' }}>
-                <DesignationTable />
+                <CashBookHeader />
               </div>
             </Col>
           </Row>
@@ -27,4 +33,4 @@ const Designation = ({ settings }) => {
   );
 };
 
-export default Designation;
+export default CashBook;

@@ -38,10 +38,9 @@ const StatisticsRatio = ({ statisticsData }) => {
 
   return (
     <div className="statistics_area">
-      <h1>Statistics</h1>
       <Row>
         <Col lg={24}>
-          <div style={{ padding: '1rem' }}>
+          <div style={{ padding: '2rem 0rem' }}>
             <Bar options={options} data={data} />
           </div>
         </Col>
