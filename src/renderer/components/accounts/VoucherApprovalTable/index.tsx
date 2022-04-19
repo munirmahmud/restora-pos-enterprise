@@ -1,11 +1,19 @@
 import { Table } from 'antd';
+import { Key } from 'react';
+
+type TableProps = {
+  address: string;
+  age: number;
+  key: Key;
+  name: string;
+};
 
 const VoucherApprovalTable = () => {
   const columns = [
     {
       title: 'Name',
       dataIndex: 'name',
-      render: (text) => <a>{text}</a>,
+      render: (text: string) => <a>{text}</a>,
     },
     {
       title: 'Age',
@@ -39,7 +47,7 @@ const VoucherApprovalTable = () => {
   ];
 
   const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
+    onChange: (_selectedRowKeys: Key[], selectedRows: TableProps[]) => {
       console.log('selectedRows*******: ', selectedRows);
     },
   };
