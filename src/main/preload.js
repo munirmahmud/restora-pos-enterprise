@@ -335,6 +335,25 @@ sendDataThroughMiddlewareOn(
   'get_dashboard_data_response'
 );
 
+/****************INSERT EMPLOYEE DESIGNATION****************/
+sendDataThroughMiddleware(
+  'insert_employee_designation', //Event Name
+  'insert_employee_designation', // Channel Name
+  'insert_employee_designation_response' //Response
+);
+// Fetch employee designation
+sendDataThroughMiddleware(
+  'get_employee_designation', //Event Name
+  'get_employee_designation', // Channel Name
+  'get_employee_designation_response' //Response
+);
+// Delete employee designation
+sendDataThroughMiddleware(
+  'delete_employee_designation', //Event Name
+  'delete_employee_designation', // Channel Name
+  'delete_employee_designation_response' //Response
+);
+
 /*======================================================================
   FUNCTION DECLARATIONS
 ========================================================================*/
