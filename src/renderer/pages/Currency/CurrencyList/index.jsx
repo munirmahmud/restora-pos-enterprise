@@ -141,7 +141,6 @@ const CurrencyList = () => {
       content:
         'If you click on the ok button the item will be deleted permanently from the database. Undo is not possible.',
       onOk() {
-        console.log('currencyItem delete', currencyItem);
         window.delete_currency_list_item.send('delete_currency_list_item', {
           id: currencyItem.id,
         });

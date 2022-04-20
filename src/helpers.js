@@ -13,7 +13,6 @@
  * This function returns a promise of object or an array if promise resolves
  *
  * @return promise
- *
  * @params string event
  * @params object channel
  */

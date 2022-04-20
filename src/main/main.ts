@@ -9,6 +9,19 @@ import { resolveHtmlPath } from './util';
 const sqlite3 = require('sqlite3').verbose();
 const { mkdirSync, copyFileSync, existsSync } = require('fs');
 
+/********************* TYPES ***********************/
+type ErrorType = {
+  message: string;
+};
+
+declare global {
+  interface Window {
+    get_employee_designation: any;
+    insert_employee_designation: any;
+    delete_employee_designation: any;
+  }
+}
+
 // Initialize db path
 var dbPath = app.getPath('userData');
 
@@ -20,7 +33,7 @@ export default class AppUpdater {
   }
 }
 
-let mainWindow;
+let mainWindow: BrowserWindow | null | null = null;
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -56,7 +69,7 @@ const createWindow = async () => {
     ? path.join(process.resourcesPath, 'assets')
     : path.join(__dirname, '../../assets');
 
-  const getAssetPath = (...paths) => {
+  const getAssetPath = (...paths: any) => {
     return path.join(RESOURCES_PATH, ...paths);
   };
 
@@ -111,12 +124,12 @@ const createWindow = async () => {
  */
 
 // Get parent category data
-ipcMain.on('parent_category', (event, args) => {
+ipcMain.on('parent_category', (_event, args) => {
   if (args.status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
     db.serialize(() => {
       let sql = `SELECT category_id, category_name, parent_id, category_is_active FROM add_item_category ORDER BY category_id DESC`;
-      db.all(sql, [], (err, rows) => {
+      db.all(sql, [], (err: ErrorType, rows: any) => {
         mainWindow.webContents.send('parent_category', rows);
       });
     });
@@ -129,7 +142,7 @@ ipcMain.on('parent_category', (event, args) => {
   SETTINGS
 ========================================================*/
 // Insert & Update Settings
-ipcMain.on('insert_settings', (event, args) => {
+ipcMain.on('insert_settings', (_event, args) => {
   let appFavicon = null,
     appLogo = null;
 
@@ -574,7 +587,7 @@ ipcMain.on('insertCategoryData', (event, args) => {
 });
 
 // Get all category list
-ipcMain.on('sendResponseForCategory', (event, args) => {
+ipcMain.on('sendResponseForCategory', (_event: Electron.IpcMainEvent, args) => {
   let { status } = args;
 
   if (status) {
@@ -585,8 +598,8 @@ ipcMain.on('sendResponseForCategory', (event, args) => {
     let sqlQ2 = `SELECT * FROM add_item_category WHERE parent_id IS NOT NULL`;
 
     db.serialize(() => {
-      db.all(sqlQ, [], (err, categories) => {
-        db2.all(sqlQ2, [], (err, sub_categories) => {
+      db.all(sqlQ, [], (_err: ErrorType, categories) => {
+        db2.all(sqlQ2, [], (_err: ErrorType, sub_categories) => {
           sub_categories?.map((s) => {
             categories?.map((c) => {
               if (c.category_id === s.parent_id) {
@@ -1958,12 +1971,12 @@ getListItems(
   db.close();
 })();
 
-ipcMain.on('get_language', (event, args) => {
+ipcMain.on('get_language', (_event, args) => {
   if (args.status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
     let sql = `SELECT language.* FROM language`;
     db.serialize(() => {
-      db.all(sql, [], (err, rows) => {
+      db.all(sql, [], (_err, rows) => {
         mainWindow.webContents.send('get_language_response', rows);
       });
     });
@@ -1983,7 +1996,7 @@ ipcMain.on('get_language', (event, args) => {
  * @params string event name
  */
 function insertData(eventName, eventResponse, table, columns) {
-  ipcMain.on(eventName, (event, args) => {
+  ipcMain.on(eventName, (_event, args) => {
     let { id, currency_name, currency_icon, position, currency_rate } = args;
 
     // Execute if the event has row ID / data ID. It is used to update a specific item
@@ -1995,7 +2008,7 @@ function insertData(eventName, eventResponse, table, columns) {
           `INSERT OR REPLACE INTO ${table} (id, currency_name, currency_icon, position, currency_rate)
           VALUES (?, ?, ?, ?, ?)`,
           [id, currency_name, currency_icon, position, currency_rate],
-          (err) => {
+          (err: ErrorType) => {
             err
               ? mainWindow.webContents.send(eventResponse, err.message)
               : mainWindow.webContents.send(eventResponse, {
@@ -2043,8 +2056,8 @@ function insertData(eventName, eventResponse, table, columns) {
  * @params string event response
  * @params string database table name
  * */
-function deleteListItem(channel, eventResponse, table) {
-  ipcMain.on(channel, (event, args) => {
+function deleteListItem(channel: string, eventResponse: string, table: string) {
+  ipcMain.on(channel, (_event, args) => {
     let { id } = args;
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
 
@@ -2064,8 +2077,14 @@ function deleteListItem(channel, eventResponse, table) {
 }
 
 // Get addons lists in names as an Array
-function getListItems(channelName, response, table, query = '*', condition) {
-  ipcMain.on(channelName, (event, args) => {
+function getListItems(
+  channelName: string,
+  response: string,
+  table: string,
+  query: string = '*',
+  condition?: boolean
+) {
+  ipcMain.on(channelName, (_event: Electron.IpcMainEvent, args) => {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
     let { status } = args;
     let sql = `SELECT ${query} FROM ${table} ${
@@ -2074,7 +2093,7 @@ function getListItems(channelName, response, table, query = '*', condition) {
 
     if (status) {
       db.serialize(() => {
-        db.all(sql, [], (err, rows) => {
+        db.all(sql, [], (_err: ErrorType, rows: any) => {
           mainWindow.webContents.send(response, rows);
         });
       });
@@ -2085,7 +2104,7 @@ function getListItems(channelName, response, table, query = '*', condition) {
 }
 
 // Get order data to create token
-ipcMain.on('get_data_to_create_token', (event, args) => {
+ipcMain.on('get_data_to_create_token', (_event, args) => {
   if (args.status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
     db.serialize(() => {
@@ -2125,3 +2144,92 @@ app
     });
   })
   .catch((err) => console.log(err));
+
+/************************************************
+ * HRM
+ ***********************************************/
+// INSERT DESIGNATION DATA
+ipcMain.on('insert_employee_designation', (_event, args) => {
+  let { id, designation, designation_details } = args;
+
+  // Execute if the event has row ID / data ID. It is used to update a specific item
+  if (args.id !== undefined) {
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+
+    db.serialize(() => {
+      db.run(
+        `INSERT OR replace INTO emp_designation (id, designation, designation_details) VALUES (?, ?, ?)`,
+        [id, designation, designation_details],
+        (err: ErrorType) => {
+          console.log('hello', err);
+          err
+            ? mainWindow.webContents.send(
+                'insert_employee_designation_response',
+                err.message
+              )
+            : mainWindow.webContents.send(
+                'insert_employee_designation_response',
+                {
+                  status: 'updated',
+                }
+              );
+        }
+      );
+    });
+    db.close();
+  } else {
+    // Execute if it is new, then insert it
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+    db.serialize(() => {
+      db.run(
+        `CREATE TABLE IF NOT EXISTS emp_designation (
+          'id' INTEGER PRIMARY KEY AUTOINCREMENT,
+          'designation' varchar(150),
+          'designation_details' varchar(100)
+        )`
+      ).run(
+        `INSERT OR REPLACE INTO emp_designation (designation, designation_details)
+          VALUES (?, ?)`,
+        [designation, designation_details],
+        (err: ErrorType) => {
+          err
+            ? mainWindow.webContents.send(
+                'insert_employee_designation_response',
+                err.message
+              )
+            : mainWindow.webContents.send(
+                'insert_employee_designation_response',
+                {
+                  status: 'inserted',
+                }
+              );
+        }
+      );
+    });
+    db.close();
+  }
+});
+
+getListItems(
+  'get_employee_designation',
+  'get_employee_designation_response',
+  'emp_designation'
+);
+
+ipcMain.on('delete_employee_designation', (_event, args) => {
+  let { id } = args;
+  let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+  db.serialize(() => {
+    db.run(`DELETE FROM emp_designation WHERE id = ?`, id, (err: ErrorType) => {
+      err
+        ? mainWindow.webContents.send('delete_employee_designation_response', {
+            status: err,
+          })
+        : mainWindow.webContents.send('delete_employee_designation_response', {
+            status: true,
+          });
+    });
+  });
+
+  db.close();
+});
