@@ -5,15 +5,16 @@ import {
   PlusCircleOutlined,
 } from '@ant-design/icons';
 import { Button, Form, Input, message, Modal, Space, Table } from 'antd';
+import { getDataFromDatabase } from 'helpers';
 import { Key, useEffect, useState } from 'react';
 
 const { confirm } = Modal;
 
 type DataType = {
   key: Key;
-  sl_no: number;
-  position: string;
-  details: string;
+  id: number;
+  designation: string;
+  designation_details: string;
 };
 
 type FieldTypes = {
@@ -26,30 +27,51 @@ type FieldTypes = {
 };
 
 type DesignationType = {
-  position?: string | undefined;
-  details?: string | undefined;
+  id?: number;
+  designation?: string | undefined;
+  designation_details?: string | undefined;
 };
 
 const DesignationTable = () => {
+  window.get_employee_designation.send('get_employee_designation', {
+    status: true,
+  });
+
+  window.delete_employee_designation.send('delete_employee_designation', {
+    status: true,
+  });
+
   const [form] = Form.useForm();
 
   const [isOpenDesignationModal, setOpenDesignationModal] = useState(false);
   const [addDesignation, setAddDesignation] = useState<FieldTypes[]>([]);
   const [updateDesignationData, setUpdateDesignationData] =
     useState<DesignationType>({});
+  const [designationList, setDesignationList] = useState([]);
+
   const [reRender, setReRender] = useState(false);
 
   useEffect(() => {
     setAddDesignation([
       {
-        name: ['position'],
-        value: updateDesignationData?.position,
+        name: ['designation'],
+        value: updateDesignationData?.designation,
       },
       {
-        name: ['details'],
-        value: updateDesignationData?.details,
+        name: ['designation_details'],
+        value: updateDesignationData?.designation_details,
       },
     ]);
+  }, [reRender]);
+
+  useEffect(() => {
+    getDataFromDatabase(
+      'get_employee_designation_response',
+      window.get_employee_designation
+    ).then((response: any) => {
+      console.log('data deg', response);
+      setDesignationList(response);
+    });
   }, [reRender]);
 
   const handleOpenModal = () => {
@@ -58,9 +80,36 @@ const DesignationTable = () => {
   };
 
   const handleSubmit = (values: DesignationType) => {
-    console.log('values', values);
+    if (updateDesignationData?.id) {
+      window.insert_employee_designation.send('insert_employee_designation', {
+        id: updateDesignationData.id,
+        ...values,
+      });
 
-    // addNewDesignation.id = designationEditData?.id;
+      setReRender((prevState) => !prevState);
+
+      message.success({
+        content: 'Designation updated successfully',
+        className: 'custom-class',
+        duration: 1,
+        style: {
+          marginTop: '5vh',
+          float: 'right',
+        },
+      });
+
+      form.resetFields();
+      setOpenDesignationModal(false);
+
+      return;
+    }
+
+    window.insert_employee_designation.send(
+      'insert_employee_designation',
+      values
+    );
+
+    setReRender((prevState) => !prevState);
 
     message.success({
       content: 'Designation added successfully',
@@ -71,8 +120,8 @@ const DesignationTable = () => {
         float: 'right',
       },
     });
+
     form.resetFields();
-    setReRender((prevState) => !prevState);
     setOpenDesignationModal(false);
   };
 
@@ -87,20 +136,20 @@ const DesignationTable = () => {
   const columns: any = [
     {
       title: 'SL No',
-      dataIndex: 'sl_no',
-      key: 'sl_no',
+      dataIndex: 'id',
+      key: 'id',
       width: '5%',
     },
     {
       title: 'Position',
-      dataIndex: 'position',
-      key: 'position',
+      dataIndex: 'designation',
+      key: 'designation',
       width: '20%',
     },
     {
       title: 'Details',
-      dataIndex: 'details',
-      key: 'details',
+      dataIndex: 'designation_details',
+      key: 'designation_details',
       width: '60%',
     },
     {
@@ -127,53 +176,43 @@ const DesignationTable = () => {
     },
   ];
 
-  const designationData = [
-    {
-      key: 1,
-      sl_no: 1,
-      position: 'Counter server',
-      details: 'Play a key role in every restaurant.',
-    },
-    {
-      key: 2,
-      sl_no: 2,
-      position: 'Kitchen manager',
-      details:
-        'Oversee the successful running of a restaurant by hiring qualkklk;ified staff, monitoring customer satisfaction, and ensuring that all products and beverages are ordered in the correct quantities.',
-    },
-    {
-      key: 3,
-      sl_no: 3,
-      position: 'Salesman',
-      details:
-        'Most waiters and waitresses, also called servers, work in full-service restaurants. They greet customers, take food orders, bring food and drinks to the tables and take payment and make change.',
-    },
-  ];
-
   const handleEditDesignation = (data: DataType) => {
-    console.log('edit data', data);
     setReRender((prevState) => !prevState);
     setOpenDesignationModal(true);
     setUpdateDesignationData(data);
   };
 
   const handleDeleteDesignation = (data: DataType) => {
-    console.log('delete data', data);
     confirm({
       title: 'Are you sure to delete this item?',
       icon: <ExclamationCircleOutlined />,
       content:
         'If you click on the ok button the item will be deleted permanently from the database. Undo is not possible.',
+      okText: 'Yes',
       onOk() {
-        message.success({
-          content: 'Category deleted successfully',
-          className: 'custom-class',
-          duration: 1,
-          style: {
-            marginTop: '5vh',
-            float: 'right',
-          },
+        window.delete_employee_designation.send('delete_employee_designation', {
+          id: data.id,
         });
+
+        window.delete_employee_designation.once(
+          'delete_employee_designation_response',
+          ({ status }: { status: boolean }) => {
+            if (status) {
+              // Rerender the component
+              setReRender((prevState) => !prevState);
+
+              message.success({
+                content: 'Designation deleted successfully',
+                className: 'custom-class',
+                duration: 1,
+                style: {
+                  marginTop: '5vh',
+                  float: 'right',
+                },
+              });
+            }
+          }
+        );
       },
       onCancel() {},
     });
@@ -192,7 +231,8 @@ const DesignationTable = () => {
       <Table
         bordered
         columns={columns}
-        dataSource={designationData}
+        dataSource={designationList}
+        rowKey={(record) => record.id}
         pagination={false}
       />
 
@@ -215,19 +255,18 @@ const DesignationTable = () => {
           autoComplete="off"
         >
           <Form.Item
-            name="position"
-            label="Position"
-            rules={[{ required: true, message: 'Position is required' }]}
+            name="designation"
+            label="Designation"
+            rules={[{ required: true, message: 'Designation is required' }]}
           >
-            <Input size="large" placeholder="Position" />
+            <Input size="large" placeholder="Designation" />
           </Form.Item>
 
-          <Form.Item
-            name="details"
-            label="Details"
-            rules={[{ required: true, message: 'Details is required' }]}
-          >
-            <Input.TextArea size="large" placeholder="Details" />
+          <Form.Item name="designation_details" label="Description">
+            <Input.TextArea
+              size="large"
+              placeholder="Designation Description"
+            />
           </Form.Item>
 
           <Space>
