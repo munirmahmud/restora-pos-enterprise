@@ -2,7 +2,15 @@ import { Col, Form, Input, Row, Select } from 'antd';
 import './AddEmployeeInfo.style.scss';
 const { Option } = Select;
 
-const Supervisor = () => {
+const Supervisor = ({ employeeInfo, setEmployeeInfo }) => {
+  const handleChangeSupervisorName = (value: string) => {
+    setEmployeeInfo({ ...employeeInfo, supervisor_name: value });
+  };
+
+  const handleChangeIsSupervisor = (value: string) => {
+    setEmployeeInfo({ ...employeeInfo, is_supervisor: value });
+  };
+
   return (
     <div className="information_wrapper">
       <Row gutter={20}>
@@ -21,9 +29,10 @@ const Supervisor = () => {
               filterOption={(input: string, option: any) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
+              onChange={handleChangeSupervisorName}
             >
-              <Option value="Bangladesh">Bangladesh</Option>
-              <Option value="India">India</Option>
+              <Option value="john">Jhon</Option>
+              <Option value="devid">Devid</Option>
             </Select>
           </Form.Item>
 
@@ -32,14 +41,24 @@ const Supervisor = () => {
             name="supervisor_report"
             rules={[{ required: true, message: '' }]}
           >
-            <Input size="large" placeholder="Reports" />
+            <Input
+              value={employeeInfo.supervisor_report}
+              onChange={(e) =>
+                setEmployeeInfo({
+                  ...employeeInfo,
+                  supervisor_report: e.target.value,
+                })
+              }
+              size="large"
+              placeholder="Reports"
+            />
           </Form.Item>
         </Col>
 
         <Col lg={12} xl={12} xxl={12}>
           <Form.Item
-            name="Is Supervisor"
-            label="is_supervisor"
+            label="Is Supervisor"
+            name="is_supervisor"
             rules={[{ required: true }]}
           >
             <Select
@@ -51,9 +70,10 @@ const Supervisor = () => {
               filterOption={(input: string, option: any) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
+              onChange={handleChangeIsSupervisor}
             >
-              <Option value="Bangladesh">Bangladesh</Option>
-              <Option value="India">India</Option>
+              <Option value="1">Yes</Option>
+              <Option value="0">No</Option>
             </Select>
           </Form.Item>
         </Col>

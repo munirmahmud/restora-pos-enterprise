@@ -1,7 +1,7 @@
 import { Col, Form, Input, Row } from 'antd';
 import './AddEmployeeInfo.style.scss';
 
-const EmergencyContact = () => {
+const EmergencyContact = ({ employeeInfo, setEmployeeInfo }) => {
   return (
     <div className="information_wrapper">
       <Row gutter={20}>
@@ -11,7 +11,17 @@ const EmergencyContact = () => {
             name="emergency_contact"
             rules={[{ required: true, message: '' }]}
           >
-            <Input size="large" placeholder="Emergency Contact" />
+            <Input
+              value={employeeInfo.emergency_contact}
+              onChange={(e) =>
+                setEmployeeInfo({
+                  ...employeeInfo,
+                  emergency_contact: e.target.value,
+                })
+              }
+              size="large"
+              placeholder="Emergency Contact"
+            />
           </Form.Item>
 
           <Form.Item
@@ -19,7 +29,17 @@ const EmergencyContact = () => {
             name="emergency_work_phone"
             rules={[{ required: true, message: '' }]}
           >
-            <Input size="large" placeholder="Emergency Work Phone" />
+            <Input
+              value={employeeInfo.emergency_work_phone}
+              onChange={(e) =>
+                setEmployeeInfo({
+                  ...employeeInfo,
+                  emergency_work_phone: e.target.value,
+                })
+              }
+              size="large"
+              placeholder="Emergency Work Phone"
+            />
           </Form.Item>
 
           <Form.Item
@@ -27,7 +47,17 @@ const EmergencyContact = () => {
             name="alter_emergency_contact"
             rules={[{ required: true, message: '' }]}
           >
-            <Input size="large" placeholder="Alter Emergency Contact" />
+            <Input
+              value={employeeInfo.alter_emergency_contact}
+              onChange={(e) =>
+                setEmployeeInfo({
+                  ...employeeInfo,
+                  alter_emergency_contact: e.target.value,
+                })
+              }
+              size="large"
+              placeholder="Alter Emergency Contact"
+            />
           </Form.Item>
 
           <Form.Item
@@ -35,16 +65,37 @@ const EmergencyContact = () => {
             name="alt_emergency_work_phone"
             rules={[{ required: true, message: '' }]}
           >
-            <Input size="large" placeholder="Alt Emergency Work Phone" />
+            <Input
+              value={employeeInfo.alt_emergency_work_phone}
+              onChange={(e) =>
+                setEmployeeInfo({
+                  ...employeeInfo,
+                  alt_emergency_work_phone: e.target.value,
+                })
+              }
+              size="large"
+              placeholder="Alt Emergency Work Phone"
+            />
           </Form.Item>
         </Col>
+
         <Col lg={12} xl={12} xxl={12}>
           <Form.Item
             label="Emergency Home Phone"
             name="emergency_home_phone"
             rules={[{ required: true, message: '' }]}
           >
-            <Input size="large" placeholder="Emergency Home Phone" />
+            <Input
+              value={employeeInfo.emergency_home_phone}
+              onChange={(e) =>
+                setEmployeeInfo({
+                  ...employeeInfo,
+                  emergency_home_phone: e.target.value,
+                })
+              }
+              size="large"
+              placeholder="Emergency Home Phone"
+            />
           </Form.Item>
 
           <Form.Item
@@ -52,14 +103,34 @@ const EmergencyContact = () => {
             name="emergency_contact_relation"
             rules={[{ required: true, message: '' }]}
           >
-            <Input size="large" placeholder="Emergency Contact Relation" />
+            <Input
+              value={employeeInfo.emergency_contact_relation}
+              onChange={(e) =>
+                setEmployeeInfo({
+                  ...employeeInfo,
+                  emergency_contact_relation: e.target.value,
+                })
+              }
+              size="large"
+              placeholder="Emergency Contact Relation"
+            />
           </Form.Item>
           <Form.Item
             label="Alt Emergency Home Phone"
             name="alt_emergency_home_phone"
             rules={[{ required: true, message: '' }]}
           >
-            <Input size="large" placeholder="Alt Emergency Home Phone" />
+            <Input
+              value={employeeInfo.alt_emergency_home_phone}
+              onChange={(e) =>
+                setEmployeeInfo({
+                  ...employeeInfo,
+                  alt_emergency_home_phone: e.target.value,
+                })
+              }
+              size="large"
+              placeholder="Alt Emergency Home Phone"
+            />
           </Form.Item>
         </Col>
       </Row>

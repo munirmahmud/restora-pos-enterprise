@@ -1,7 +1,7 @@
 import { Col, Form, Input, Row } from 'antd';
 import './AddEmployeeInfo.style.scss';
 
-const AdditionalAddress = () => {
+const AdditionalAddress = ({ employeeInfo, setEmployeeInfo }) => {
   return (
     <div className="information_wrapper">
       <Row gutter={20}>
@@ -11,15 +11,29 @@ const AdditionalAddress = () => {
             name="home_email"
             rules={[{ required: true, message: '' }]}
           >
-            <Input size="large" placeholder="Home Email" />
+            <Input
+              value={employeeInfo.home_email}
+              onChange={(e) =>
+                setEmployeeInfo({ ...employeeInfo, home_email: e.target.value })
+              }
+              size="large"
+              placeholder="Home Email"
+            />
           </Form.Item>
 
           <Form.Item
-            label="Home Phone "
-            name="home_phone "
+            label="Home Phone"
+            name="home_phone"
             rules={[{ required: true, message: '' }]}
           >
-            <Input size="large" placeholder="Home Phone " />
+            <Input
+              value={employeeInfo.home_phone}
+              onChange={(e) =>
+                setEmployeeInfo({ ...employeeInfo, home_phone: e.target.value })
+              }
+              size="large"
+              placeholder="Home Phone "
+            />
           </Form.Item>
 
           <Form.Item
@@ -27,7 +41,14 @@ const AdditionalAddress = () => {
             name="cell_phone"
             rules={[{ required: true, message: '' }]}
           >
-            <Input size="large" placeholder="Cell Phone" />
+            <Input
+              value={employeeInfo.cell_phone}
+              onChange={(e) =>
+                setEmployeeInfo({ ...employeeInfo, cell_phone: e.target.value })
+              }
+              size="large"
+              placeholder="Cell Phone"
+            />
           </Form.Item>
         </Col>
         <Col lg={12} xl={12} xxl={12}>
@@ -36,7 +57,17 @@ const AdditionalAddress = () => {
             name="business_email"
             rules={[{ required: true, message: '' }]}
           >
-            <Input size="large" placeholder="Business Email" />
+            <Input
+              value={employeeInfo.business_email}
+              onChange={(e) =>
+                setEmployeeInfo({
+                  ...employeeInfo,
+                  business_email: e.target.value,
+                })
+              }
+              size="large"
+              placeholder="Business Email"
+            />
           </Form.Item>
 
           <Form.Item
@@ -44,7 +75,17 @@ const AdditionalAddress = () => {
             name="business_phone"
             rules={[{ required: true, message: '' }]}
           >
-            <Input size="large" placeholder="Business Phone" />
+            <Input
+              value={employeeInfo.business_phone}
+              onChange={(e) =>
+                setEmployeeInfo({
+                  ...employeeInfo,
+                  business_phone: e.target.value,
+                })
+              }
+              size="large"
+              placeholder="Business Phone"
+            />
           </Form.Item>
         </Col>
       </Row>
