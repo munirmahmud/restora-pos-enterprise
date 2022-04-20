@@ -1,11 +1,36 @@
-import { DeleteOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Space, Table } from 'antd';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  ExclamationCircleOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+import { Button, message, Modal, Space, Table } from 'antd';
 import { useState } from 'react';
 import employeeImg from '../../../../../assets/default.jpg';
 import EmployeeDetails from './EmployeeDetails';
 
+const { confirm } = Modal;
+
+type DataTypes = {
+  key: number;
+  sl_no: string;
+  first_name: string;
+  last_name: string;
+  designation: string;
+  phone: number;
+  email_address: string;
+  division: string;
+  duty_type: string;
+  hire_date: string;
+  original_hire_date: string;
+  termination_date: string;
+};
+
 const ManageEmployeeTable = () => {
-  const columns = [
+  const [isOpenEmployeeInfoModal, setIsOpenEmployeeInfoModal] = useState(false);
+  const [manageEmployeeInfo, setManageEmployeeInfo] = useState({});
+
+  const columns: any = [
     { title: 'SL NO', dataIndex: 'sl_no', key: 'sl_no' },
     {
       title: 'Photograph',
@@ -47,7 +72,7 @@ const ManageEmployeeTable = () => {
       dataIndex: 'action',
       key: 'action',
       align: 'center',
-      render: (_text, record) => (
+      render: (_text: string, record: DataTypes) => (
         <Space size={10}>
           <Button
             type="primary"
@@ -109,10 +134,25 @@ const ManageEmployeeTable = () => {
 
   const deleteManageEmployeeInfo = (data: any) => {
     console.log('delete data', data);
+    confirm({
+      title: 'Are you sure to delete this item?',
+      icon: <ExclamationCircleOutlined />,
+      content:
+        'If you click on the ok button the item will be deleted permanently from the database. Undo is not possible.',
+      onOk() {
+        message.success({
+          content: 'Category deleted successfully',
+          className: 'custom-class',
+          duration: 1,
+          style: {
+            marginTop: '5vh',
+            float: 'right',
+          },
+        });
+      },
+      onCancel() {},
+    });
   };
-
-  const [isOpenEmployeeInfoModal, setIsOpenEmployeeInfoModal] = useState(false);
-  const [manageEmployeeInfo, setManageEmployeeInfo] = useState({});
 
   const handleShowEmployeeInfo = (data: any) => {
     console.log('show data', data);
@@ -125,6 +165,7 @@ const ManageEmployeeTable = () => {
       <Table bordered columns={columns} dataSource={data} pagination={false} />
 
       <EmployeeDetails
+        manageEmployeeInfo={manageEmployeeInfo}
         isOpenEmployeeInfoModal={isOpenEmployeeInfoModal}
         setIsOpenEmployeeInfoModal={setIsOpenEmployeeInfoModal}
       />

@@ -4,11 +4,21 @@ import {
   UserAddOutlined,
 } from '@ant-design/icons';
 import { Modal } from 'antd';
+import { FC } from 'react';
 
-const EmployeeDetails = ({
+type EmployeeDetailsProps = {
+  manageEmployeeInfo: object;
+  isOpenEmployeeInfoModal: boolean;
+  setIsOpenEmployeeInfoModal: (params: {}) => void;
+};
+
+const EmployeeDetails: FC<EmployeeDetailsProps> = ({
+  manageEmployeeInfo,
   isOpenEmployeeInfoModal,
   setIsOpenEmployeeInfoModal,
 }) => {
+  console.log('manageEmployeeInfo modal', manageEmployeeInfo);
+
   return (
     <Modal
       title="Employee Info"

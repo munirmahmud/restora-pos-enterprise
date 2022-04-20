@@ -1,14 +1,6 @@
 import { EditOutlined } from '@ant-design/icons';
 import { Button, Space, Table } from 'antd';
-import { Key, ReactNode } from 'react';
-
-type ColumnsTypes = {
-  title: string;
-  dataIndex: string;
-  width?: string;
-  align?: string;
-  render?: (_text: string, record: ColumnsTypes) => ReactNode;
-};
+import { Key } from 'react';
 
 type DataTypes = {
   key: Key;
@@ -24,7 +16,6 @@ const VoucherApprovalTable = () => {
     {
       title: 'Name',
       dataIndex: 'name',
-      render: (text: string) => <a>{text}</a>,
     },
     {
       title: 'Voucher No',
