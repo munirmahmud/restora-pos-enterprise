@@ -29,6 +29,7 @@ type DataTypes = {
 const ManageEmployeeTable = () => {
   const [isOpenEmployeeInfoModal, setIsOpenEmployeeInfoModal] = useState(false);
   const [manageEmployeeInfo, setManageEmployeeInfo] = useState({});
+  const [updateEmployeeInfo, setUpdateEmployeeInfo] = useState({});
 
   const columns: any = [
     { title: 'SL NO', dataIndex: 'sl_no', key: 'sl_no' },
@@ -130,6 +131,7 @@ const ManageEmployeeTable = () => {
 
   const updateManageEmployeeInfo = (data: any) => {
     console.log('edit data', data);
+    setUpdateEmployeeInfo(data);
   };
 
   const deleteManageEmployeeInfo = (data: any) => {
@@ -139,6 +141,7 @@ const ManageEmployeeTable = () => {
       icon: <ExclamationCircleOutlined />,
       content:
         'If you click on the ok button the item will be deleted permanently from the database. Undo is not possible.',
+      okText: 'Yes',
       onOk() {
         message.success({
           content: 'Category deleted successfully',
