@@ -5,29 +5,35 @@ import {
   PlusCircleOutlined,
 } from '@ant-design/icons';
 import { Button, Form, Input, message, Modal, Space, Table } from 'antd';
-import { Key, useEffect, useState } from 'react';
+import { Key, ReactNode, useEffect, useState } from 'react';
 
 const { confirm } = Modal;
 
-type ColumnsType = {
-  title: string;
-  dataIndex: string;
-  key: Key;
-  align?: string;
-  width: string;
-};
 type DataType = {
   key: Key;
   sl_no: number;
   department_name: string;
 };
 
+type UpdateDepartmentType = {
+  department_name?: string;
+};
+type DepartmentType = {
+  name: string | number | (string | number)[];
+  touched?: boolean;
+  validating?: boolean;
+  value?: any;
+  errors?: string[];
+  warnings?: string[];
+};
+
 const DepartmentsTable = () => {
   const [form] = Form.useForm();
 
   const [isOpenDepartmentModal, setOpenDepartmentModal] = useState(false);
-  const [updateDepartmentData, setUpdateDepartmentData] = useState({});
-  const [addDepartment, setAddDepartment] = useState([]);
+  const [updateDepartmentData, setUpdateDepartmentData] =
+    useState<UpdateDepartmentType>({});
+  const [addDepartment, setAddDepartment] = useState<DepartmentType[]>([]);
   const [reRender, setReRender] = useState(false);
 
   useEffect(() => {
@@ -44,17 +50,10 @@ const DepartmentsTable = () => {
     setOpenDepartmentModal(true);
   };
 
-  const handleSubmit = () => {
-    const addNewDepartment = {};
-
-    for (const data of addDepartment) {
-      addNewDepartment[data.name[0]] =
-        typeof data.value === 'string' ? data?.value?.trim() : data?.value;
-    }
+  const handleSubmit = (value: UpdateDepartmentType) => {
+    console.log('value', value);
 
     // addNewDepartment.id = updateDepartmentData?.id;
-
-    console.log('addNewDepartment', addNewDepartment);
 
     message.success({
       content: 'Department added successfully',
@@ -78,7 +77,7 @@ const DepartmentsTable = () => {
     console.log('Failed:', errorInfo);
   };
 
-  const columns: ColumnsType[] = [
+  const columns: any = [
     {
       title: 'SL No',
       dataIndex: 'sl_no',
@@ -96,7 +95,7 @@ const DepartmentsTable = () => {
       dataIndex: 'action',
       key: 'action',
       align: 'center',
-      render: (_text: string, record: DataType): JSX.Element => (
+      render: (_text: string, record: DataType): ReactNode => (
         <Space size="middle">
           <Button type="primary" onClick={() => handleEditDepartment(record)}>
             <EditOutlined />
@@ -192,9 +191,9 @@ const DepartmentsTable = () => {
           onFinish={handleSubmit}
           onFinishFailed={onFinishFailed}
           fields={addDepartment}
-          onFieldsChange={(_, allFields) => {
-            setAddDepartment(allFields);
-          }}
+          onFieldsChange={(_, allFields: DepartmentType[]): void =>
+            setAddDepartment(allFields)
+          }
           autoComplete="off"
         >
           <Form.Item
