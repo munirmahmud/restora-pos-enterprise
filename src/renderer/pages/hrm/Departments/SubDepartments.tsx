@@ -3,7 +3,7 @@ import { FC } from 'react';
 import Sidebar from 'renderer/components/partials/Sidebar';
 import { SettingsProps } from '../../../types';
 import Heading from './../../../components/Heading';
-import SubDepartmentsTable from './../../../components/hrm/SubDepartmentsTable';
+import SubDepartmentTable from './../../../components/hrm/Department/SubDepartmentTable';
 
 type SubDepartmentsProps = {
   settings: SettingsProps;
@@ -23,7 +23,7 @@ const SubDepartments: FC<SubDepartmentsProps> = ({ settings }) => {
               <Heading title="Sub Department" />
 
               <div style={{ margin: '0rem 1.5rem' }}>
-                <SubDepartmentsTable />
+                <SubDepartmentTable />
               </div>
             </Col>
           </Row>

@@ -371,6 +371,23 @@ sendDataThroughMiddleware(
   'delete_department_response' //Response
 );
 
+// SUB DEPARTMENT
+sendDataThroughMiddleware(
+  'insert_sub_department', //Event Name
+  'insert_sub_department', // Channel Name
+  'insert_sub_department_response' //Response
+);
+sendDataThroughMiddleware(
+  'fetch_sub_department', //Event Name
+  'fetch_sub_department', // Channel Name
+  'fetch_sub_department_response' //Response
+);
+sendDataThroughMiddleware(
+  'delete_sub_department', //Event Name
+  'delete_sub_department', // Channel Name
+  'delete_sub_department_response' //Response
+);
+
 /*======================================================================
   FUNCTION DECLARATIONS
 ========================================================================*/

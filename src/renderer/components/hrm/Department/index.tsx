@@ -33,7 +33,6 @@ type DepartmentType = {
 const Department = () => {
   window.fetch_department.send('fetch_department', {
     status: true,
-    department_name: '',
   });
 
   const [form] = Form.useForm();
@@ -62,11 +61,7 @@ const Department = () => {
     getDataFromDatabase(
       'fetch_department_response',
       window.fetch_department
-    ).then((response: any) => {
-      console.log('response', response);
-
-      setDepartMentList(response);
-    });
+    ).then((response: any) => setDepartMentList(response));
   }, [reRender]);
 
   const handleOpenModal = () => {
@@ -183,7 +178,7 @@ const Department = () => {
           ({ status }: { status: boolean }) => {
             if (status) {
               // Rerender the component
-              setReRender((prevState) => !prevState);
+              setReRender((render) => !render);
 
               message.success({
                 content: 'Designation deleted successfully',

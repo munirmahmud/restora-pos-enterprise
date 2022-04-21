@@ -22,6 +22,9 @@ declare global {
     insert_department: any;
     fetch_department: any;
     delete_department: any;
+    insert_sub_department: any;
+    fetch_sub_department: any;
+    delete_sub_department: any;
   }
 }
 
@@ -2287,3 +2290,74 @@ ipcMain.on('insert_department', (_event, args) => {
 // Fetch department data
 getListItems('fetch_department', 'fetch_department_response', 'department');
 deleteListItem('delete_department', 'delete_department_response', 'department');
+
+/*********************
+ * SUB DEPARTMENT
+ ********************/
+// INSERT SUB DEPARTMENT DATA
+ipcMain.on('insert_sub_department', (_event, args) => {
+  let { id, sub_department_name, department_id } = args;
+
+  console.log('args', args);
+
+  // Execute if the event has row ID / data ID. It is used to update a specific item
+  if (args.id !== undefined) {
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+
+    console.log('args 2', args);
+    db.serialize(() => {
+      db.run(
+        `INSERT OR replace INTO sub_department (id, sub_department_name, department_id) VALUES (?, ?, ?)`,
+        [id, sub_department_name, department_id],
+        (err: ErrorType) => {
+          err
+            ? mainWindow.webContents.send(
+                'insert_sub_department_response',
+                err.message
+              )
+            : mainWindow.webContents.send('insert_sub_department_response', {
+                status: 'updated',
+              });
+        }
+      );
+    });
+    db.close();
+  } else {
+    // Execute if it is new, then insert it
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+    db.serialize(() => {
+      db.run(
+        `CREATE TABLE IF NOT EXISTS sub_department (
+          'id' INTEGER PRIMARY KEY AUTOINCREMENT,
+          'sub_department_name' varchar(150),
+          'department_id' INT
+        )`
+      ).run(
+        `INSERT OR REPLACE INTO sub_department (sub_department_name, department_id) VALUES (?, ?)`,
+        [sub_department_name, department_id],
+        (err: ErrorType) => {
+          err
+            ? mainWindow.webContents.send(
+                'insert_sub_department_response',
+                err.message
+              )
+            : mainWindow.webContents.send('insert_sub_department_response', {
+                status: 'inserted',
+              });
+        }
+      );
+    });
+    db.close();
+  }
+});
+
+getListItems(
+  'fetch_sub_department',
+  'fetch_sub_department_response',
+  'sub_department'
+);
+deleteListItem(
+  'delete_sub_department',
+  'delete_sub_department_response',
+  'sub_department'
+);
