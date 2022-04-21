@@ -19,6 +19,9 @@ declare global {
     get_employee_designation: any;
     insert_employee_designation: any;
     delete_employee_designation: any;
+    insert_department: any;
+    fetch_department: any;
+    delete_department: any;
   }
 }
 
@@ -2056,13 +2059,17 @@ function insertData(eventName, eventResponse, table, columns) {
  * @params string event response
  * @params string database table name
  * */
-function deleteListItem(channel: string, eventResponse: string, table: string) {
+function deleteListItem(
+  channel: string,
+  eventResponse: string,
+  table: string
+): void {
   ipcMain.on(channel, (_event, args) => {
     let { id } = args;
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
 
     db.serialize(() => {
-      db.run(`DELETE FROM ${table} WHERE id = ?`, id, (err) => {
+      db.run(`DELETE FROM ${table} WHERE id = ?`, id, (err: ErrorType) => {
         err
           ? mainWindow.webContents.send(eventResponse, {
               status: err,
@@ -2215,21 +2222,68 @@ getListItems(
   'get_employee_designation_response',
   'emp_designation'
 );
+deleteListItem(
+  'delete_employee_designation',
+  'delete_employee_designation_response',
+  'department'
+);
 
-ipcMain.on('delete_employee_designation', (_event, args) => {
-  let { id } = args;
-  let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
-  db.serialize(() => {
-    db.run(`DELETE FROM emp_designation WHERE id = ?`, id, (err: ErrorType) => {
-      err
-        ? mainWindow.webContents.send('delete_employee_designation_response', {
-            status: err,
-          })
-        : mainWindow.webContents.send('delete_employee_designation_response', {
-            status: true,
-          });
+/*********************
+ * DEPARTMENT
+ ********************/
+// INSERT DEPARTMENT DATA
+ipcMain.on('insert_department', (_event, args) => {
+  let { id, department_name } = args;
+
+  // Execute if the event has row ID / data ID. It is used to update a specific item
+  if (args.id !== undefined) {
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+
+    db.serialize(() => {
+      db.run(
+        `INSERT OR replace INTO department (id, department_name) VALUES (?, ?)`,
+        [id, department_name],
+        (err: ErrorType) => {
+          err
+            ? mainWindow.webContents.send(
+                'insert_department_response',
+                err.message
+              )
+            : mainWindow.webContents.send('insert_department_response', {
+                status: 'updated',
+              });
+        }
+      );
     });
-  });
-
-  db.close();
+    db.close();
+  } else {
+    // Execute if it is new, then insert it
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+    db.serialize(() => {
+      db.run(
+        `CREATE TABLE IF NOT EXISTS department (
+          'id' INTEGER PRIMARY KEY AUTOINCREMENT,
+          'department_name' varchar(150)
+        )`
+      ).run(
+        `INSERT OR REPLACE INTO department (department_name) VALUES (?)`,
+        [department_name],
+        (err: ErrorType) => {
+          err
+            ? mainWindow.webContents.send(
+                'insert_department_response',
+                err.message
+              )
+            : mainWindow.webContents.send('insert_department_response', {
+                status: 'inserted',
+              });
+        }
+      );
+    });
+    db.close();
+  }
 });
+
+// Fetch department data
+getListItems('fetch_department', 'fetch_department_response', 'department');
+deleteListItem('delete_department', 'delete_department_response', 'department');

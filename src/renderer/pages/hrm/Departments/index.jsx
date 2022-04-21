@@ -1,5 +1,5 @@
 import { Col, ConfigProvider, Row } from 'antd';
-import DepartmentsTable from 'renderer/components/hrm/DepartmentsTable';
+import Department from 'renderer/components/hrm/Department';
 import Sidebar from 'renderer/components/partials/Sidebar';
 import Heading from '../../../components/Heading';
 
@@ -17,7 +17,7 @@ const Departments = ({ settings }) => {
               <Heading title="Department" />
 
               <div style={{ margin: '0rem 1.5rem' }}>
-                <DepartmentsTable />
+                <Department />
               </div>
             </Col>
           </Row>

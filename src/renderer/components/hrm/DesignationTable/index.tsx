@@ -69,7 +69,6 @@ const DesignationTable = () => {
       'get_employee_designation_response',
       window.get_employee_designation
     ).then((response: any) => {
-      console.log('data deg', response);
       setDesignationList(response);
     });
   }, [reRender]);

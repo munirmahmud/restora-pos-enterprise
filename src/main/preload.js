@@ -354,6 +354,23 @@ sendDataThroughMiddleware(
   'delete_employee_designation_response' //Response
 );
 
+/****************INSERT DEPARTMENT****************/
+sendDataThroughMiddleware(
+  'insert_department', //Event Name
+  'insert_department', // Channel Name
+  'insert_department_response' //Response
+);
+sendDataThroughMiddleware(
+  'fetch_department', //Event Name
+  'fetch_department', // Channel Name
+  'fetch_department_response' //Response
+);
+sendDataThroughMiddleware(
+  'delete_department', //Event Name
+  'delete_department', // Channel Name
+  'delete_department_response' //Response
+);
+
 /*======================================================================
   FUNCTION DECLARATIONS
 ========================================================================*/
