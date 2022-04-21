@@ -35,6 +35,7 @@ import AddEmployee from './pages/hrm/AddEmployee';
 import Departments from './pages/hrm/Departments';
 import Designation from './pages/hrm/Designation';
 import ManageEmployee from './pages/hrm/ManageEmployee';
+import SubDepartments from './pages/hrm/SubDepartments';
 import Language from './pages/Language/';
 import OnGoingOrder from './pages/OnGoingOrder';
 import ItemSalesReport from './pages/report/ItemSalesReport';
@@ -204,6 +205,10 @@ export default function App() {
           <Route
             path="/departments"
             element={<Departments settings={settings} />}
+          />
+          <Route
+            path="/sub_departments"
+            element={<SubDepartments settings={settings} />}
           />
 
           {/* Application Settings */}
