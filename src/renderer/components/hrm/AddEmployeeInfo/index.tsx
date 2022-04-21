@@ -12,46 +12,143 @@ import Supervisor from './Supervisor';
 
 const { Step } = Steps;
 
-const steps = [
-  {
-    title: 'Basic Information',
-    content: <BasicInformation />,
-  },
-  {
-    title: 'Positional Info',
-    content: <PositionalInfo />,
-  },
-  {
-    title: 'Benefits',
-    content: <Benefits />,
-  },
-  {
-    title: 'Supervisor',
-    content: <Supervisor />,
-  },
-  {
-    title: 'Biographical Info',
-    content: <BiographicalInfo />,
-  },
-  {
-    title: 'Additional Address',
-    content: <AdditionalAddress />,
-  },
-  {
-    title: 'Emergency Contact',
-    content: <EmergencyContact />,
-  },
-  {
-    title: 'Custom',
-    content: <Custom />,
-  },
-];
+type EmployeeInfoTypes = {};
 
 const AddEmployeeInfo = () => {
   const [current, setCurrent] = useState(0);
+  const [employeeInfo, setEmployeeInfo] = useState<EmployeeInfoTypes>({
+    first_name: '',
+    last_name: '',
+    email_address: '',
+    phone: '',
+    country: '',
+    state: '',
+    city: '',
+    zip_code: '',
+    division: '',
+    pay_frequency_text: '',
+    home_department: '',
+    hire_date: '',
+    designation: '',
+    termination_reason: '',
+    termination_date: '',
+    voluntary_termination: '',
+    original_hire_date: '',
+    re_hire_date: '',
+    pay_frequency: '',
+    duty_type: '',
+    rate_type: '',
+    hourly_rate2: '',
+    department_text: '',
+    rate: '',
+    hourly_rate3: '',
+    benefit_class_code: '',
+    benefit_accrual_date: '',
+    benefit_description: '',
+    benefit_status: '',
+    supervisor_name: '',
+    supervisor_report: '',
+    is_supervisor: '',
+    date_of_birth: '',
+    eeo_class: '',
+    work_in_state: '',
+    gender: '',
+    ethnic_group: '',
+    live_in_state: '',
+    marital_status: '',
+    ssn: '',
+    citizenship: '',
+    home_email: '',
+    home_phone: '',
+    cell_phone: '',
+    business_email: '',
+    business_phone: '',
+    emergency_contact: '',
+    emergency_work_phone: '',
+    alter_emergency_contact: '',
+    alt_emergency_work_phone: '',
+    emergency_home_phone: '',
+    emergency_contact_relation: '',
+    alt_emergency_home_phone: '',
+    custom_field_name: '',
+    custom_value: '',
+    custom_field_type: '',
+  });
 
-  const handleSubmit = (values: any) => {
-    console.log('Success:', values);
+  const steps = [
+    {
+      title: 'Basic Information',
+      content: (
+        <BasicInformation
+          employeeInfo={employeeInfo}
+          setEmployeeInfo={setEmployeeInfo}
+        />
+      ),
+    },
+    {
+      title: 'Positional Info',
+      content: (
+        <PositionalInfo
+          employeeInfo={employeeInfo}
+          setEmployeeInfo={setEmployeeInfo}
+        />
+      ),
+    },
+    {
+      title: 'Benefits',
+      content: (
+        <Benefits
+          employeeInfo={employeeInfo}
+          setEmployeeInfo={setEmployeeInfo}
+        />
+      ),
+    },
+    {
+      title: 'Supervisor',
+      content: (
+        <Supervisor
+          employeeInfo={employeeInfo}
+          setEmployeeInfo={setEmployeeInfo}
+        />
+      ),
+    },
+    {
+      title: 'Biographical Info',
+      content: (
+        <BiographicalInfo
+          employeeInfo={employeeInfo}
+          setEmployeeInfo={setEmployeeInfo}
+        />
+      ),
+    },
+    {
+      title: 'Additional Address',
+      content: (
+        <AdditionalAddress
+          employeeInfo={employeeInfo}
+          setEmployeeInfo={setEmployeeInfo}
+        />
+      ),
+    },
+    {
+      title: 'Emergency Contact',
+      content: (
+        <EmergencyContact
+          employeeInfo={employeeInfo}
+          setEmployeeInfo={setEmployeeInfo}
+        />
+      ),
+    },
+    {
+      title: 'Custom',
+      content: (
+        <Custom employeeInfo={employeeInfo} setEmployeeInfo={setEmployeeInfo} />
+      ),
+    },
+  ];
+
+  const handleSubmit = () => {
+    console.log('employeeInfo', employeeInfo);
   };
 
   const onFinishFailed = (errorInfo: any) => {

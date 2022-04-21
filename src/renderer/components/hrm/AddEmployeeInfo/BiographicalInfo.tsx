@@ -5,7 +5,7 @@ const { Option } = Select;
 
 const { Dragger } = Upload;
 
-const BiographicalInfo = () => {
+const BiographicalInfo = ({ employeeInfo, setEmployeeInfo }) => {
   const props = {
     name: 'file',
     multiple: true,
@@ -26,18 +26,36 @@ const BiographicalInfo = () => {
     },
   };
 
-  const onDateOfBirthChange = (date: any, dateString: any) => {
-    console.log(date, dateString);
+  const handleChangeWorkInState = (value: string) => {
+    setEmployeeInfo({ ...employeeInfo, work_in_state: value });
+  };
+
+  const handleChangeGender = (value: string) => {
+    setEmployeeInfo({ ...employeeInfo, gender: value });
+  };
+
+  const handleChangeLiveInStatus = (value: string) => {
+    setEmployeeInfo({ ...employeeInfo, live_in_state: value });
+  };
+
+  const handleChangeMaritalStatus = (value: string) => {
+    setEmployeeInfo({ ...employeeInfo, marital_status: value });
+  };
+
+  const handleChangeCitizenship = (value: string) => {
+    setEmployeeInfo({ ...employeeInfo, citizenship: value });
   };
 
   return (
     <div className="information_wrapper">
       <Row gutter={20}>
         <Col lg={8} xl={8} xxl={8}>
-          <Form.Item label="Date of Birth" name="dateOfBirth">
+          <Form.Item label="Date of Birth" name="date_of_birth">
             <DatePicker
               style={{ width: '100%' }}
-              onChange={onDateOfBirthChange}
+              onChange={(_date, dateString) =>
+                setEmployeeInfo({ ...employeeInfo, date_of_birth: dateString })
+              }
               placeholder="Date of Birth"
               size="large"
               showToday={false}
@@ -49,7 +67,14 @@ const BiographicalInfo = () => {
             name="eeo_class"
             rules={[{ required: true, message: '' }]}
           >
-            <Input size="large" placeholder="EEO Class" />
+            <Input
+              value={employeeInfo.eeo_class}
+              onChange={(e) =>
+                setEmployeeInfo({ ...employeeInfo, eeo_class: e.target.value })
+              }
+              size="large"
+              placeholder="EEO Class"
+            />
           </Form.Item>
 
           <Form.Item
@@ -66,9 +91,10 @@ const BiographicalInfo = () => {
               filterOption={(input: string, option: any) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
+              onChange={handleChangeWorkInState}
             >
-              <Option value="Bangladesh">Bangladesh</Option>
-              <Option value="India">India</Option>
+              <Option value="1">Yes</Option>
+              <Option value="0">No</Option>
             </Select>
           </Form.Item>
 
@@ -87,6 +113,7 @@ const BiographicalInfo = () => {
                   </p>
                 </Dragger>
               </Col>
+
               <Col lg={6}>
                 <p>preview</p>
               </Col>
@@ -109,9 +136,11 @@ const BiographicalInfo = () => {
               filterOption={(input: string, option: any) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
+              onChange={handleChangeGender}
             >
-              <Option value="Bangladesh">Bangladesh</Option>
-              <Option value="India">India</Option>
+              <Option value="male">Male</Option>
+              <Option value="female">Female</Option>
+              <Option value="other">Other</Option>
             </Select>
           </Form.Item>
 
@@ -120,7 +149,17 @@ const BiographicalInfo = () => {
             name="ethnic_group"
             rules={[{ required: true, message: '' }]}
           >
-            <Input size="large" placeholder="Ethnic Group" />
+            <Input
+              value={employeeInfo.ethnic_group}
+              onChange={(e) =>
+                setEmployeeInfo({
+                  ...employeeInfo,
+                  ethnic_group: e.target.value,
+                })
+              }
+              size="large"
+              placeholder="Ethnic Group"
+            />
           </Form.Item>
 
           <Form.Item
@@ -137,9 +176,10 @@ const BiographicalInfo = () => {
               filterOption={(input: string, option: any) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
+              onChange={handleChangeLiveInStatus}
             >
-              <Option value="Bangladesh">Bangladesh</Option>
-              <Option value="India">India</Option>
+              <Option value="1">Yes</Option>
+              <Option value="0">No</Option>
             </Select>
           </Form.Item>
         </Col>
@@ -159,9 +199,10 @@ const BiographicalInfo = () => {
               filterOption={(input: string, option: any) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
+              onChange={handleChangeMaritalStatus}
             >
-              <Option value="Bangladesh">Bangladesh</Option>
-              <Option value="India">India</Option>
+              <Option value="single">Single</Option>
+              <Option value="married">Married</Option>
             </Select>
           </Form.Item>
 
@@ -170,7 +211,17 @@ const BiographicalInfo = () => {
             name="ssn"
             rules={[{ required: true, message: '' }]}
           >
-            <Input size="large" placeholder="SSN" />
+            <Input
+              value={employeeInfo.ssn}
+              onChange={(e) =>
+                setEmployeeInfo({
+                  ...employeeInfo,
+                  ssn: e.target.value,
+                })
+              }
+              size="large"
+              placeholder="SSN"
+            />
           </Form.Item>
 
           <Form.Item
@@ -187,9 +238,10 @@ const BiographicalInfo = () => {
               filterOption={(input: string, option: any) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
+              onChange={handleChangeCitizenship}
             >
-              <Option value="Bangladesh">Bangladesh</Option>
-              <Option value="India">India</Option>
+              <Option value="citizen">Citizen</Option>
+              <Option value="non-citizen">Non Citizen</Option>
             </Select>
           </Form.Item>
         </Col>

@@ -4,7 +4,11 @@ import { Button, Col, Form, Input, Row, Select } from 'antd';
 import './AddEmployeeInfo.style.scss';
 const { Option } = Select;
 
-const Custom = () => {
+const Custom = ({ employeeInfo, setEmployeeInfo }) => {
+  const handleChangeCustomFiledType = (value: string) => {
+    setEmployeeInfo({ ...employeeInfo, custom_field_type: value });
+  };
+
   return (
     <div className="information_wrapper">
       <Row gutter={20}>
@@ -14,7 +18,17 @@ const Custom = () => {
             name="custom_field_name"
             rules={[{ required: true, message: '' }]}
           >
-            <Input placeholder="Custom Field Name" size="large" />
+            <Input
+              value={employeeInfo.custom_field_name}
+              onChange={(e) =>
+                setEmployeeInfo({
+                  ...employeeInfo,
+                  custom_field_name: e.target.value,
+                })
+              }
+              placeholder="Custom Field Name"
+              size="large"
+            />
           </Form.Item>
         </Col>
 
@@ -33,9 +47,10 @@ const Custom = () => {
               filterOption={(input: string, option: any) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
+              onChange={handleChangeCustomFiledType}
             >
-              <Option value="Bangladesh">Bangladesh</Option>
-              <Option value="India">India</Option>
+              <Option value="text">Text</Option>
+              <Option value="data">Data</Option>
             </Select>
           </Form.Item>
         </Col>
@@ -46,7 +61,17 @@ const Custom = () => {
             name="custom_value"
             rules={[{ required: true, message: '' }]}
           >
-            <Input placeholder="Custom Value" size="large" />
+            <Input
+              value={employeeInfo.custom_value}
+              onChange={(e) =>
+                setEmployeeInfo({
+                  ...employeeInfo,
+                  custom_value: e.target.value,
+                })
+              }
+              placeholder="Custom Value"
+              size="large"
+            />
           </Form.Item>
         </Col>
       </Row>

@@ -1,8 +1,15 @@
 import { Col, ConfigProvider, Row } from 'antd';
+import { FC } from 'react';
+import ManageEmployeeTable from 'renderer/components/hrm/ManageEmployeeTable';
 import Sidebar from 'renderer/components/partials/Sidebar';
-import Heading from './../../../components/Heading';
+import Heading from '../../../components/Heading';
+import { SettingsProps } from '../../../types';
 
-const ManageEmployee = ({ settings }) => {
+type ManageEmployeeProps = {
+  settings: SettingsProps;
+};
+
+const ManageEmployee: FC<ManageEmployeeProps> = ({ settings }): JSX.Element => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">
@@ -16,7 +23,7 @@ const ManageEmployee = ({ settings }) => {
               <Heading title="Manage Employee" />
 
               <div style={{ margin: '0rem 1.5rem' }}>
-                <h1>Manage Employee</h1>
+                <ManageEmployeeTable />
               </div>
             </Col>
           </Row>

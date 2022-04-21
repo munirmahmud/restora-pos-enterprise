@@ -10,7 +10,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Image, Menu } from 'antd';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import PremiumVersion from '../PremiumVersion';
 import './Sidebar.style.scss';
 
 const { SubMenu } = Menu;
@@ -18,7 +17,6 @@ const rootSubmenuKeys = ['food_management'];
 
 export const Sidebar = ({ settings }) => {
   const [openKeys, setOpenKeys] = useState(['food_management']);
-  const [premiumVersion, setPremiumVersion] = useState(false);
 
   const onOpenChange = (keys) => {
     const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
@@ -28,8 +26,6 @@ export const Sidebar = ({ settings }) => {
       setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
     }
   };
-
-  const onClick = (e) => {};
 
   return (
     <>
@@ -42,9 +38,7 @@ export const Sidebar = ({ settings }) => {
 
         <Menu
           theme="dark"
-          style={{
-            height: '100%',
-          }}
+          style={{ height: '100%' }}
           mode="inline"
           openKeys={openKeys}
           onOpenChange={onOpenChange}
@@ -222,10 +216,6 @@ export const Sidebar = ({ settings }) => {
               <Menu.Item key="attendance_form:1">
                 <Link to="/attendance_form">Attendance Form</Link>
               </Menu.Item>
-
-              {/* <Menu.Item key="attendance_report:2">
-                <Link to="/attendance_report">Attendance Report</Link>
-              </Menu.Item> */}
             </SubMenu>
 
             <SubMenu key="leave" title="Leave">
@@ -279,13 +269,7 @@ export const Sidebar = ({ settings }) => {
             </Menu.Item>
 
             <Menu.Item key="language:2">
-              {settings.appStatus === 'free' ? (
-                <Link to="#" onClick={() => setPremiumVersion(true)}>
-                  Language
-                </Link>
-              ) : (
-                <Link to="/language">Language</Link>
-              )}
+              <Link to="/language">Language</Link>
             </Menu.Item>
           </SubMenu>
 
@@ -304,11 +288,6 @@ export const Sidebar = ({ settings }) => {
           </SubMenu>
         </Menu>
       </div>
-
-      <PremiumVersion
-        premiumVersion={premiumVersion}
-        setPremiumVersion={setPremiumVersion}
-      />
     </>
   );
 };
