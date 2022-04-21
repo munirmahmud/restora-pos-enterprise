@@ -1,0 +1,51 @@
+.employee_information {
+  .profile_info {
+    box-shadow: rgb(99 99 99 / 20%) 0px 2px 8px 0px;
+
+    .personal_info {
+      .profile_img {
+        min-height: 200;
+        padding: 1.5rem;
+        background-color: #86b7ff;
+
+        img {
+          border-radius: 50%;
+        }
+      }
+    }
+
+    .personal_bio_graphical_info {
+      margin-top: 1.5rem;
+      padding-bottom: 1rem;
+    }
+  }
+
+  .employee_details {
+    box-shadow: rgb(99 99 99 / 20%) 0px 2px 8px 0px;
+
+    .emergency_contact_info {
+      padding-bottom: 1rem;
+    }
+  }
+
+  .profile_heading {
+    padding: 0.2rem;
+    margin-bottom: 0;
+  }
+
+  .margin_top {
+    margin-top: 1rem;
+  }
+
+  p {
+    padding: 0.4rem 1rem;
+    margin: 0;
+    border-bottom: 1px solid #ddd;
+    font-size: 13px;
+    font-weight: 500;
+
+    span {
+      font-weight: normal;
+    }
+  }
+}
