@@ -183,28 +183,28 @@ const DesignationTable = () => {
       form.resetFields();
       setOpenDesignationModal(false);
 
-      return;
+      // return;
+    } else {
+      window.insert_employee_designation.send(
+        'insert_employee_designation',
+        values
+      );
+
+      setReRender((prevState) => !prevState);
+
+      message.success({
+        content: 'Designation added successfully',
+        className: 'custom-class',
+        duration: 1,
+        style: {
+          marginTop: '5vh',
+          float: 'right',
+        },
+      });
+
+      form.resetFields();
+      setOpenDesignationModal(false);
     }
-
-    window.insert_employee_designation.send(
-      'insert_employee_designation',
-      values
-    );
-
-    setReRender((prevState) => !prevState);
-
-    message.success({
-      content: 'Designation added successfully',
-      className: 'custom-class',
-      duration: 1,
-      style: {
-        marginTop: '5vh',
-        float: 'right',
-      },
-    });
-
-    form.resetFields();
-    setOpenDesignationModal(false);
   };
 
   const handleReset = () => {

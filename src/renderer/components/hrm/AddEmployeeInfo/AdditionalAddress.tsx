@@ -1,16 +1,12 @@
 import { Col, Form, Input, Row } from 'antd';
 import './AddEmployeeInfo.style.scss';
 
-const AdditionalAddress = ({ employeeInfo, setEmployeeInfo }) => {
+const AdditionalAddress = ({ employeeInfo, setEmployeeInfo }: any) => {
   return (
     <div className="information_wrapper">
       <Row gutter={20}>
         <Col lg={12} xl={12} xxl={12}>
-          <Form.Item
-            label="Home Email"
-            name="home_email"
-            rules={[{ required: true, message: '' }]}
-          >
+          <Form.Item label="Home Email" name="home_email">
             <Input
               value={employeeInfo.home_email}
               onChange={(e) =>
@@ -21,11 +17,7 @@ const AdditionalAddress = ({ employeeInfo, setEmployeeInfo }) => {
             />
           </Form.Item>
 
-          <Form.Item
-            label="Home Phone"
-            name="home_phone"
-            rules={[{ required: true, message: '' }]}
-          >
+          <Form.Item label="Home Phone" name="home_phone">
             <Input
               value={employeeInfo.home_phone}
               onChange={(e) =>
@@ -39,7 +31,7 @@ const AdditionalAddress = ({ employeeInfo, setEmployeeInfo }) => {
           <Form.Item
             label="Cell Phone"
             name="cell_phone"
-            rules={[{ required: true, message: '' }]}
+            rules={[{ required: true, message: 'Cell Phone is required' }]}
           >
             <Input
               value={employeeInfo.cell_phone}
@@ -52,11 +44,7 @@ const AdditionalAddress = ({ employeeInfo, setEmployeeInfo }) => {
           </Form.Item>
         </Col>
         <Col lg={12} xl={12} xxl={12}>
-          <Form.Item
-            label="Business Email"
-            name="business_email"
-            rules={[{ required: true, message: '' }]}
-          >
+          <Form.Item label="Business Email" name="business_email">
             <Input
               value={employeeInfo.business_email}
               onChange={(e) =>
@@ -70,11 +58,7 @@ const AdditionalAddress = ({ employeeInfo, setEmployeeInfo }) => {
             />
           </Form.Item>
 
-          <Form.Item
-            label="Business Phone"
-            name="business_phone"
-            rules={[{ required: true, message: '' }]}
-          >
+          <Form.Item label="Business Phone" name="business_phone">
             <Input
               value={employeeInfo.business_phone}
               onChange={(e) =>

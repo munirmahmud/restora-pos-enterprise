@@ -2,7 +2,7 @@ import { Col, DatePicker, Form, Input, Row, Select } from 'antd';
 import './AddEmployeeInfo.style.scss';
 const { Option } = Select;
 
-const PositionalInfo = ({ employeeInfo, setEmployeeInfo }) => {
+const PositionalInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
   const handleChangeDivision = (value: string) => {
     setEmployeeInfo({ ...employeeInfo, division: value });
   };
