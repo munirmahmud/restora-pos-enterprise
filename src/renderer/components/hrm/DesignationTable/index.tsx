@@ -62,14 +62,11 @@ const DesignationTable = () => {
         value: updateDesignationData?.designation_details,
       },
     ]);
-  }, [reRender]);
 
-  useEffect(() => {
     getDataFromDatabase(
       'get_employee_designation_response',
       window.get_employee_designation
     ).then((response: any) => {
-      console.log('data deg', response);
       setDesignationList(response);
     });
   }, [reRender]);
@@ -77,6 +74,91 @@ const DesignationTable = () => {
   const handleOpenModal = () => {
     form.resetFields();
     setOpenDesignationModal(true);
+  };
+
+  const columns: any = [
+    {
+      title: 'SL No',
+      dataIndex: 'id',
+      key: 'id',
+      width: '5%',
+    },
+    {
+      title: 'Position',
+      dataIndex: 'designation',
+      key: 'designation',
+      width: '20%',
+    },
+    {
+      title: 'Details',
+      dataIndex: 'designation_details',
+      key: 'designation_details',
+      width: '60%',
+    },
+    {
+      title: 'Action',
+      dataIndex: 'action',
+      key: 'action',
+      align: 'center',
+      render: (_text: string, record: DataType): JSX.Element => (
+        <Space size="middle">
+          <Button type="primary" onClick={() => handleEditDesignation(record)}>
+            <EditOutlined />
+            Edit
+          </Button>
+          <Button
+            type="primary"
+            danger
+            onClick={() => handleDeleteDesignation(record)}
+          >
+            <DeleteOutlined />
+            Delete
+          </Button>
+        </Space>
+      ),
+    },
+  ];
+
+  const handleEditDesignation = (data: DataType) => {
+    setOpenDesignationModal(true);
+    setReRender((prevState) => !prevState);
+    setUpdateDesignationData(data);
+  };
+
+  const handleDeleteDesignation = (data: DataType) => {
+    confirm({
+      title: 'Are you sure to delete this item?',
+      icon: <ExclamationCircleOutlined />,
+      content:
+        'If you click on the ok button the item will be deleted permanently from the database. Undo is not possible.',
+      okText: 'Yes',
+      onOk() {
+        window.delete_employee_designation.send('delete_employee_designation', {
+          id: data.id,
+        });
+
+        window.delete_employee_designation.once(
+          'delete_employee_designation_response',
+          ({ status }: { status: boolean }) => {
+            if (status) {
+              // Rerender the component
+              setReRender((prevState) => !prevState);
+
+              message.success({
+                content: 'Designation deleted successfully',
+                className: 'custom-class',
+                duration: 1,
+                style: {
+                  marginTop: '5vh',
+                  float: 'right',
+                },
+              });
+            }
+          }
+        );
+      },
+      onCancel() {},
+    });
   };
 
   const handleSubmit = (values: DesignationType) => {
@@ -131,91 +213,6 @@ const DesignationTable = () => {
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
-  };
-
-  const columns: any = [
-    {
-      title: 'SL No',
-      dataIndex: 'id',
-      key: 'id',
-      width: '5%',
-    },
-    {
-      title: 'Position',
-      dataIndex: 'designation',
-      key: 'designation',
-      width: '20%',
-    },
-    {
-      title: 'Details',
-      dataIndex: 'designation_details',
-      key: 'designation_details',
-      width: '60%',
-    },
-    {
-      title: 'Action',
-      dataIndex: 'action',
-      key: 'action',
-      align: 'center',
-      render: (_text: string, record: DataType): JSX.Element => (
-        <Space size="middle">
-          <Button type="primary" onClick={() => handleEditDesignation(record)}>
-            <EditOutlined />
-            Edit
-          </Button>
-          <Button
-            type="primary"
-            danger
-            onClick={() => handleDeleteDesignation(record)}
-          >
-            <DeleteOutlined />
-            Delete
-          </Button>
-        </Space>
-      ),
-    },
-  ];
-
-  const handleEditDesignation = (data: DataType) => {
-    setReRender((prevState) => !prevState);
-    setOpenDesignationModal(true);
-    setUpdateDesignationData(data);
-  };
-
-  const handleDeleteDesignation = (data: DataType) => {
-    confirm({
-      title: 'Are you sure to delete this item?',
-      icon: <ExclamationCircleOutlined />,
-      content:
-        'If you click on the ok button the item will be deleted permanently from the database. Undo is not possible.',
-      okText: 'Yes',
-      onOk() {
-        window.delete_employee_designation.send('delete_employee_designation', {
-          id: data.id,
-        });
-
-        window.delete_employee_designation.once(
-          'delete_employee_designation_response',
-          ({ status }: { status: boolean }) => {
-            if (status) {
-              // Rerender the component
-              setReRender((prevState) => !prevState);
-
-              message.success({
-                content: 'Designation deleted successfully',
-                className: 'custom-class',
-                duration: 1,
-                style: {
-                  marginTop: '5vh',
-                  float: 'right',
-                },
-              });
-            }
-          }
-        );
-      },
-      onCancel() {},
-    });
   };
 
   return (
