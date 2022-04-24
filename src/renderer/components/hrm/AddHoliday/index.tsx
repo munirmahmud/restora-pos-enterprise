@@ -6,6 +6,7 @@ import {
 } from '@ant-design/icons';
 import {
   Button,
+  DatePicker,
   Form,
   Input,
   InputNumber,
@@ -14,6 +15,7 @@ import {
   Space,
   Table,
 } from 'antd';
+import moment from 'moment';
 import { useEffect, useState } from 'react';
 
 const { confirm } = Modal;
@@ -24,40 +26,60 @@ type DataTypes = {
   total_leaves: number;
 };
 
-const AddLeaveType = () => {
+const AddHoliday = () => {
   const [form] = Form.useForm();
-  const [isOpenLeaveTypeModal, setOpenLeaveTypeModal] = useState(false);
-  const [updateLeaveTypeInfo, setUpdateLeaveTypeInfo] = useState({});
-  const [leaveTypeInfo, setLeaveTypeInfo] = useState([]);
+  const [isOpenToggleModal, setOpenToggleModal] = useState(false);
+  const [updateHolidayInfo, setUpdateHolidayInfo] = useState({});
+  const [holidayInfo, setHolidayInfo] = useState([]);
 
   const [reRender, setReRender] = useState(false);
 
   useEffect(() => {
-    setLeaveTypeInfo([
+    setHolidayInfo([
       {
-        name: ['leave_type'],
-        value: updateLeaveTypeInfo?.leave_type,
+        name: ['holiday_name'],
+        value: updateHolidayInfo?.holiday_name,
       },
       {
-        name: ['total_leaves'],
-        value: updateLeaveTypeInfo?.total_leaves,
+        name: ['from'],
+        // value: updateHolidayInfo?.from,
+      },
+      {
+        name: ['to'],
+        // value: updateHolidayInfo?.to,
+      },
+      {
+        name: ['number_of_days'],
+        value: updateHolidayInfo?.number_of_days,
       },
     ]);
   }, [reRender]);
 
   const columns: any = [
-    { title: 'ID', dataIndex: 'id', key: 'id' },
+    { title: 'SL NO', dataIndex: 'id', key: 'id' },
     {
-      title: 'Type Name',
-      dataIndex: 'leave_type',
-      key: 'leave_type',
-      width: '35%',
+      title: 'Holiday Name',
+      dataIndex: 'holiday_name',
+      key: 'holiday_name',
+      width: '30%',
     },
     {
-      title: 'Total Leave Days',
-      dataIndex: 'total_leaves',
-      key: 'total_leaves',
-      width: '35%',
+      title: 'From',
+      dataIndex: 'from',
+      key: 'from',
+      width: '15%',
+    },
+    {
+      title: 'To',
+      dataIndex: 'to',
+      key: 'to',
+      width: '15%',
+    },
+    {
+      title: 'Number of Days',
+      dataIndex: 'number_of_days',
+      key: 'number_of_days',
+      width: '15%',
     },
     {
       title: 'Action',
@@ -78,31 +100,38 @@ const AddLeaveType = () => {
     },
   ];
 
+  const format = 'YYYY-MM-DD';
+  const today = new Date();
+
   const data = [
     {
       key: 1,
       id: 1,
-      leave_type: 'Sick',
-      total_leaves: 2,
+      holiday_name: 'Pahela Boishakh',
+      from: moment(today).format(format),
+      to: moment(today).format(format),
+      number_of_days: 1,
     },
     {
       key: 2,
       id: 2,
-      leave_type: 'Annual',
-      total_leaves: 5,
+      holiday_name: 'Pahela Boishakh',
+      from: moment(today).format(format),
+      to: moment(today).format(format),
+      number_of_days: 1,
     },
   ];
 
   const handleOpenModal = () => {
-    setOpenLeaveTypeModal(true);
+    setOpenToggleModal(true);
     form.resetFields();
   };
 
   const updateLeaveType = (data: any) => {
     console.log('edit data', data);
     setReRender((prevState) => !prevState);
-    setOpenLeaveTypeModal(true);
-    setUpdateLeaveTypeInfo(data);
+    setOpenToggleModal(true);
+    setUpdateHolidayInfo(data);
     form.resetFields();
   };
 
@@ -116,7 +145,7 @@ const AddLeaveType = () => {
       okText: 'Yes',
       onOk() {
         message.success({
-          content: 'Leave Type deleted successfully',
+          content: 'Holiday deleted successfully',
           className: 'custom-class',
           duration: 1,
           style: {
@@ -132,8 +161,18 @@ const AddLeaveType = () => {
   const handleSubmit = (value: any) => {
     console.log('value', value);
     setReRender((prevState) => !prevState);
-    setOpenLeaveTypeModal(false);
 
+    message.success({
+      content: 'Holiday added successfully',
+      className: 'custom-class',
+      duration: 1,
+      style: {
+        marginTop: '5vh',
+        float: 'right',
+      },
+    });
+
+    setOpenToggleModal(false);
     form.resetFields();
   };
 
@@ -152,16 +191,16 @@ const AddLeaveType = () => {
         onClick={handleOpenModal}
         style={{ marginBottom: '1.5rem', float: 'right' }}
       >
-        <PlusCircleOutlined /> Add Leave Type
+        <PlusCircleOutlined /> Add Holiday
       </Button>
 
       <Table bordered columns={columns} dataSource={data} pagination={false} />
 
       <Modal
         title="Add Leave Type"
-        visible={isOpenLeaveTypeModal}
-        onOk={() => setOpenLeaveTypeModal(false)}
-        onCancel={() => setOpenLeaveTypeModal(false)}
+        visible={isOpenToggleModal}
+        onOk={() => setOpenToggleModal(false)}
+        onCancel={() => setOpenToggleModal(false)}
         footer={null}
         width={500}
       >
@@ -170,23 +209,42 @@ const AddLeaveType = () => {
           layout="vertical"
           onFinish={handleSubmit}
           onFinishFailed={onFinishFailed}
-          fields={leaveTypeInfo}
-          onFieldsChange={(_, allFields) => setLeaveTypeInfo(allFields)}
+          fields={holidayInfo}
+          onFieldsChange={(_, allFields) => setHolidayInfo(allFields)}
           autoComplete="off"
         >
           <Form.Item
-            name="leave_type"
-            label="Leave Type"
-            rules={[{ required: true, message: 'Leave Type is required' }]}
+            name="holiday_name"
+            label="Holiday Name"
+            rules={[{ required: true, message: 'Holiday Name is required' }]}
           >
-            <Input size="large" placeholder="Leave Type" />
+            <Input placeholder="Holiday Name" />
           </Form.Item>
 
-          <Form.Item name="total_leaves" label="Number of Leave Days">
+          <Form.Item name="from" label="From">
+            <DatePicker
+              placeholder="From"
+              style={{ width: '100%' }}
+              showToday={false}
+            />
+          </Form.Item>
+
+          <Form.Item name="to" label="To">
+            <DatePicker
+              placeholder="To"
+              style={{ width: '100%' }}
+              showToday={false}
+              // onChange={(_date, dateString: string) => setHolidayInfo([{...}])}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="number_of_days"
+            label="Number of Days Without Weekend"
+          >
             <InputNumber
               min={1}
-              size="large"
-              placeholder="Number of Leave Days"
+              placeholder="Number of Days Without Weekend"
               style={{ width: '100%' }}
             />
           </Form.Item>
@@ -206,4 +264,4 @@ const AddLeaveType = () => {
   );
 };
 
-export default AddLeaveType;
+export default AddHoliday;
