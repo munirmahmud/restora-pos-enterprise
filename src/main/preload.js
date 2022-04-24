@@ -335,7 +335,7 @@ sendDataThroughMiddlewareOn(
   'get_dashboard_data_response'
 );
 
-/****************INSERT EMPLOYEE DESIGNATION****************/
+/****************HUMAN RESOURCE****************/
 sendDataThroughMiddleware(
   'insert_employee_designation', //Event Name
   'insert_employee_designation', // Channel Name
@@ -386,6 +386,23 @@ sendDataThroughMiddleware(
   'delete_sub_department', //Event Name
   'delete_sub_department', // Channel Name
   'delete_sub_department_response' //Response
+);
+
+// SALARY ADVANCE
+sendDataThroughMiddleware(
+  'insert_salary_advance', //Event Name
+  'insert_salary_advance', // Channel Name
+  'insert_salary_advance_response' //Response
+);
+sendDataThroughMiddleware(
+  'fetch_salary_advance', //Event Name
+  'fetch_salary_advance', // Channel Name
+  'fetch_salary_advance_response' //Response
+);
+sendDataThroughMiddleware(
+  'delete_salary_advance', //Event Name
+  'delete_salary_advance', // Channel Name
+  'delete_salary_advance_response' //Response
 );
 
 /*======================================================================

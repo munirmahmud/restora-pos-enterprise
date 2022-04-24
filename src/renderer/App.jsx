@@ -36,6 +36,9 @@ import Departments from './pages/hrm/Departments';
 import SubDepartments from './pages/hrm/Departments/SubDepartments';
 import Designation from './pages/hrm/Designation';
 import ManageEmployee from './pages/hrm/ManageEmployee';
+import AdvanceSalary from './pages/hrm/payroll/AdvanceSalary';
+import MonthlyDeduction from './pages/hrm/payroll/MonthlyDeduction';
+import SalaryGenerate from './pages/hrm/payroll/SalaryGenerate';
 import Language from './pages/Language/';
 import OnGoingOrder from './pages/OnGoingOrder';
 import ItemSalesReport from './pages/report/ItemSalesReport';
@@ -209,6 +212,20 @@ export default function App() {
           <Route
             path="/sub_departments"
             element={<SubDepartments settings={settings} />}
+          />
+
+          {/* Payroll */}
+          <Route
+            path="/advance_salary"
+            element={<AdvanceSalary settings={settings} />}
+          />
+          <Route
+            path="/monthly_deduction"
+            element={<MonthlyDeduction settings={settings} />}
+          />
+          <Route
+            path="/salary_generate"
+            element={<SalaryGenerate settings={settings} />}
           />
 
           {/* Application Settings */}

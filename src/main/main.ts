@@ -25,6 +25,9 @@ declare global {
     insert_sub_department: any;
     fetch_sub_department: any;
     delete_sub_department: any;
+    insert_salary_advance: any;
+    fetch_salary_advance: any;
+    delete_salary_advance: any;
   }
 }
 
@@ -2304,7 +2307,6 @@ ipcMain.on('insert_sub_department', (_event, args) => {
   if (args.id !== undefined) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
 
-    console.log('args 2', args);
     db.serialize(() => {
       db.run(
         `INSERT OR replace INTO sub_department (id, sub_department_name, department_id) VALUES (?, ?, ?)`,
@@ -2360,4 +2362,75 @@ deleteListItem(
   'delete_sub_department',
   'delete_sub_department_response',
   'sub_department'
+);
+
+// INSERT SALARY ADVANCE DATA
+ipcMain.on('insert_salary_advance', (_event, args) => {
+  let { id, employee_id, req_amount, release_amount, salary_month } = args;
+
+  console.log('args', args);
+
+  // Execute if the event has row ID / data ID. It is used to update a specific item
+  if (args.id !== undefined) {
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+
+    db.serialize(() => {
+      db.run(
+        `INSERT OR replace INTO salary_advance (id, employee_id, req_amount, release_amount, salary_month) VALUES (?, ?, ?, ?, ?)`,
+        [id, employee_id, req_amount, release_amount, salary_month],
+        (err: ErrorType) => {
+          err
+            ? mainWindow.webContents.send(
+                'insert_salary_advance_response',
+                err.message
+              )
+            : mainWindow.webContents.send('insert_salary_advance_response', {
+                status: 'updated',
+              });
+        }
+      );
+    });
+    db.close();
+  } else {
+    // Execute if it is new, then insert it
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+    db.serialize(() => {
+      db.run(
+        `CREATE TABLE IF NOT EXISTS salary_advance (
+          'id' INTEGER PRIMARY KEY AUTOINCREMENT,
+          'employee_id' INT NOT NULL,
+          'req_amount' INT,
+          'release_amount' INT DEFAULT 0,
+          'salary_month' TEXT,
+          'created_at' DATETIME
+        )`
+      ).run(
+        `INSERT OR REPLACE INTO salary_advance (employee_id, req_amount, release_amount, salary_month, created_at) VALUES (?, ?, ?, ?, ?)`,
+        [employee_id, req_amount, release_amount, salary_month, Date.now()],
+        (err: ErrorType) => {
+          err
+            ? mainWindow.webContents.send(
+                'insert_salary_advance_response',
+                err.message
+              )
+            : mainWindow.webContents.send('insert_salary_advance_response', {
+                status: 'inserted',
+              });
+        }
+      );
+    });
+    db.close();
+  }
+});
+
+//TODO: JOINING QUERY
+getListItems(
+  'fetch_salary_advance',
+  'fetch_salary_advance_response',
+  'salary_advance'
+);
+deleteListItem(
+  'delete_salary_advance',
+  'delete_salary_advance_response',
+  'salary_advance'
 );
