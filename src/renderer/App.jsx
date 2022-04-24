@@ -35,6 +35,9 @@ import AddEmployee from './pages/hrm/AddEmployee';
 import Departments from './pages/hrm/Departments';
 import SubDepartments from './pages/hrm/Departments/SubDepartments';
 import Designation from './pages/hrm/Designation';
+import Holiday from './pages/hrm/Holiday';
+import LeaveApplication from './pages/hrm/LeaveApplication';
+import LeaveType from './pages/hrm/LeaveType';
 import ManageEmployee from './pages/hrm/ManageEmployee';
 import AdvanceSalary from './pages/hrm/payroll/AdvanceSalary';
 import MonthlyDeduction from './pages/hrm/payroll/MonthlyDeduction';
@@ -213,6 +216,16 @@ export default function App() {
             path="/sub_departments"
             element={<SubDepartments settings={settings} />}
           />
+          <Route
+            path="/add_leave_type"
+            element={<LeaveType settings={settings} />}
+          />
+          <Route
+            path="/leave_application"
+            element={<LeaveApplication settings={settings} />}
+          />
+
+          <Route path="/holiday" element={<Holiday settings={settings} />} />
 
           {/* Payroll */}
           <Route
