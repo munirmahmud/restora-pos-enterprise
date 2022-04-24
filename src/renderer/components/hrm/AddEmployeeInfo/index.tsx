@@ -2,12 +2,14 @@ import { Button, Form, message, Steps } from 'antd';
 import { useState } from 'react';
 import './AddEmployeeInfo.style.scss';
 import AdditionalAddress from './AdditionalAddress';
+import BankInfo from './BankInfo';
 import BasicInformation from './BasicInformation';
 import Benefits from './Benefits';
 import BiographicalInfo from './BiographicalInfo';
 import Custom from './Custom';
 import EmergencyContact from './EmergencyContact';
 import PositionalInfo from './PositionalInfo';
+import SalaryInfo from './SalaryInfo';
 import Supervisor from './Supervisor';
 
 const { Step } = Steps;
@@ -25,6 +27,17 @@ const AddEmployeeInfo = () => {
     state: '',
     city: '',
     zip_code: '',
+    attendance_time: '',
+    employee_type: '',
+    account_number: '',
+    bank_name: '',
+    bban_number: '',
+    basic_salary: '',
+    house_rent: '',
+    medical: '',
+    others: '',
+    gross_salary: '',
+    branch_name: '',
     division: '',
     pay_frequency_text: '',
     home_department: '',
@@ -77,9 +90,27 @@ const AddEmployeeInfo = () => {
 
   const steps = [
     {
-      title: 'Basic Information',
+      title: 'Basic Info',
       content: (
         <BasicInformation
+          employeeInfo={employeeInfo}
+          setEmployeeInfo={setEmployeeInfo}
+        />
+      ),
+    },
+    {
+      title: 'Bank Info',
+      content: (
+        <BankInfo
+          employeeInfo={employeeInfo}
+          setEmployeeInfo={setEmployeeInfo}
+        />
+      ),
+    },
+    {
+      title: 'Salary Info',
+      content: (
+        <SalaryInfo
           employeeInfo={employeeInfo}
           setEmployeeInfo={setEmployeeInfo}
         />
@@ -113,7 +144,7 @@ const AddEmployeeInfo = () => {
       ),
     },
     {
-      title: 'Biographical Info',
+      title: 'Biography',
       content: (
         <BiographicalInfo
           employeeInfo={employeeInfo}
@@ -122,7 +153,7 @@ const AddEmployeeInfo = () => {
       ),
     },
     {
-      title: 'Additional Address',
+      title: 'Address',
       content: (
         <AdditionalAddress
           employeeInfo={employeeInfo}
@@ -131,7 +162,7 @@ const AddEmployeeInfo = () => {
       ),
     },
     {
-      title: 'Emergency Contact',
+      title: 'Contact',
       content: (
         <EmergencyContact
           employeeInfo={employeeInfo}
@@ -149,6 +180,16 @@ const AddEmployeeInfo = () => {
 
   const handleSubmit = () => {
     console.log('employeeInfo', employeeInfo);
+
+    message.success({
+      content: 'Employee information added successfully',
+      className: 'custom-class',
+      duration: 1,
+      style: {
+        marginTop: '5vh',
+        float: 'right',
+      },
+    });
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -197,7 +238,7 @@ const AddEmployeeInfo = () => {
               type="primary"
               htmlType="submit"
               className="submit_btn"
-              onClick={() => message.success('Processing complete!')}
+              // onClick={() => message.success('Processing complete!')}
             >
               Done
             </Button>

@@ -210,20 +210,12 @@ export const Sidebar = ({ settings }) => {
 
             <SubMenu key="department" title="Department">
               <Menu.Item key="departments">
-                <Link to="/departments">Departments</Link>
+                <Link to="/departments">Add Departments</Link>
               </Menu.Item>
 
-              <SubMenu key="sub_department" title="Sub Department">
-                <Menu.Item key="sub_departments">
-                  <Link to="/sub_departments">Sub Departments</Link>
-                </Menu.Item>
-
-                <Menu.Item key="manage_sub_departments">
-                  <Link to="/manage_sub_departments">
-                    Manage Sub Departments
-                  </Link>
-                </Menu.Item>
-              </SubMenu>
+              <Menu.Item key="sub_departments">
+                <Link to="/sub_departments">Sub Departments</Link>
+              </Menu.Item>
             </SubMenu>
 
             <SubMenu key="attendance" title="Attendance">

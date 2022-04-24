@@ -3,7 +3,7 @@ import { Button, Col, DatePicker, Form, Input, Row, Select } from 'antd';
 import './AddEmployeeInfo.style.scss';
 const { Option } = Select;
 
-const Benefits = ({ employeeInfo, setEmployeeInfo }) => {
+const Benefits = ({ employeeInfo, setEmployeeInfo }: any) => {
   const handleChangeBenefitStatus = (value: any) => {
     setEmployeeInfo({ ...employeeInfo, benefit_status: value });
   };
@@ -12,11 +12,7 @@ const Benefits = ({ employeeInfo, setEmployeeInfo }) => {
     <div className="information_wrapper">
       <Row gutter={20}>
         <Col lg={12} xl={12} xxl={12}>
-          <Form.Item
-            label="Benefit Class code"
-            name="benefit_class_code"
-            rules={[{ required: true, message: '' }]}
-          >
+          <Form.Item label="Benefit Class code" name="benefit_class_code">
             <Input
               value={employeeInfo.benefit_class_code}
               onChange={(e) =>
@@ -30,11 +26,7 @@ const Benefits = ({ employeeInfo, setEmployeeInfo }) => {
             />
           </Form.Item>
 
-          <Form.Item
-            label="Benefit Accrual Date"
-            name="benefit_accrual_date"
-            rules={[{ required: true, message: '' }]}
-          >
+          <Form.Item label="Benefit Accrual Date" name="benefit_accrual_date">
             <DatePicker
               style={{ width: '100%' }}
               onChange={(_date, dateString) =>
@@ -50,11 +42,7 @@ const Benefits = ({ employeeInfo, setEmployeeInfo }) => {
         </Col>
 
         <Col lg={11} xl={11} xxl={11}>
-          <Form.Item
-            label="Benefit Description"
-            name="benefit_description"
-            rules={[{ required: true, message: '' }]}
-          >
+          <Form.Item label="Benefit Description" name="benefit_description">
             <Input
               value={employeeInfo.benefit_description}
               onChange={(e) =>
@@ -67,11 +55,7 @@ const Benefits = ({ employeeInfo, setEmployeeInfo }) => {
               size="large"
             />
           </Form.Item>
-          <Form.Item
-            label="Benefit Status"
-            name="benefit_status"
-            rules={[{ required: true, message: '' }]}
-          >
+          <Form.Item label="Benefit Status" name="benefit_status">
             <Select
               size="large"
               placeholder="Status"
@@ -96,7 +80,6 @@ const Benefits = ({ employeeInfo, setEmployeeInfo }) => {
                     label="Benefit Class code"
                     {...restField}
                     name={[name, 'first']}
-                    rules={[{ required: true, message: '' }]}
                   >
                     <Input placeholder="Benefit Class code" size="large" />
                   </Form.Item>
@@ -104,7 +87,6 @@ const Benefits = ({ employeeInfo, setEmployeeInfo }) => {
                     label="Benefit Accrual Date"
                     {...restField}
                     name={[name, 'first']}
-                    rules={[{ required: true, message: 'Missing first name' }]}
                   >
                     <DatePicker
                       size="large"
@@ -119,7 +101,6 @@ const Benefits = ({ employeeInfo, setEmployeeInfo }) => {
                     label="Benefit Description"
                     {...restField}
                     name={[name, 'last']}
-                    rules={[{ required: true, message: '' }]}
                   >
                     <Input placeholder="Benefit Description" size="large" />
                   </Form.Item>
@@ -127,7 +108,6 @@ const Benefits = ({ employeeInfo, setEmployeeInfo }) => {
                     label="Benefit Status"
                     {...restField}
                     name={[name, 'last']}
-                    rules={[{ required: true, message: 'Missing last name' }]}
                   >
                     <Select
                       size="large"
