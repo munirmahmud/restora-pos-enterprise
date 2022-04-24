@@ -225,14 +225,17 @@ export const Sidebar = ({ settings }) => {
             </SubMenu>
 
             <SubMenu key="leave" title="Leave">
-              <Menu.Item key="leave_application:1">
+              <Menu.Item key="add_leave_type:1">
+                <Link to="/add_leave_type">Add Leave Type</Link>
+              </Menu.Item>
+              <Menu.Item key="leave_application:2">
                 <Link to="/leave_application">Leave Application</Link>
               </Menu.Item>
-              <Menu.Item key="leave_balance:2">
+              <Menu.Item key="leave_balance:3">
                 <Link to="/leave_balance">Leave Balance</Link>
               </Menu.Item>
-              <Menu.Item key="holiday:3">
-                <Link to="/holiday">Holiday</Link>
+              <Menu.Item key="holiday:4">
+                <Link to="/holiday">Add Holiday</Link>
               </Menu.Item>
             </SubMenu>
 
