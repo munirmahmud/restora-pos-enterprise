@@ -281,7 +281,7 @@ const AddLeaveApplication = () => {
       />
 
       <Modal
-        title="Add Leave Type"
+        title="Add Leave Application"
         visible={isToggleModal}
         onOk={() => setToggleModal(false)}
         onCancel={() => setToggleModal(false)}

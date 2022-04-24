@@ -34,6 +34,7 @@ import Home from './pages/Home';
 import AddEmployee from './pages/hrm/AddEmployee';
 import Departments from './pages/hrm/Departments';
 import Designation from './pages/hrm/Designation';
+import Holiday from './pages/hrm/Holiday';
 import LeaveApplication from './pages/hrm/LeaveApplication';
 import LeaveType from './pages/hrm/LeaveType';
 import ManageEmployee from './pages/hrm/ManageEmployee';
@@ -220,6 +221,8 @@ export default function App() {
             path="/leave_application"
             element={<LeaveApplication settings={settings} />}
           />
+
+          <Route path="/holiday" element={<Holiday settings={settings} />} />
 
           {/* Application Settings */}
           <Route
