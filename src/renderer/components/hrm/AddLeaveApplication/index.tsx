@@ -2,6 +2,7 @@ import {
   DeleteOutlined,
   EditOutlined,
   ExclamationCircleOutlined,
+  EyeOutlined,
   PlusCircleOutlined,
 } from '@ant-design/icons';
 import {
@@ -46,8 +47,8 @@ const AddLeaveApplication = () => {
   useEffect(() => {
     setLeaveApplicationInfo([
       {
-        name: ['employee_name'],
-        value: updateLeaveApplicationInfo?.employee_name,
+        name: ['name'],
+        value: updateLeaveApplicationInfo?.name,
       },
       {
         name: ['leave_type'],
@@ -96,8 +97,8 @@ const AddLeaveApplication = () => {
     { title: 'SL NO', dataIndex: 'id', key: 'id' },
     {
       title: 'Name',
-      dataIndex: 'employee_name',
-      key: 'employee_name',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
       title: 'Employee ID',
@@ -156,6 +157,10 @@ const AddLeaveApplication = () => {
       align: 'center',
       render: (_text: string, record: DataTypes) => (
         <Space size={10}>
+          <Button type="primary" onClick={() => handleApprove(record)}>
+            <EyeOutlined />
+          </Button>
+
           <Button type="primary" onClick={() => updateLeaveType(record)}>
             <EditOutlined />
           </Button>
@@ -172,7 +177,7 @@ const AddLeaveApplication = () => {
     {
       key: 1,
       id: 1,
-      employee_name: 'Sick',
+      name: 'Sick',
       employee_id: 2,
       leave_type: 'sick',
       application_start_date: moment(today).format(format),
@@ -188,6 +193,14 @@ const AddLeaveApplication = () => {
 
   const handleOpenModal = () => {
     setToggleModal(true);
+    form.resetFields();
+  };
+
+  const handleApprove = (data: any) => {
+    console.log('approve data', data);
+    setReRender((prevState) => !prevState);
+    setToggleModal(true);
+    setUpdateLeaveApplicationInfo({ ...data, action: 'approve' });
     form.resetFields();
   };
 
@@ -255,10 +268,17 @@ const AddLeaveApplication = () => {
         onClick={handleOpenModal}
         style={{ marginBottom: '1.5rem', float: 'right' }}
       >
-        <PlusCircleOutlined /> Add Leave Type
+        <PlusCircleOutlined />
+        Add Leave Application
       </Button>
 
-      <Table bordered columns={columns} dataSource={data} pagination={false} />
+      <Table
+        bordered
+        columns={columns}
+        dataSource={data}
+        pagination={false}
+        rowKey={(record: any) => record.id}
+      />
 
       <Modal
         title="Add Leave Type"
@@ -281,7 +301,7 @@ const AddLeaveApplication = () => {
             <Col lg={12}>
               <Form.Item
                 label="Employee Name"
-                name="employee_name"
+                name="name"
                 rules={[
                   { required: true, message: 'Employee Name is required' },
                 ]}
@@ -370,9 +390,43 @@ const AddLeaveApplication = () => {
                 />
               </Form.Item>
 
-              <Form.Item label="Approved By" name="approved_by">
-                <Input placeholder="Approved By" />
-              </Form.Item>
+              {updateLeaveApplicationInfo?.action && (
+                <>
+                  <Form.Item label="Approved By" name="approved_by">
+                    <Select
+                      showSearch
+                      placeholder="Approved By"
+                      optionFilterProp="children"
+                      // onChange={onChange}
+                      filterOption={(input: string, option: any) =>
+                        option.children
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      }
+                    >
+                      <Option value="1">John</Option>
+                      <Option value="2">Devid</Option>
+                    </Select>
+                  </Form.Item>
+
+                  <Form.Item label="Status" name="status">
+                    <Select
+                      showSearch
+                      placeholder="Status"
+                      optionFilterProp="children"
+                      // onChange={onChange}
+                      filterOption={(input: string, option: any) =>
+                        option.children
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      }
+                    >
+                      <Option value="1">Approve</Option>
+                      <Option value="0">Decline</Option>
+                    </Select>
+                  </Form.Item>
+                </>
+              )}
             </Col>
           </Row>
 
