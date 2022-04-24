@@ -34,6 +34,7 @@ import Home from './pages/Home';
 import AddEmployee from './pages/hrm/AddEmployee';
 import Departments from './pages/hrm/Departments';
 import Designation from './pages/hrm/Designation';
+import LeaveApplication from './pages/hrm/LeaveApplication';
 import LeaveType from './pages/hrm/LeaveType';
 import ManageEmployee from './pages/hrm/ManageEmployee';
 import SubDepartments from './pages/hrm/SubDepartments';
@@ -214,6 +215,10 @@ export default function App() {
           <Route
             path="/add_leave_type"
             element={<LeaveType settings={settings} />}
+          />
+          <Route
+            path="/leave_application"
+            element={<LeaveApplication settings={settings} />}
           />
 
           {/* Application Settings */}
