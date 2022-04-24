@@ -26,7 +26,11 @@ type DataType = {
   id: number;
   key: Key;
   sl_no: number;
-  department_name: string;
+  employee_id: number;
+  req_amount: number;
+  release_amount: number;
+  salary_month: string;
+  created_at: string;
 };
 
 type UpdateDepartmentType = {
