@@ -2,7 +2,7 @@ import { Col, Form, Input, Row, Select } from 'antd';
 import './AddEmployeeInfo.style.scss';
 const { Option } = Select;
 
-const Supervisor = ({ employeeInfo, setEmployeeInfo }) => {
+const Supervisor = ({ employeeInfo, setEmployeeInfo }: any) => {
   const handleChangeSupervisorName = (value: string) => {
     setEmployeeInfo({ ...employeeInfo, supervisor_name: value });
   };
@@ -15,11 +15,7 @@ const Supervisor = ({ employeeInfo, setEmployeeInfo }) => {
     <div className="information_wrapper">
       <Row gutter={20}>
         <Col lg={12} xl={12} xxl={12}>
-          <Form.Item
-            label="Supervisor Name"
-            name="supervisor_name"
-            rules={[{ required: true }]}
-          >
+          <Form.Item label="Supervisor Name" name="supervisor_name">
             <Select
               showSearch
               placeholder="Select Supervisor Name"
@@ -36,11 +32,7 @@ const Supervisor = ({ employeeInfo, setEmployeeInfo }) => {
             </Select>
           </Form.Item>
 
-          <Form.Item
-            label="Supervisor Report"
-            name="supervisor_report"
-            rules={[{ required: true, message: '' }]}
-          >
+          <Form.Item label="Supervisor Report" name="supervisor_report">
             <Input
               value={employeeInfo.supervisor_report}
               onChange={(e) =>
@@ -56,11 +48,7 @@ const Supervisor = ({ employeeInfo, setEmployeeInfo }) => {
         </Col>
 
         <Col lg={12} xl={12} xxl={12}>
-          <Form.Item
-            label="Is Supervisor"
-            name="is_supervisor"
-            rules={[{ required: true }]}
-          >
+          <Form.Item label="Is Supervisor" name="is_supervisor">
             <Select
               placeholder="Is Supervisor"
               allowClear

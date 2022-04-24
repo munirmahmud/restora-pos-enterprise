@@ -4,7 +4,7 @@ import { Button, Col, Form, Input, Row, Select } from 'antd';
 import './AddEmployeeInfo.style.scss';
 const { Option } = Select;
 
-const Custom = ({ employeeInfo, setEmployeeInfo }) => {
+const Custom = ({ employeeInfo, setEmployeeInfo }: any) => {
   const handleChangeCustomFiledType = (value: string) => {
     setEmployeeInfo({ ...employeeInfo, custom_field_type: value });
   };
@@ -13,11 +13,7 @@ const Custom = ({ employeeInfo, setEmployeeInfo }) => {
     <div className="information_wrapper">
       <Row gutter={20}>
         <Col lg={8} xl={8} xxl={8}>
-          <Form.Item
-            label="Custom Field Name"
-            name="custom_field_name"
-            rules={[{ required: true, message: '' }]}
-          >
+          <Form.Item label="Custom Field Name" name="custom_field_name">
             <Input
               value={employeeInfo.custom_field_name}
               onChange={(e) =>
@@ -33,11 +29,7 @@ const Custom = ({ employeeInfo, setEmployeeInfo }) => {
         </Col>
 
         <Col lg={8} xl={8} xxl={8}>
-          <Form.Item
-            label="Custom Field Type"
-            name="custom_field_type"
-            rules={[{ required: true, message: '' }]}
-          >
+          <Form.Item label="Custom Field Type" name="custom_field_type">
             <Select
               size="large"
               placeholder="Custom Field Type"
@@ -56,11 +48,7 @@ const Custom = ({ employeeInfo, setEmployeeInfo }) => {
         </Col>
 
         <Col lg={7} xl={7} xxl={7}>
-          <Form.Item
-            label="Custom Value"
-            name="custom_value"
-            rules={[{ required: true, message: '' }]}
-          >
+          <Form.Item label="Custom Value" name="custom_value">
             <Input
               value={employeeInfo.custom_value}
               onChange={(e) =>

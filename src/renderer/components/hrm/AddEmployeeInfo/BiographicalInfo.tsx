@@ -5,7 +5,7 @@ const { Option } = Select;
 
 const { Dragger } = Upload;
 
-const BiographicalInfo = ({ employeeInfo, setEmployeeInfo }) => {
+const BiographicalInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
   const props = {
     name: 'file',
     multiple: true,
@@ -50,7 +50,11 @@ const BiographicalInfo = ({ employeeInfo, setEmployeeInfo }) => {
     <div className="information_wrapper">
       <Row gutter={20}>
         <Col lg={8} xl={8} xxl={8}>
-          <Form.Item label="Date of Birth" name="date_of_birth">
+          <Form.Item
+            label="Date of Birth"
+            name="date_of_birth"
+            rules={[{ required: true, message: 'Date of Birth is required' }]}
+          >
             <DatePicker
               style={{ width: '100%' }}
               onChange={(_date, dateString) =>
@@ -62,11 +66,7 @@ const BiographicalInfo = ({ employeeInfo, setEmployeeInfo }) => {
             />
           </Form.Item>
 
-          <Form.Item
-            label="EEO Class"
-            name="eeo_class"
-            rules={[{ required: true, message: '' }]}
-          >
+          <Form.Item label="EEO Class" name="eeo_class">
             <Input
               value={employeeInfo.eeo_class}
               onChange={(e) =>
@@ -77,11 +77,7 @@ const BiographicalInfo = ({ employeeInfo, setEmployeeInfo }) => {
             />
           </Form.Item>
 
-          <Form.Item
-            label="Work in State"
-            name="work_in_state"
-            rules={[{ required: true, message: '' }]}
-          >
+          <Form.Item label="Work in State" name="work_in_state">
             <Select
               placeholder="Select  State"
               allowClear
@@ -144,11 +140,7 @@ const BiographicalInfo = ({ employeeInfo, setEmployeeInfo }) => {
             </Select>
           </Form.Item>
 
-          <Form.Item
-            label="Ethnic Group"
-            name="ethnic_group"
-            rules={[{ required: true, message: '' }]}
-          >
+          <Form.Item label="Ethnic Group" name="ethnic_group">
             <Input
               value={employeeInfo.ethnic_group}
               onChange={(e) =>
@@ -162,11 +154,7 @@ const BiographicalInfo = ({ employeeInfo, setEmployeeInfo }) => {
             />
           </Form.Item>
 
-          <Form.Item
-            label="Live in State"
-            name="live_in_state"
-            rules={[{ required: true, message: '' }]}
-          >
+          <Form.Item label="Live in State" name="live_in_state">
             <Select
               placeholder="Select  Live state"
               allowClear
@@ -185,11 +173,7 @@ const BiographicalInfo = ({ employeeInfo, setEmployeeInfo }) => {
         </Col>
 
         <Col lg={8} xl={8} xxl={8}>
-          <Form.Item
-            label="Marital Status"
-            name="marital_status"
-            rules={[{ required: true, message: '' }]}
-          >
+          <Form.Item label="Marital Status" name="marital_status">
             <Select
               placeholder="Select Marital Status"
               allowClear
@@ -206,11 +190,7 @@ const BiographicalInfo = ({ employeeInfo, setEmployeeInfo }) => {
             </Select>
           </Form.Item>
 
-          <Form.Item
-            label="SSN"
-            name="ssn"
-            rules={[{ required: true, message: '' }]}
-          >
+          <Form.Item label="SSN" name="ssn">
             <Input
               value={employeeInfo.ssn}
               onChange={(e) =>
@@ -224,11 +204,7 @@ const BiographicalInfo = ({ employeeInfo, setEmployeeInfo }) => {
             />
           </Form.Item>
 
-          <Form.Item
-            label="Citizenship"
-            name="citizenship"
-            rules={[{ required: true, message: '' }]}
-          >
+          <Form.Item label="Citizenship" name="citizenship">
             <Select
               placeholder="Select  Citizenship"
               allowClear

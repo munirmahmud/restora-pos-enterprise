@@ -1,7 +1,7 @@
 import { Col, Form, Input, Row } from 'antd';
 import './AddEmployeeInfo.style.scss';
 
-const EmergencyContact = ({ employeeInfo, setEmployeeInfo }) => {
+const EmergencyContact = ({ employeeInfo, setEmployeeInfo }: any) => {
   return (
     <div className="information_wrapper">
       <Row gutter={20}>
@@ -9,7 +9,12 @@ const EmergencyContact = ({ employeeInfo, setEmployeeInfo }) => {
           <Form.Item
             label="Emergency Contact"
             name="emergency_contact"
-            rules={[{ required: true, message: '' }]}
+            rules={[
+              {
+                required: true,
+                message: 'Emergency Contact is required filed',
+              },
+            ]}
           >
             <Input
               value={employeeInfo.emergency_contact}
@@ -27,7 +32,12 @@ const EmergencyContact = ({ employeeInfo, setEmployeeInfo }) => {
           <Form.Item
             label="Emergency Work Phone"
             name="emergency_work_phone"
-            rules={[{ required: true, message: '' }]}
+            rules={[
+              {
+                required: true,
+                message: 'Emergency Work Phone is required filed',
+              },
+            ]}
           >
             <Input
               value={employeeInfo.emergency_work_phone}
@@ -45,7 +55,6 @@ const EmergencyContact = ({ employeeInfo, setEmployeeInfo }) => {
           <Form.Item
             label="Alter Emergency Contact"
             name="alter_emergency_contact"
-            rules={[{ required: true, message: '' }]}
           >
             <Input
               value={employeeInfo.alter_emergency_contact}
@@ -63,7 +72,6 @@ const EmergencyContact = ({ employeeInfo, setEmployeeInfo }) => {
           <Form.Item
             label="Alt Emergency Work Phone"
             name="alt_emergency_work_phone"
-            rules={[{ required: true, message: '' }]}
           >
             <Input
               value={employeeInfo.alt_emergency_work_phone}
@@ -83,7 +91,12 @@ const EmergencyContact = ({ employeeInfo, setEmployeeInfo }) => {
           <Form.Item
             label="Emergency Home Phone"
             name="emergency_home_phone"
-            rules={[{ required: true, message: '' }]}
+            rules={[
+              {
+                required: true,
+                message: 'Emergency Home Phone is required filed',
+              },
+            ]}
           >
             <Input
               value={employeeInfo.emergency_home_phone}
@@ -101,7 +114,6 @@ const EmergencyContact = ({ employeeInfo, setEmployeeInfo }) => {
           <Form.Item
             label="Emergency Contact Relation"
             name="emergency_contact_relation"
-            rules={[{ required: true, message: '' }]}
           >
             <Input
               value={employeeInfo.emergency_contact_relation}
@@ -118,7 +130,6 @@ const EmergencyContact = ({ employeeInfo, setEmployeeInfo }) => {
           <Form.Item
             label="Alt Emergency Home Phone"
             name="alt_emergency_home_phone"
-            rules={[{ required: true, message: '' }]}
           >
             <Input
               value={employeeInfo.alt_emergency_home_phone}

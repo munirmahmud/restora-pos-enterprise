@@ -323,17 +323,7 @@ const QuickOrderModal = ({
                 }}
               >
                 <Row gutter={20}>
-                  <Col lg={15}>
-                    {/* <Text>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. At,
-                      iusto dolorem fugit, eligendi veritatis, corporis inventore
-                      aspernatur perspiciatis ab facere consectetur aliquam
-                      exercitationem repudiandae aut magnam et cupiditate natus
-                      voluptates? Aut voluptates ad suscipit earum amet tenetur
-                      expedita quas in et eaque quo magni quae doloribus at non
-                      quod
-                    </Text> */}
-                  </Col>
+                  <Col lg={15}></Col>
                   <Col lg={9}>
                     <Space className="flex" style={{ flexDirection: 'column' }}>
                       <Button
