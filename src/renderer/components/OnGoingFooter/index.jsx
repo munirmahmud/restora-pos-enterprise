@@ -8,9 +8,10 @@ import {
   SwapOutlined,
 } from '@ant-design/icons';
 import { Button, Col, message, Row } from 'antd';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PremiumVersion from '../partials/PremiumVersion';
+import TokenModal from '../TokenModal';
 import { ContextData } from './../../contextApi';
 import QuickOrderModal from './../Cart/QuickOrderModal';
 import './OnGoingFooter.style.scss';
@@ -29,7 +30,20 @@ const OnGoingFooter = ({
   const { cartItems, setCartItems } = useContext(ContextData);
   const [premiumVersion, setPremiumVersion] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [tokenPrint, setTokenPrint] = useState('printToken');
   const [orderData, setOrderData] = useState({});
+
+  useEffect(() => {
+    if (orderComplete?.order_info) {
+      const orderItems = JSON.parse(orderComplete.order_info);
+      const tokenWithOrders = {
+        ...orderComplete,
+        order_info: orderItems,
+      };
+
+      setOrderData(tokenWithOrders);
+    }
+  }, [orderComplete]);
 
   function orderCompleted(orderItem) {
     if (Object.keys(orderItem).length === 0) {
@@ -46,8 +60,69 @@ const OnGoingFooter = ({
     }
 
     setOpenModal(true);
-    setOrderData(orderItem);
   }
+
+  const generateDueInvoice = (item) => {
+    if (Object.keys(orderData).length === 0) {
+      message.error({
+        content: 'Sorry! No order is selected.',
+        className: 'custom-class',
+        duration: 2,
+        style: {
+          marginTop: '15vh',
+        },
+      });
+
+      return;
+    }
+
+    // localStorage.setItem('order_id', orderData.order_id);
+    // const orderItems = JSON.parse(orderData.order_info);
+
+    // setCartItems(orderItems);
+    // redirect('/', { state: { ...orderData, order_info: orderItems } });
+  };
+
+  const kitchenOrderToken = (orderDetails) => {
+    if (Object.keys(orderDetails).length === 0) {
+      message.error({
+        content: 'Sorry! No order is selected.',
+        className: 'custom-class',
+        duration: 2,
+        style: {
+          marginTop: '15vh',
+        },
+      });
+
+      return;
+    }
+
+    // const orderItems = JSON.parse(orderDetails.order_info);
+
+    // const tokenWithOrders = {
+    //   ...orderDetails,
+    //   order_info: orderItems,
+    // };
+
+    // setOrderData(tokenWithOrders);
+
+    var printContents = document.getElementById(tokenPrint).innerHTML;
+    var originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
+
+    // After printing reload the page
+    window.location.reload();
+    // & Redirect to the ongoing page
+    window.addEventListener('afterprint', (e) => {
+      console.log('after print', e);
+      redirect('/on_going_order');
+    });
+
+    window.onafterprint = () => {
+      console.log('on after print');
+    };
+  };
 
   const editOnGoingOrder = (orderData) => {
     if (Object.keys(orderData).length === 0) {
@@ -117,15 +192,19 @@ const OnGoingFooter = ({
                 <Button
                   type="primary"
                   className="on_going_btn due_invoice_btn premium_btn"
-                  onClick={() => setPremiumVersion(true)}
+                  onClick={() => generateDueInvoice(orderComplete)}
                 >
                   <DeliveredProcedureOutlined /> Due Invoice
                 </Button>
 
                 <Button
                   type="primary"
-                  className="on_going_btn kot_btn premium_btn"
-                  onClick={() => setPremiumVersion(true)}
+                  className={
+                    activeInactiveBtn?.status === 1
+                      ? 'on_going_btn kot_btn '
+                      : 'on_going_btn kot_btn premium_btn'
+                  }
+                  onClick={() => kitchenOrderToken(orderComplete)}
                 >
                   <EditOutlined /> Kot
                 </Button>
@@ -175,6 +254,8 @@ const OnGoingFooter = ({
           setOngoingOrders={setOngoingOrders}
         />
       )}
+
+      <TokenModal orderData={orderData} tokenPrint={tokenPrint} />
     </>
   );
 };

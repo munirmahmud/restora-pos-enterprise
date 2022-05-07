@@ -1080,16 +1080,15 @@ ipcMain.on('update_order_info_after_edit', (event, args) => {
 });
 
 // Get all order info
-ipcMain.on('get_all_order_info_ongoing', (event, args) => {
+ipcMain.on('get_all_order_info_ongoing', (_event, args) => {
   let { status } = args;
 
   if (status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
-    let sql = `SELECT * FROM orders
-    where status = 1`;
+    let sql = `SELECT * FROM orders where status = 1`;
 
     db.serialize(() => {
-      db.all(sql, [], (err, rows) => {
+      db.all(sql, [], (err: ErrorType, rows: any) => {
         mainWindow.webContents.send(
           'get_all_order_info_ongoing_response',
           rows
@@ -1146,7 +1145,7 @@ ipcMain.on('get_todays_completed_orders', (event, args) => {
 });
 
 // Complete order info
-ipcMain.on('update_order_info_ongoing', (event, args) => {
+ipcMain.on('update_order_info_ongoing', (_event: any, args: any) => {
   let { order_id, grand_total, discount } = args;
 
   let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
@@ -1163,16 +1162,16 @@ ipcMain.on('update_order_info_ongoing', (event, args) => {
 });
 
 // Get sales report
-ipcMain.on('get_all_order_for_sales_report', (event, args) => {
+ipcMain.on('get_all_order_for_sales_report', (_event, args) => {
   if (args.status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
     let sql = `SELECT orders.*, customer_info.customer_name
     FROM orders
     INNER JOIN customer_info ON orders.customer_id = customer_info.id
     ORDER BY creation_date DESC`;
-    db.all(sql, [], (err, rows) => {
+    db.all(sql, [], (_err: ErrorType, rows: any) => {
       if (rows && rows.length > 0) {
-        const allOrders = rows.map((order, index) => {
+        const allOrders = rows.map((order: any, index: number) => {
           let temp = JSON.parse(order.order_info);
           let amount = 0;
           temp.map((t) => {
@@ -1203,40 +1202,43 @@ ipcMain.on('get_all_order_for_sales_report', (event, args) => {
 });
 
 // Get item sales report
-ipcMain.on('get_order_info_for_item_sales_report', (event, args) => {
-  if (args.status) {
-    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
-    let sql = `SELECT orders.order_info FROM orders`;
-    db.all(sql, [], (err, rows) => {
-      if (rows && rows.length) {
-        let newData = new Array();
+ipcMain.on(
+  'get_order_info_for_item_sales_report',
+  (_event: Electron.IpcMainEvent, args) => {
+    if (args.status) {
+      let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+      let sql = `SELECT orders.order_info FROM orders`;
+      db.all(sql, [], (_err: ErrorType, rows: any) => {
+        if (rows && rows.length) {
+          let newData = new Array();
 
-        rows.forEach((data) => {
-          let temp = JSON.parse(data.order_info);
-          temp.map((t) => newData.push(t));
-        });
+          rows.forEach((data: any) => {
+            let temp = JSON.parse(data.order_info);
+            temp.map((t: any) => newData.push(t));
+          });
 
-        const unique = newData;
+          const unique = newData;
 
-        const group = {};
+          const group: any = {};
 
-        unique.forEach((e) => {
-          const o = (group[e.id] = group[e.id] || { ...e, quantity: 0 });
-          o.quantity += e.quantity;
-        });
+          unique.forEach((e) => {
+            const o = (group[e.id] = group[e.id] || { ...e, quantity: 0 });
+            o.quantity += e.quantity;
+          });
 
-        const res = Object.values(group);
+          const res = Object.values(group);
 
-        mainWindow.webContents.send(
-          'get_order_info_for_item_sales_report_response',
-          res
-        );
-      }
-    });
+          mainWindow.webContents.send(
+            'get_order_info_for_item_sales_report_response',
+            res
+          );
+        }
+      });
 
-    db.close();
+      db.close();
+    }
   }
-});
+);
 
 // Get dashboard report
 ipcMain.on('get_dashboard_data', (event, args) => {
@@ -1857,7 +1859,7 @@ insertData(
   New Customer Name in to POS
 =====================================================*/
 // Insert New Customer Info
-ipcMain.on('insert_customer_info', (event, args) => {
+ipcMain.on('insert_customer_info', (event: string, args) => {
   let {
     id,
     customer_name,
@@ -1921,11 +1923,11 @@ ipcMain.on('insert_customer_info', (event, args) => {
   }
 });
 
-/*==================================================================
+/*================================================================
   Get addons and variants
 ==================================================================*/
-ipcMain.on('get_addons_and_variant', (event, args) => {
-  let food_addon_variants = {};
+ipcMain.on('get_addons_and_variant', (_event: any, args) => {
+  let food_addon_variants: any = {};
   let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
   let sql = `SELECT addons.add_on_id, addons.add_on_name, addons.price
   FROM addons
@@ -1942,10 +1944,10 @@ ipcMain.on('get_addons_and_variant', (event, args) => {
   WHERE item_foods.id = ${args}`;
 
   db.serialize(() => {
-    db.all(sql, [], (err, rows) => {
+    db.all(sql, [], (_err: ErrorType, rows: any) => {
       food_addon_variants['addons'] = rows;
     });
-    db.all(sql2, [], (err, rows) => {
+    db.all(sql2, [], (_err: ErrorType, rows: any) => {
       food_addon_variants['variants'] = rows;
     });
   });

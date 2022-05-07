@@ -20,6 +20,8 @@ const OnGoingOrder = ({ settings }) => {
   const [reRender, setReRender] = useState(false);
   const [ongoingOrders, setOngoingOrders] = useState([]);
 
+  const [invoicePrintDivId, setInvoicePrintDivId] = useState(null);
+
   useEffect(() => {
     getDataFromDatabase(
       'get_all_order_info_ongoing_response',
@@ -79,7 +81,11 @@ const OnGoingOrder = ({ settings }) => {
         />
       </div>
 
-      <InVoiceGenerate settings={settings} foodItems={cartItems} />
+      <InVoiceGenerate
+        settings={settings}
+        foodItems={cartItems}
+        setInvoicePrintDivId={setInvoicePrintDivId}
+      />
 
       <OnGoingFooter
         openSearchInput={openSearchInput}
