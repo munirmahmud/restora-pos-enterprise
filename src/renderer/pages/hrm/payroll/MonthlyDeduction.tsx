@@ -1,9 +1,17 @@
 import { Col, ConfigProvider, Row } from 'antd';
-import Department from 'renderer/components/hrm/Department';
+import { FC } from 'react';
+import AddEmployeeInfo from 'renderer/components/hrm/AddEmployeeInfo';
 import Sidebar from 'renderer/components/partials/Sidebar';
 import Heading from '../../../components/Heading';
+import { SettingsProps } from '../../../types';
 
-const Departments = ({ settings }) => {
+type VoucherReportProps = {
+  settings: SettingsProps;
+};
+
+const MonthlyDeduction: FC<VoucherReportProps> = ({
+  settings,
+}): JSX.Element => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">
@@ -14,10 +22,10 @@ const Departments = ({ settings }) => {
             </Col>
 
             <Col lg={19} xl={21} xxl={21}>
-              <Heading title="Department" />
+              <Heading title="Monthly Deduction" />
 
               <div style={{ margin: '0rem 1.5rem' }}>
-                <Department />
+                <AddEmployeeInfo />
               </div>
             </Col>
           </Row>
@@ -27,4 +35,4 @@ const Departments = ({ settings }) => {
   );
 };
 
-export default Departments;
+export default MonthlyDeduction;

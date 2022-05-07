@@ -239,7 +239,7 @@ export const Sidebar = ({ settings }) => {
               </Menu.Item>
             </SubMenu>
 
-            <SubMenu key="pay_roll" title="Pay Roll">
+            <SubMenu key="pay_roll" title="Payroll">
               <Menu.Item key="advance_salary:1">
                 <Link to="/advance_salary">Advance Salary</Link>
               </Menu.Item>

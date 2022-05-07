@@ -1,9 +1,15 @@
 import { Col, ConfigProvider, Row } from 'antd';
-import Department from 'renderer/components/hrm/Department';
+import { FC } from 'react';
 import Sidebar from 'renderer/components/partials/Sidebar';
-import Heading from '../../../components/Heading';
+import { SettingsProps } from '../../../types';
+import Heading from './../../../components/Heading';
+import SubDepartmentTable from './../../../components/hrm/Department/SubDepartmentTable';
 
-const Departments = ({ settings }) => {
+type SubDepartmentsProps = {
+  settings: SettingsProps;
+};
+
+const SubDepartments: FC<SubDepartmentsProps> = ({ settings }) => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">
@@ -14,10 +20,10 @@ const Departments = ({ settings }) => {
             </Col>
 
             <Col lg={19} xl={21} xxl={21}>
-              <Heading title="Department" />
+              <Heading title="Sub Department" />
 
               <div style={{ margin: '0rem 1.5rem' }}>
-                <Department />
+                <SubDepartmentTable />
               </div>
             </Col>
           </Row>
@@ -27,4 +33,4 @@ const Departments = ({ settings }) => {
   );
 };
 
-export default Departments;
+export default SubDepartments;

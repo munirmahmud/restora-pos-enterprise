@@ -5,7 +5,7 @@ import { useContext, useState } from 'react';
 import { ContextData } from '../../../contextApi';
 import '../cart.styles.scss';
 import QuickOrderModal from '../QuickOrderModal';
-import TokenModal from './../../TokenModal/index';
+import TokenModal from './../../TokenModal';
 
 const { Text } = Typography;
 

@@ -1,15 +1,15 @@
 import { Col, ConfigProvider, Row } from 'antd';
 import { FC } from 'react';
+import AdvanceSalaryComponent from 'renderer/components/hrm/PayrollComponent/AdvanceSalaryComponent';
 import Sidebar from 'renderer/components/partials/Sidebar';
+import Heading from '../../../components/Heading';
 import { SettingsProps } from '../../../types';
-import Heading from './../../../components/Heading';
-import SubDepartmentsTable from './../../../components/hrm/SubDepartmentsTable';
 
-type SubDepartmentsProps = {
+type VoucherReportProps = {
   settings: SettingsProps;
 };
 
-const SubDepartments: FC<SubDepartmentsProps> = ({ settings }) => {
+const AdvanceSalary: FC<VoucherReportProps> = ({ settings }): JSX.Element => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">
@@ -20,10 +20,10 @@ const SubDepartments: FC<SubDepartmentsProps> = ({ settings }) => {
             </Col>
 
             <Col lg={19} xl={21} xxl={21}>
-              <Heading title="Sub Department" />
+              <Heading title="Advance Salary" />
 
               <div style={{ margin: '0rem 1.5rem' }}>
-                <SubDepartmentsTable />
+                <AdvanceSalaryComponent />
               </div>
             </Col>
           </Row>
@@ -33,4 +33,4 @@ const SubDepartments: FC<SubDepartmentsProps> = ({ settings }) => {
   );
 };
 
-export default SubDepartments;
+export default AdvanceSalary;
