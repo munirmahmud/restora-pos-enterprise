@@ -336,6 +336,14 @@ sendDataThroughMiddlewareOn(
 );
 
 /****************HUMAN RESOURCE****************/
+
+// ADD EMPLOYEE
+sendDataThroughMiddlewareOn(
+  'insert_employee',
+  'insert_employee',
+  'insert_employee_response'
+)
+
 sendDataThroughMiddleware(
   'insert_employee_designation', //Event Name
   'insert_employee_designation', // Channel Name
