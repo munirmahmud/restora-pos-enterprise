@@ -241,7 +241,7 @@
     "@fortawesome/react-fontawesome": "^0.1.16",
     "antd": "^4.18.2",
     "chart.js": "^3.7.1",
-    "electromon": "^1.0.10",
+    "electromon": "^1.0.0",
     "electron-debug": "^3.2.0",
     "electron-log": "^4.4.4",
     "electron-updater": "^4.6.4",
@@ -254,7 +254,8 @@
     "react-point": "^3.0.1",
     "react-router-dom": "^6.2.1",
     "react-to-print": "^2.14.4",
-    "regenerator-runtime": "^0.13.9"
+    "regenerator-runtime": "^0.13.9",
+    "sqlite3": "^5.0.5"
   },
   "browser": {
     "fs": false,

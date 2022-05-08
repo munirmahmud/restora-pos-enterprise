@@ -19,24 +19,25 @@ type EmployeeInfoTypes = {};
 const AddEmployeeInfo = () => {
   const [current, setCurrent] = useState(0);
   const [employeeInfo, setEmployeeInfo] = useState<EmployeeInfoTypes>({
-    first_name: '',
-    last_name: '',
-    email_address: '',
-    phone: '',
-    country: '',
-    state: '',
-    city: '',
-    zip_code: '',
-    attendance_time: '',
-    employee_type: '',
-    account_number: '',
-    bank_name: '',
-    bban_number: '',
-    basic_salary: '',
-    house_rent: '',
-    medical: '',
-    others: '',
-    gross_salary: '',
+    first_name: '', //
+    last_name: '',//
+    email: '',//
+    phone: '',//
+    country: '',//
+    state: '',//
+    city: '',//
+    zip_code: '',//
+    attendance_time: '',//
+    employee_type: '',//
+    account_number: '',//
+    bank_name: '',//
+    bban_number: '',//
+    basic_salary: '', // emp_salary
+    house_rent: '', // emp_salary
+    medical: '', // emp_salary
+    others_allowance: '', // emp_salary
+    gross_salary: '', // emp_salary
+    tranport_allowance:'', // emp_salary
     branch_name: '',
     division: '',
     pay_frequency_text: '',
