@@ -28,6 +28,9 @@ declare global {
     insert_salary_advance: any;
     fetch_salary_advance: any;
     delete_salary_advance: any;
+    insert_floor: any;
+    delete_floor: any;
+    fetch_floor: any;
   }
 }
 
