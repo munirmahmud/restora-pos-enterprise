@@ -2490,3 +2490,54 @@ ipcMain.on('insert_floor', (_event, args) => {
 
 getListItems('fetch_floor', 'fetch_floor_response', 'floor');
 deleteListItem('delete_floor', 'delete_floor_response', 'floor');
+
+// INSERT TABLE DATA
+ipcMain.on('insert_table', (_event, args) => {
+  let { id, floorName } = args;
+
+  console.log('args', args);
+
+  // Execute if the event has row ID / data ID. It is used to update a specific item
+  if (args.id !== undefined) {
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+
+    db.serialize(() => {
+      db.run(
+        // `INSERT OR replace INTO floor (id, floorName) VALUES (?, ?)`,
+        `UPDATE floor floorName = ${floorName} WHERE id = ${id}`,
+        [id, floorName],
+        (err: ErrorType) => {
+          err
+            ? mainWindow.webContents.send('insert_table_response', err.message)
+            : mainWindow.webContents.send('insert_table_response', {
+                status: 'updated',
+              });
+        }
+      );
+    });
+    db.close();
+  } else {
+    // Execute if it is new, then insert it
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+    db.serialize(() => {
+      db.run(
+        `CREATE TABLE IF NOT EXISTS table (
+          'id' INTEGER PRIMARY KEY AUTOINCREMENT,
+          'floorName' varchar(15) NOT NULL,
+          'created_at' DATETIME
+        )`
+      ).run(
+        `INSERT OR REPLACE INTO table (floorName, created_at) VALUES (?, ?)`,
+        [floorName, Date.now()],
+        (err: ErrorType) => {
+          err
+            ? mainWindow.webContents.send('insert_table_response', err.message)
+            : mainWindow.webContents.send('insert_table_response', {
+                status: 'inserted',
+              });
+        }
+      );
+    });
+    db.close();
+  }
+});
