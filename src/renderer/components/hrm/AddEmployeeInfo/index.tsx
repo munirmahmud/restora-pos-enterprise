@@ -11,6 +11,8 @@ import EmergencyContact from './EmergencyContact';
 import PositionalInfo from './PositionalInfo';
 import SalaryInfo from './SalaryInfo';
 import Supervisor from './Supervisor';
+import { getDataFromDatabase } from 'helpers';
+
 
 const { Step } = Steps;
 
@@ -21,7 +23,7 @@ const AddEmployeeInfo = () => {
   const [employeeInfo, setEmployeeInfo] = useState<EmployeeInfoTypes>({
     first_name: '',
     last_name: '',
-    email_address: '',
+    email: '',
     phone: '',
     country: '',
     state: '',
@@ -29,39 +31,46 @@ const AddEmployeeInfo = () => {
     zip_code: '',
     attendance_time: '',
     employee_type: '',
+
     account_number: '',
     bank_name: '',
     bban_number: '',
-    basic_salary: '',
-    house_rent: '',
-    medical: '',
-    others: '',
-    gross_salary: '',
     branch_name: '',
+
+    basic_salary: '', // emp_salary
+    house_rent: '', // emp_salary
+    medical: '', // emp_salary
+    others_allowance: '', // emp_salary
+    gross_salary: '', // emp_salary
+    tranport_allowance: '', // emp_salary
+
     division: '',
+    hire_date: '',
     pay_frequency_text: '',
     home_department: '',
-    hire_date: '',
-    designation: '',
-    termination_reason: '',
     termination_date: '',
-    voluntary_termination: '',
+    termination_reason: '',
+    designation: '',
     original_hire_date: '',
-    re_hire_date: '',
+    voluntary_termination: '',
     pay_frequency: '',
-    duty_type: '',
-    rate_type: '',
     hourly_rate2: '',
     department_text: '',
+    duty_type: '',
+    re_hire_date: '',
+    rate_type: '',
     rate: '',
     hourly_rate3: '',
+
     benefit_class_code: '',
     benefit_accrual_date: '',
     benefit_description: '',
     benefit_status: '',
+
     supervisor_name: '',
     supervisor_report: '',
     is_supervisor: '',
+
     date_of_birth: '',
     eeo_class: '',
     work_in_state: '',
@@ -71,11 +80,14 @@ const AddEmployeeInfo = () => {
     marital_status: '',
     ssn: '',
     citizenship: '',
+    pp_image: '',
+
     home_email: '',
     home_phone: '',
     cell_phone: '',
     business_email: '',
     business_phone: '',
+
     emergency_contact: '',
     emergency_work_phone: '',
     alter_emergency_contact: '',
@@ -87,6 +99,7 @@ const AddEmployeeInfo = () => {
     custom_value: '',
     custom_field_type: '',
   });
+
 
   const steps = [
     {
@@ -180,6 +193,7 @@ const AddEmployeeInfo = () => {
 
   const handleSubmit = () => {
     console.log('employeeInfo', employeeInfo);
+    window.insert_employee.send('insert_employee', employeeInfo)
 
     message.success({
       content: 'Employee information added successfully',
@@ -238,7 +252,7 @@ const AddEmployeeInfo = () => {
               type="primary"
               htmlType="submit"
               className="submit_btn"
-              // onClick={() => message.success('Processing complete!')}
+            // onClick={() => message.success('Processing complete!')}
             >
               Done
             </Button>
@@ -258,5 +272,12 @@ const AddEmployeeInfo = () => {
     </div>
   );
 };
+
+getDataFromDatabase(
+  'get_employee_designation_response',
+  window.get_employee_designation
+).then((response: any) => {
+  console.log(response);
+});
 
 export default AddEmployeeInfo;

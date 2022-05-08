@@ -252,19 +252,19 @@ ipcMain.on('insert_settings', (_event, args) => {
           phone,
           appFavicon?.name
             ? path?.join(
-                app.getPath('userData'),
-                'assets',
-                settings_favicon_folder_name,
-                appFavicon.name
-              )
+              app.getPath('userData'),
+              'assets',
+              settings_favicon_folder_name,
+              appFavicon.name
+            )
             : appFavicon,
           appLogo?.name
             ? path?.join(
-                app.getPath('userData'),
-                'assets',
-                settings_logo_folder_name,
-                appLogo.name
-              )
+              app.getPath('userData'),
+              'assets',
+              settings_logo_folder_name,
+              appLogo.name
+            )
             : appLogo,
           opentime,
           closetime,
@@ -286,12 +286,12 @@ ipcMain.on('insert_settings', (_event, args) => {
         (err) => {
           err
             ? mainWindow.webContents.send(
-                'insert_settings_response',
-                err.message
-              )
+              'insert_settings_response',
+              err.message
+            )
             : mainWindow.webContents.send('insert_settings_response', {
-                status: 'inserted',
-              });
+              status: 'inserted',
+            });
         }
       );
   });
@@ -498,20 +498,20 @@ ipcMain.on('insertCategoryData', (event, args) => {
           parent_id,
           cat_img?.name
             ? path.join(
-                app.getPath('userData'),
-                'assets',
-                cat_image_folder_name,
-                cat_img.name
-              )
+              app.getPath('userData'),
+              'assets',
+              cat_image_folder_name,
+              cat_img.name
+            )
             : cat_img,
 
           cat_icon?.name
             ? path.join(
-                app.getPath('userData'),
-                'assets',
-                cat_icon_folder_name,
-                cat_icon.name
-              )
+              app.getPath('userData'),
+              'assets',
+              cat_icon_folder_name,
+              cat_icon.name
+            )
             : cat_icon,
 
           category_is_active,
@@ -522,12 +522,12 @@ ipcMain.on('insertCategoryData', (event, args) => {
         (err) => {
           err
             ? mainWindow.webContents.send(
-                'after_insert_get_response',
-                err.message
-              )
+              'after_insert_get_response',
+              err.message
+            )
             : mainWindow.webContents.send('after_insert_get_response', {
-                status: 'updated',
-              });
+              status: 'updated',
+            });
         }
       );
     });
@@ -561,20 +561,20 @@ ipcMain.on('insertCategoryData', (event, args) => {
           parent_id,
           cat_img?.name
             ? path.join(
-                app.getPath('userData'),
-                'assets',
-                cat_image_folder_name,
-                cat_img.name
-              )
+              app.getPath('userData'),
+              'assets',
+              cat_image_folder_name,
+              cat_img.name
+            )
             : cat_img?.name,
 
           cat_icon?.name
             ? path.join(
-                app.getPath('userData'),
-                'assets',
-                cat_icon_folder_name,
-                cat_icon.name
-              )
+              app.getPath('userData'),
+              'assets',
+              cat_icon_folder_name,
+              cat_icon.name
+            )
             : cat_icon?.name,
           category_is_active,
           offer_start_date,
@@ -584,12 +584,12 @@ ipcMain.on('insertCategoryData', (event, args) => {
         (err) => {
           err
             ? mainWindow.webContents.send(
-                'after_insert_get_response',
-                err.message
-              )
+              'after_insert_get_response',
+              err.message
+            )
             : mainWindow.webContents.send('after_insert_get_response', {
-                status: 'inserted',
-              });
+              status: 'inserted',
+            });
         }
       );
     });
@@ -655,11 +655,11 @@ ipcMain.on('delete_category', (event, args) => {
     db.run(`DELETE FROM add_item_category WHERE category_id = ?`, id, (err) => {
       err
         ? mainWindow.webContents.send('delete_category_response', {
-            status: err,
-          })
+          status: err,
+        })
         : mainWindow.webContents.send('delete_category_response', {
-            status: true,
-          });
+          status: true,
+        });
     });
   });
 
@@ -680,8 +680,8 @@ ipcMain.on('add_addons', (event, args) => {
           err
             ? mainWindow.webContents.send('add_addons_response', err.message)
             : mainWindow.webContents.send('add_addons_response', {
-                status: 'updated',
-              });
+              status: 'updated',
+            });
         }
       );
     });
@@ -706,8 +706,8 @@ ipcMain.on('add_addons', (event, args) => {
           err
             ? mainWindow.webContents.send('add_addons_response', err.message)
             : mainWindow.webContents.send('add_addons_response', {
-                status: 'inserted',
-              });
+              status: 'inserted',
+            });
         }
       );
     });
@@ -733,8 +733,8 @@ ipcMain.on('delete_addons', (event, args) => {
       err
         ? mainWindow.webContents.send('delete_addons_response', { status: err })
         : mainWindow.webContents.send('delete_addons_response', {
-            status: true,
-          });
+          status: true,
+        });
     });
   });
   db.close();
@@ -797,11 +797,11 @@ ipcMain.on('add_new_foods', (event, args) => {
           food_name,
           product_img?.name
             ? path.join(
-                app.getPath('userData'),
-                'assets',
-                foods_images_folder_name,
-                product_img.name
-              )
+              app.getPath('userData'),
+              'assets',
+              foods_images_folder_name,
+              product_img.name
+            )
             : product_img,
           component,
           description,
@@ -823,8 +823,8 @@ ipcMain.on('add_new_foods', (event, args) => {
           err
             ? mainWindow.webContents.send('add_new_foods_response', err.message)
             : mainWindow.webContents.send('add_new_foods_response', {
-                status: 'updated',
-              });
+              status: 'updated',
+            });
         }
       );
     });
@@ -875,11 +875,11 @@ ipcMain.on('add_new_foods', (event, args) => {
           food_name,
           product_img?.name
             ? path.join(
-                app.getPath('userData'),
-                'assets',
-                foods_images_folder_name,
-                product_img.name
-              )
+              app.getPath('userData'),
+              'assets',
+              foods_images_folder_name,
+              product_img.name
+            )
             : product_img?.name,
 
           component,
@@ -902,8 +902,8 @@ ipcMain.on('add_new_foods', (event, args) => {
           err
             ? mainWindow.webContents.send('add_new_foods_response', err.message)
             : mainWindow.webContents.send('add_new_foods_response', {
-                status: 'inserted',
-              });
+              status: 'inserted',
+            });
         }
       );
     });
@@ -1436,12 +1436,12 @@ ipcMain.on('add_new_foods_variant', (event, args) => {
         (err) => {
           err
             ? mainWindow.webContents.send(
-                'add_new_foods_variant_response',
-                err.message
-              )
+              'add_new_foods_variant_response',
+              err.message
+            )
             : mainWindow.webContents.send('add_new_foods_variant_response', {
-                status: 'updated',
-              });
+              status: 'updated',
+            });
         }
       );
     });
@@ -1464,12 +1464,12 @@ ipcMain.on('add_new_foods_variant', (event, args) => {
         (err) => {
           err
             ? mainWindow.webContents.send(
-                'add_new_foods_variant_response',
-                err.message
-              )
+              'add_new_foods_variant_response',
+              err.message
+            )
             : mainWindow.webContents.send('add_new_foods_variant_response', {
-                status: 'inserted',
-              });
+              status: 'inserted',
+            });
         }
       );
     });
@@ -1519,15 +1519,15 @@ ipcMain.on('context_bridge_food_available_time', (event, args) => {
         (err) => {
           err
             ? mainWindow.webContents.send(
-                'context_bridge_food_available_time_response',
-                err.message
-              )
+              'context_bridge_food_available_time_response',
+              err.message
+            )
             : mainWindow.webContents.send(
-                'context_bridge_food_available_time_response',
-                {
-                  status: 'updated',
-                }
-              );
+              'context_bridge_food_available_time_response',
+              {
+                status: 'updated',
+              }
+            );
         }
       );
     });
@@ -1550,15 +1550,15 @@ ipcMain.on('context_bridge_food_available_time', (event, args) => {
         (err) => {
           err
             ? mainWindow.webContents.send(
-                'context_bridge_food_available_time_response',
-                err.message
-              )
+              'context_bridge_food_available_time_response',
+              err.message
+            )
             : mainWindow.webContents.send(
-                'context_bridge_food_available_time_response',
-                {
-                  status: 'inserted',
-                }
-              );
+              'context_bridge_food_available_time_response',
+              {
+                status: 'inserted',
+              }
+            );
         }
       );
     });
@@ -1633,23 +1633,23 @@ ipcMain.on('context_bridge_menu_type', (event, args) => {
           menu_type,
           menu_type_icon?.name
             ? path.join(
-                app.getPath('userData'),
-                'assets',
-                menu_icon_folder_name,
-                menu_type_icon.name
-              )
+              app.getPath('userData'),
+              'assets',
+              menu_icon_folder_name,
+              menu_type_icon.name
+            )
             : menu_type_icon,
           is_active,
         ],
         (err) => {
           err
             ? mainWindow.webContents.send(
-                'context_bridge_menu_type_response',
-                err.message
-              )
+              'context_bridge_menu_type_response',
+              err.message
+            )
             : mainWindow.webContents.send('context_bridge_menu_type_response', {
-                status: 'updated',
-              });
+              status: 'updated',
+            });
         }
       );
     });
@@ -1672,23 +1672,23 @@ ipcMain.on('context_bridge_menu_type', (event, args) => {
           menu_type,
           menu_type_icon?.name
             ? path.join(
-                app.getPath('userData'),
-                'assets',
-                menu_icon_folder_name,
-                menu_type_icon.name
-              )
+              app.getPath('userData'),
+              'assets',
+              menu_icon_folder_name,
+              menu_type_icon.name
+            )
             : menu_type_icon,
           is_active,
         ],
         (err) => {
           err
             ? mainWindow.webContents.send(
-                'context_bridge_menu_type_response',
-                err.message
-              )
+              'context_bridge_menu_type_response',
+              err.message
+            )
             : mainWindow.webContents.send('context_bridge_menu_type_response', {
-                status: 'inserted',
-              });
+              status: 'inserted',
+            });
         }
       );
     });
@@ -1738,15 +1738,15 @@ ipcMain.on('context_bridge_menu_addons', (event, args) => {
         (err) => {
           err
             ? mainWindow.webContents.send(
-                'context_bridge_menu_addons_response',
-                err.message
-              )
+              'context_bridge_menu_addons_response',
+              err.message
+            )
             : mainWindow.webContents.send(
-                'context_bridge_menu_addons_response',
-                {
-                  status: 'updated',
-                }
-              );
+              'context_bridge_menu_addons_response',
+              {
+                status: 'updated',
+              }
+            );
         }
       );
     });
@@ -1770,15 +1770,15 @@ ipcMain.on('context_bridge_menu_addons', (event, args) => {
         (err) => {
           err
             ? mainWindow.webContents.send(
-                'context_bridge_menu_addons_response',
-                err.message
-              )
+              'context_bridge_menu_addons_response',
+              err.message
+            )
             : mainWindow.webContents.send(
-                'context_bridge_menu_addons_response',
-                {
-                  status: 'inserted',
-                }
-              );
+              'context_bridge_menu_addons_response',
+              {
+                status: 'inserted',
+              }
+            );
         }
       );
     });
@@ -1884,12 +1884,12 @@ ipcMain.on('insert_customer_info', (event: string, args) => {
         (err) => {
           err
             ? mainWindow.webContents.send(
-                'insert_customer_info_response',
-                err.message
-              )
+              'insert_customer_info_response',
+              err.message
+            )
             : mainWindow.webContents.send('insert_customer_info_response', {
-                status: 'updated',
-              });
+              status: 'updated',
+            });
         }
       );
     });
@@ -1913,12 +1913,12 @@ ipcMain.on('insert_customer_info', (event: string, args) => {
         (err) => {
           err
             ? mainWindow.webContents.send(
-                'insert_customer_info_response',
-                err.message
-              )
+              'insert_customer_info_response',
+              err.message
+            )
             : mainWindow.webContents.send('insert_customer_info_response', {
-                status: 'inserted',
-              });
+              status: 'inserted',
+            });
         }
       );
     });
@@ -2026,8 +2026,8 @@ function insertData(eventName, eventResponse, table, columns) {
             err
               ? mainWindow.webContents.send(eventResponse, err.message)
               : mainWindow.webContents.send(eventResponse, {
-                  status: 'updated',
-                });
+                status: 'updated',
+              });
           }
         );
       });
@@ -2053,8 +2053,8 @@ function insertData(eventName, eventResponse, table, columns) {
             err
               ? mainWindow.webContents.send(eventResponse, err.message)
               : mainWindow.webContents.send(eventResponse, {
-                  status: 'inserted',
-                });
+                status: 'inserted',
+              });
           }
         );
       });
@@ -2083,11 +2083,11 @@ function deleteListItem(
       db.run(`DELETE FROM ${table} WHERE id = ?`, id, (err: ErrorType) => {
         err
           ? mainWindow.webContents.send(eventResponse, {
-              status: err,
-            })
+            status: err,
+          })
           : mainWindow.webContents.send(eventResponse, {
-              status: true,
-            });
+            status: true,
+          });
       });
     });
     db.close();
@@ -2105,9 +2105,8 @@ function getListItems(
   ipcMain.on(channelName, (_event: Electron.IpcMainEvent, args) => {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
     let { status } = args;
-    let sql = `SELECT ${query} FROM ${table} ${
-      condition && 'WHERE is_active = 1'
-    }`;
+    let sql = `SELECT ${query} FROM ${table} ${condition && 'WHERE is_active = 1'
+      }`;
 
     if (status) {
       db.serialize(() => {
@@ -2182,15 +2181,15 @@ ipcMain.on('insert_employee_designation', (_event, args) => {
           console.log('hello', err);
           err
             ? mainWindow.webContents.send(
-                'insert_employee_designation_response',
-                err.message
-              )
+              'insert_employee_designation_response',
+              err.message
+            )
             : mainWindow.webContents.send(
-                'insert_employee_designation_response',
-                {
-                  status: 'updated',
-                }
-              );
+              'insert_employee_designation_response',
+              {
+                status: 'updated',
+              }
+            );
         }
       );
     });
@@ -2212,15 +2211,15 @@ ipcMain.on('insert_employee_designation', (_event, args) => {
         (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
-                'insert_employee_designation_response',
-                err.message
-              )
+              'insert_employee_designation_response',
+              err.message
+            )
             : mainWindow.webContents.send(
-                'insert_employee_designation_response',
-                {
-                  status: 'inserted',
-                }
-              );
+              'insert_employee_designation_response',
+              {
+                status: 'inserted',
+              }
+            );
         }
       );
     });
@@ -2257,12 +2256,12 @@ ipcMain.on('insert_department', (_event, args) => {
         (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
-                'insert_department_response',
-                err.message
-              )
+              'insert_department_response',
+              err.message
+            )
             : mainWindow.webContents.send('insert_department_response', {
-                status: 'updated',
-              });
+              status: 'updated',
+            });
         }
       );
     });
@@ -2282,12 +2281,12 @@ ipcMain.on('insert_department', (_event, args) => {
         (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
-                'insert_department_response',
-                err.message
-              )
+              'insert_department_response',
+              err.message
+            )
             : mainWindow.webContents.send('insert_department_response', {
-                status: 'inserted',
-              });
+              status: 'inserted',
+            });
         }
       );
     });
@@ -2319,12 +2318,12 @@ ipcMain.on('insert_sub_department', (_event, args) => {
         (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
-                'insert_sub_department_response',
-                err.message
-              )
+              'insert_sub_department_response',
+              err.message
+            )
             : mainWindow.webContents.send('insert_sub_department_response', {
-                status: 'updated',
-              });
+              status: 'updated',
+            });
         }
       );
     });
@@ -2345,12 +2344,12 @@ ipcMain.on('insert_sub_department', (_event, args) => {
         (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
-                'insert_sub_department_response',
-                err.message
-              )
+              'insert_sub_department_response',
+              err.message
+            )
             : mainWindow.webContents.send('insert_sub_department_response', {
-                status: 'inserted',
-              });
+              status: 'inserted',
+            });
         }
       );
     });
@@ -2386,12 +2385,12 @@ ipcMain.on('insert_salary_advance', (_event, args) => {
         (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
-                'insert_salary_advance_response',
-                err.message
-              )
+              'insert_salary_advance_response',
+              err.message
+            )
             : mainWindow.webContents.send('insert_salary_advance_response', {
-                status: 'updated',
-              });
+              status: 'updated',
+            });
         }
       );
     });
@@ -2415,18 +2414,325 @@ ipcMain.on('insert_salary_advance', (_event, args) => {
         (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
-                'insert_salary_advance_response',
-                err.message
-              )
+              'insert_salary_advance_response',
+              err.message
+            )
             : mainWindow.webContents.send('insert_salary_advance_response', {
-                status: 'inserted',
-              });
+              status: 'inserted',
+            });
         }
       );
     });
     db.close();
   }
 });
+
+// INSERT EMPLOYEE
+ipcMain.on('insert_employee', (_event, args) => {
+  console.log('2429: Employee table created.');
+  let {
+    first_name,
+    last_name,
+    email,
+    phone,
+    country,
+    state,
+    city,
+    zip_code,
+    attendance_time,
+    employee_type,
+    account_number,
+    bank_name,
+    bban_number,
+    branch_name,
+    division,
+    hire_date,
+    pay_frequency_text,
+    home_department,
+    termination_date,
+    termination_reason,
+    designation,
+    original_hire_date,
+    voluntary_termination,
+    pay_frequency,
+    hourly_rate2,
+    department_text,
+    duty_type,
+    re_hire_date,
+    rate_type,
+    rate,
+    hourly_rate3,
+    benefit_class_code,
+    benefit_accrual_date,
+    benefit_description,
+    benefit_status,
+    supervisor_name,
+    supervisor_report,
+    is_supervisor,
+    date_of_birth,
+    eeo_class,
+    work_in_state,
+    gender,
+    ethnic_group,
+    live_in_state,
+    marital_status,
+    ssn,
+    citizenship,
+    pp_image,
+    home_email,
+    home_phone,
+    cell_phone,
+    business_email,
+    business_phone,
+    emergency_contact,
+    emergency_work_phone,
+    alter_emergency_contact,
+    alt_emergency_work_phone,
+    emergency_home_phone,
+    emergency_contact_relation,
+    alt_emergency_home_phone,
+    custom_field_name,
+    custom_value,
+    custom_field_type,
+    basic_salary,
+    house_rent,
+    medical,
+    others_allowance,
+    gross_salary,
+    tranport_allowance
+  } = args
+  let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+  db.serialize(() => {
+    db.run(`CREATE TABLE IF NOT EXISTS employees (
+      'id' INTEGER PRIMARY KEY AUTOINCREMENT,
+      'first_name' VARCHAR(255) NOT NULL,
+      'last_name' VARCHAR(255),
+      'email' VARCHAR(255) NOT NULL,
+      'phone' VARCHAR(50) NOT NULL,
+      'country' INT,
+      'state' INT,
+      'city' VARCHAR(255),
+      'zip_code' INT,
+      'attendance_time' INT,
+      'employee_type' INT,
+      'account_number' INT NOT NULL,
+      'bank_name' VARCHAR(255) NOT NULL,
+      'bban_number' VARCHAR(255) NOT NULL,
+      'branch_name' VARCHAR(255) NOT NULL,
+      'division' INT NOT NULL,
+      'hire_date' INT,
+      'pay_frequency_text' VARCHAR(255) NOT NULL,
+      'home_department' VARCHAR(255) NOT NULL,
+      'termination_date' INT,
+      'termination_reason' TEXT NOT NULL,
+      'designation' INT NOT NULL,
+      'original_hire_date' INT,
+      'voluntary_termination' INT NOT NULL,
+      'pay_frequency' INT NOT NULL,
+      'hourly_rate2' REAL NOT NULL,
+      'department_text' VARCHAR(255) NOT NULL,
+      'duty_type' INT NOT NULL,
+      're_hire_date' INT,
+      'rate_type' INT NOT NULL,
+      'rate' REAL NOT NULL,
+      'hourly_rate3' INT NOT NULL,
+      'benefit_class_code' VARCHAR(255),
+      'benefit_accrual_date' INT,
+      'benefit_description' TEXT,
+      'benefit_status' INT,
+      'supervisor_name' INT,
+      'supervisor_report' VARCHAR(255),
+      'is_supervisor' INT,
+      'date_of_birth' INT NOT NULL,
+      'eeo_class' VARCHAR(255),
+      'work_in_state' VARCHAR(255),
+      'gender' VARCHAR(50) NOT NULL,
+      'ethnic_group' VARCHAR(255),
+      'live_in_state' VARCHAR(255),
+      'marital_status' VARCHAR(100),
+      'ssn' VARCHAR(255),
+      'citizenship' VARCHAR(255),
+      'pp_image' VARCHAR(255),
+      'home_email' VARCHAR(255),
+      'home_phone' VARCHAR(50),
+      'cell_phone' VARCHAR(50),
+      'business_email' VARCHAR(255),
+      'business_phone' VARCHAR(50),
+      'emergency_contact' VARCHAR(50),
+      'emergency_work_phone' VARCHAR(50),
+      'alter_emergency_contact' VARCHAR(50),
+      'alt_emergency_work_phone' VARCHAR(50),
+      'emergency_home_phone' VARCHAR(50),
+      'emergency_contact_relation' VARCHAR(50),
+      'alt_emergency_home_phone' VARCHAR(50),
+      'custom_field_name' VARCHAR(255),
+      'custom_value' VARCHAR(255),
+      'custom_field_type' VARCHAR(255)
+      )`)
+      .run(`CREATE TABLE IF NOT EXISTS employees_salary (
+    'id' INTEGER PRIMARY KEY AUTOINCREMENT,
+    'basic_salary' REAL,
+    'house_rent' REAL,
+    'medical' REAL,
+    'others_allowance' REAL,
+    'gross_salary' REAL NOT NULL,
+    'tranport_allowance' REAL
+    )`)
+      .run(`INSERT INTO employees (
+        first_name,
+        last_name,
+        email,
+        phone,
+        country,
+        state,
+        city,
+        zip_code,
+        attendance_time,
+        employee_type,
+        account_number,
+        bank_name,
+        bban_number,
+        branch_name,
+        division,
+        hire_date,
+        pay_frequency_text,
+        home_department,
+        termination_date,
+        termination_reason,
+        designation,
+        original_hire_date,
+        voluntary_termination,
+        pay_frequency,
+        hourly_rate2,
+        department_text,
+        duty_type,
+        re_hire_date,
+        rate_type,
+        rate,
+        hourly_rate3,
+        benefit_class_code,
+        benefit_accrual_date,
+        benefit_description,
+        benefit_status,
+        supervisor_name,
+        supervisor_report,
+        is_supervisor,
+        date_of_birth,
+        eeo_class,
+        work_in_state,
+        gender,
+        ethnic_group,
+        live_in_state,
+        marital_status,
+        ssn,
+        citizenship,
+        home_email,
+        home_phone,
+        cell_phone,
+        business_email,
+        business_phone,
+        emergency_contact,
+        emergency_work_phone,
+        alter_emergency_contact,
+        alt_emergency_work_phone,
+        emergency_home_phone,
+        emergency_contact_relation,
+        alt_emergency_home_phone,
+        custom_field_name,
+        custom_value,
+        custom_field_type
+        ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+        [
+          first_name,
+          last_name ? last_name : null,
+          email,
+          phone,
+          country ? country : null,
+          state ? state : null,
+          city ? city : null,
+          zip_code ? zip_code : null,
+          attendance_time ? attendance_time : null,
+          employee_type ? employee_type : null,
+          account_number,
+          bank_name,
+          bban_number,
+          branch_name,
+          division,
+          hire_date ? hire_date : null,
+          pay_frequency_text,
+          home_department,
+          termination_date ? termination_date : null,
+          termination_reason,
+          designation,
+          original_hire_date ? original_hire_date : null,
+          voluntary_termination,
+          pay_frequency,
+          hourly_rate2,
+          department_text,
+          duty_type,
+          re_hire_date ? re_hire_date : null,
+          rate_type,
+          rate,
+          hourly_rate3,
+          benefit_class_code ? benefit_class_code : null,
+          benefit_accrual_date ? benefit_accrual_date : null,
+          benefit_description ? benefit_description : null,
+          benefit_status ? benefit_status : null,
+          supervisor_name ? supervisor_name : null,
+          supervisor_report ? supervisor_report : null,
+          is_supervisor ? is_supervisor : null,
+          date_of_birth,
+          eeo_class ? eeo_class : null,
+          work_in_state,
+          gender ? gender : null,
+          ethnic_group ? ethnic_group : null,
+          live_in_state ? live_in_state : null,
+          marital_status ? marital_status : null,
+          ssn ? ssn : null,
+          citizenship ? citizenship : null,
+          pp_image ? pp_image : null,
+          home_email ? home_email : null,
+          home_phone ? home_phone : null,
+          cell_phone ? cell_phone : null,
+          business_email ? business_email : null,
+          business_phone ? business_phone : null,
+          emergency_contact ? emergency_contact : null,
+          emergency_work_phone ? emergency_work_phone : null,
+          alter_emergency_contact ? emergency_contact : null,
+          alt_emergency_work_phone ? alt_emergency_work_phone : null,
+          emergency_home_phone ? emergency_home_phone : null,
+          emergency_contact_relation ? emergency_contact_relation : null,
+          alt_emergency_home_phone ? alt_emergency_home_phone : null,
+          custom_field_name ? custom_field_name : null,
+          custom_value ? custom_value : null,
+          custom_field_type ? custom_field_type : null
+        ],
+        (err: ErrorType) => {
+          err
+            ? mainWindow.webContents.send(
+              'insert_employee_response',
+              err.message
+            )
+            : mainWindow.webContents.send('insert_employee_response', {
+              status: 'inserted',
+            });
+        }
+      )
+      .run(`INSERT INTO employees_salary
+    (basic_salary, house_rent, medical, others_allowance,
+    gross_salary, tranport_allowance) VALUES (?,?,?,?,?,?)`,
+        [
+          basic_salary ? basic_salary : null,
+          house_rent ? house_rent : null,
+          medical ? medical : null,
+          others_allowance ? others_allowance : null,
+          gross_salary ? gross_salary : null,
+          tranport_allowance ? tranport_allowance : null
+        ]
+      )
+  })
+  db.close();
+})
 
 //TODO: JOINING QUERY
 getListItems(

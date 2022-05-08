@@ -41,17 +41,17 @@ const BasicInformation = ({ employeeInfo, setEmployeeInfo }: any) => {
 
           <Form.Item
             label="Email Address"
-            name="email_address"
+            name="email"
             rules={[
               { required: true, message: 'Please input your email address!' },
             ]}
           >
             <Input
-              value={employeeInfo.email_address}
+              value={employeeInfo.email}
               onChange={(e) =>
                 setEmployeeInfo({
                   ...employeeInfo,
-                  email_address: e.target.value,
+                  email: e.target.value,
                 })
               }
               size="large"
