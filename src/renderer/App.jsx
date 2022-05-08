@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { MemoryRouter as Router, Route, Routes } from 'react-router-dom';
 import SystemMenu from './components/partials/SystemMenu';
 import { ContextData } from './contextApi';
+import { TodaysOrder } from './pages';
 import BankBook from './pages/accounts/BankBook';
 import Cash from './pages/accounts/Cash';
 import CashBook from './pages/accounts/CashBook';
@@ -47,7 +48,53 @@ import OnGoingOrder from './pages/OnGoingOrder';
 import ItemSalesReport from './pages/report/ItemSalesReport';
 import SalesReport from './pages/report/SalesReport';
 import ApplicationSettings from './pages/settings/ApplicationSettings';
-import TodaysOrder from './pages/TodaysOrder';
+// import {
+//   AddAddons,
+//   AddCategory,
+//   AddEmployee,
+//   AddFood,
+//   AddonsAssignList,
+//   AddonsList,
+//   AdvanceSalary,
+//   ApplicationSettings,
+//   BankBook,
+//   Cash,
+//   CashBook,
+//   CategoryList,
+//   ChartOfAccounts,
+//   Contact,
+//   ContraVoucher,
+//   CreditVoucher,
+//   Currency,
+//   DashBoard,
+//   DebitVoucher,
+//   Departments,
+//   Designation,
+//   FinancialYear,
+//   FinancialYearEnding,
+//   FoodAvailability,
+//   FoodList,
+//   FoodVariant,
+//   Holiday,
+//   Home,
+//   ItemSalesReport,
+//   Journal,
+//   Language,
+//   LeaveApplication,
+//   LeaveType,
+//   ManageEmployee,
+//   MenuType,
+//   MonthlyDeduction,
+//   OnGoingOrder,
+//   OpeningBalance,
+//   SalaryGenerate,
+//   SalesReport,
+//   SubDepartments,
+//   Supplier,
+//   TodaysOrder,
+//   VoucherApproval,
+//   VoucherReport,
+// } from './pages';
 
 export default function App() {
   window.get_settings.send('get_settings', { status: true });
