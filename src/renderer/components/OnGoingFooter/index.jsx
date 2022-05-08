@@ -191,7 +191,11 @@ const OnGoingFooter = ({
 
                 <Button
                   type="primary"
-                  className="on_going_btn due_invoice_btn premium_btn"
+                  className={
+                    activeInactiveBtn?.status === 1
+                      ? 'on_going_btn due_invoice_btn '
+                      : 'on_going_btn due_invoice_btn premium_btn'
+                  }
                   onClick={() => generateDueInvoice(orderComplete)}
                 >
                   <DeliveredProcedureOutlined /> Due Invoice
@@ -206,7 +210,7 @@ const OnGoingFooter = ({
                   }
                   onClick={() => kitchenOrderToken(orderComplete)}
                 >
-                  <EditOutlined /> Kot
+                  <EditOutlined /> KOT
                 </Button>
 
                 <Button

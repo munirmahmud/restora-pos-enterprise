@@ -9,27 +9,25 @@ const ApplicationSettings = ({
   reRenderOnSettings,
 }) => {
   return (
-    <>
-      <div className="main_wrapper">
-        <div className="pos_system">
-          <ConfigProvider direction={settings.site_align}>
-            <Row>
-              <Col lg={5} xl={3} xxl={3}>
-                <Sidebar settings={settings} />
-              </Col>
-              <Col lg={19} xl={21} xxl={21}>
-                <Heading title="Application Settings" />
+    <div className="main_wrapper">
+      <div className="pos_system">
+        <ConfigProvider direction={settings.site_align}>
+          <Row>
+            <Col lg={5} xl={3} xxl={3}>
+              <Sidebar settings={settings} />
+            </Col>
+            <Col lg={19} xl={21} xxl={21}>
+              <Heading title="Application Settings" />
 
-                <ApplicationSetting
-                  setReRenderOnSettings={setReRenderOnSettings}
-                  reRenderOnSettings={reRenderOnSettings}
-                />
-              </Col>
-            </Row>
-          </ConfigProvider>
-        </div>
+              <ApplicationSetting
+                setReRenderOnSettings={setReRenderOnSettings}
+                reRenderOnSettings={reRenderOnSettings}
+              />
+            </Col>
+          </Row>
+        </ConfigProvider>
       </div>
-    </>
+    </div>
   );
 };
 
