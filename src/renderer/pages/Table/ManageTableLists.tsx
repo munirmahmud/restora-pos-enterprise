@@ -1,13 +1,24 @@
 import {
   DeleteOutlined,
   EditOutlined,
+  ExclamationCircleOutlined,
   PlusCircleOutlined,
 } from '@ant-design/icons';
-import { Button, Form, Input, Modal, Select, Space, Table } from 'antd';
-import { ReactNode, useState } from 'react';
+import {
+  Button,
+  Form,
+  Input,
+  message,
+  Modal,
+  Select,
+  Space,
+  Table,
+} from 'antd';
+import { ReactNode, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const { Option } = Select;
+const { confirm } = Modal;
 
 type DataType = {
   id: number;
@@ -20,6 +31,11 @@ type DataType = {
 const ManageTableLists = () => {
   const [form] = Form.useForm();
   const [openModal, setOpenModal] = useState(false);
+  const [addTable, setAddTable] = useState([]);
+
+  useEffect(() => {
+    setAddTable([]);
+  }, []);
 
   const columns = [
     {
@@ -93,12 +109,32 @@ const ManageTableLists = () => {
   const handleEditTable = (data: DataType) => {
     console.log('Edit data', data);
   };
+
   const handleDeleteTable = (data: DataType) => {
     console.log('Delete data', data);
+    confirm({
+      title: 'Are you sure to delete this item?',
+      icon: <ExclamationCircleOutlined />,
+      content:
+        'If you click on the ok button the item will be deleted permanently from the database. Undo is not possible.',
+      onOk() {
+        message.success({
+          content: 'Table deleted successfully',
+          className: 'custom-class',
+          duration: 1,
+          style: {
+            marginTop: '5vh',
+            float: 'right',
+          },
+        });
+      },
+      onCancel() {},
+    });
   };
 
   const handleSubmit = (values: any) => {
     console.log(values);
+    form.resetFields();
   };
 
   const onReset = () => {
@@ -148,6 +184,10 @@ const ManageTableLists = () => {
             form={form}
             name="control-hooks"
             onFinish={handleSubmit}
+            fields={addTable}
+            onFieldsChange={(_, allFields) => {
+              setAddTable(allFields);
+            }}
           >
             <Form.Item
               name="table_name"

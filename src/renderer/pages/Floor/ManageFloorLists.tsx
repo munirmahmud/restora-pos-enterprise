@@ -1,7 +1,23 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Col, Form, Input, Row, Space, Table } from 'antd';
-import { ReactNode } from 'react';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  ExclamationCircleOutlined,
+} from '@ant-design/icons';
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  message,
+  Modal,
+  Row,
+  Space,
+  Table,
+} from 'antd';
+import { ReactNode, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+
+const { confirm } = Modal;
 
 type DataType = {
   id: number;
@@ -13,36 +29,34 @@ type DataType = {
 
 const ManageFloorLists = () => {
   const [form] = Form.useForm();
+  const [addFloor, setAddFloor] = useState([]);
+
+  useEffect(() => {
+    setAddFloor([
+      {
+        name: ['floor_name'],
+        value: '',
+      },
+    ]);
+  }, []);
 
   const columns = [
     {
       title: 'SL NO',
       dataIndex: 'sl_no',
       key: 'sl_no',
-      width: '7%',
+      width: '10%',
     },
     {
-      title: 'Table Name',
-      dataIndex: 'table_name',
-      key: 'table_name',
-      width: '30%',
-    },
-    {
-      title: 'Capacity',
-      dataIndex: 'capacity',
-      key: 'capacity',
-      width: '25%',
-    },
-    {
-      title: 'Icon',
-      dataIndex: 'icon',
-      key: 'icon',
-      width: '20%',
+      title: 'Floor Name',
+      dataIndex: 'floor_name',
+      key: 'floor_name',
     },
     {
       title: 'Action',
       key: 'action',
       align: 'center',
+      width: '20%',
       render: (_text: string, record: DataType): ReactNode => (
         <Space size="middle">
           <Button type="primary" onClick={() => handleEditFloor(record)}>
@@ -65,21 +79,15 @@ const ManageFloorLists = () => {
   const data = [
     {
       sl_no: 1,
-      table_name: 'John Brown',
-      capacity: 32,
-      icon: '',
+      floor_name: 'Main Floor',
     },
     {
       sl_no: 2,
-      table_name: 'Jim Green',
-      capacity: 42,
-      icon: '',
+      floor_name: 'Jim Green',
     },
     {
       sl_no: 3,
-      table_name: 'Joe Black',
-      capacity: 32,
-      icon: '',
+      floor_name: 'Joe Black',
     },
   ];
 
@@ -89,10 +97,29 @@ const ManageFloorLists = () => {
 
   const handleDeleteFloor = (data: DataType) => {
     console.log('Delete data', data);
+    confirm({
+      title: 'Are you sure to delete this item?',
+      icon: <ExclamationCircleOutlined />,
+      content:
+        'If you click on the ok button the item will be deleted permanently from the database. Undo is not possible.',
+      onOk() {
+        message.success({
+          content: 'Floor deleted successfully',
+          className: 'custom-class',
+          duration: 1,
+          style: {
+            marginTop: '5vh',
+            float: 'right',
+          },
+        });
+      },
+      onCancel() {},
+    });
   };
 
   const handleSubmit = (values: any) => {
     console.log(values);
+    form.resetFields();
   };
 
   const onReset = () => {
@@ -124,23 +151,33 @@ const ManageFloorLists = () => {
                 form={form}
                 name="control-hooks"
                 onFinish={handleSubmit}
+                fields={addFloor}
+                onFieldsChange={(_, allFields) => {
+                  setAddFloor(allFields);
+                }}
               >
-                <Form.Item
-                  name="floor_name"
-                  label="Floor Name"
-                  rules={[{ required: true }]}
-                >
-                  <Input placeholder="Add Table Name" />
-                </Form.Item>
+                <Row gutter={20}>
+                  <Col lg={16}>
+                    <Form.Item
+                      name="floor_name"
+                      label="Floor Name"
+                      rules={[{ required: true }]}
+                    >
+                      <Input placeholder="Add Table Name" />
+                    </Form.Item>
+                  </Col>
 
-                <Space>
-                  <Button type="primary" htmlType="submit">
-                    Submit
-                  </Button>
-                  <Button type="primary" danger onClick={onReset}>
-                    Reset
-                  </Button>
-                </Space>
+                  <Col lg={8} className="flex content_start">
+                    <Space>
+                      <Button type="primary" htmlType="submit">
+                        Add
+                      </Button>
+                      <Button type="primary" danger onClick={onReset}>
+                        Reset
+                      </Button>
+                    </Space>
+                  </Col>
+                </Row>
               </Form>
             </Col>
           </Row>
