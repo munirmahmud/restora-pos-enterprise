@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { MemoryRouter as Router, Route, Routes } from 'react-router-dom';
 import SystemMenu from './components/partials/SystemMenu';
 import { ContextData } from './contextApi';
+import { TodaysOrder } from './pages';
 import BankBook from './pages/accounts/BankBook';
 import Cash from './pages/accounts/Cash';
 import CashBook from './pages/accounts/CashBook';
@@ -49,7 +50,6 @@ import ItemSalesReport from './pages/report/ItemSalesReport';
 import SalesReport from './pages/report/SalesReport';
 import ApplicationSettings from './pages/settings/ApplicationSettings';
 import Table from './pages/Table';
-import TodaysOrder from './pages/TodaysOrder';
 
 export default function App() {
   window.get_settings.send('get_settings', { status: true });
