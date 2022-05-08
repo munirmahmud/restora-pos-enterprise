@@ -80,7 +80,7 @@ const OnGoingFooter = ({
     // const orderItems = JSON.parse(orderData.order_info);
 
     // setCartItems(orderItems);
-    // redirect('/', { state: { ...orderData, order_info: orderItems } });
+    redirect('/', { state: { ...orderData, order_info: orderItems } });
   };
 
   const kitchenOrderToken = (orderDetails) => {
@@ -96,15 +96,6 @@ const OnGoingFooter = ({
 
       return;
     }
-
-    // const orderItems = JSON.parse(orderDetails.order_info);
-
-    // const tokenWithOrders = {
-    //   ...orderDetails,
-    //   order_info: orderItems,
-    // };
-
-    // setOrderData(tokenWithOrders);
 
     var printContents = document.getElementById(tokenPrint).innerHTML;
     var originalContents = document.body.innerHTML;

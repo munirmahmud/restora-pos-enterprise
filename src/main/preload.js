@@ -405,6 +405,23 @@ sendDataThroughMiddleware(
   'delete_salary_advance_response' //Response
 );
 
+// FLOOR
+sendDataThroughMiddleware(
+  'insert_floor', //Event Name
+  'insert_floor', // Channel Name
+  'insert_floor_response' //Response
+);
+sendDataThroughMiddleware(
+  'fetch_floor', //Event Name
+  'fetch_floor', // Channel Name
+  'fetch_floor_response' //Response
+);
+sendDataThroughMiddleware(
+  'delete_floor', //Event Name
+  'delete_floor', // Channel Name
+  'delete_floor_response' //Response
+);
+
 /*======================================================================
   FUNCTION DECLARATIONS
 ========================================================================*/
