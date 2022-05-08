@@ -40,7 +40,7 @@ const AddEmployeeInfo = () => {
     medical: '', // emp_salary
     others_allowance: '', // emp_salary
     gross_salary: '', // emp_salary
-    tranport_allowance:'', // emp_salary
+    tranport_allowance: '', // emp_salary
 
     division: '',
     hire_date: '',
@@ -78,6 +78,7 @@ const AddEmployeeInfo = () => {
     marital_status: '',
     ssn: '',
     citizenship: '',
+    pp_image: '',
 
     home_email: '',
     home_phone: '',
@@ -250,7 +251,7 @@ const AddEmployeeInfo = () => {
               type="primary"
               htmlType="submit"
               className="submit_btn"
-              // onClick={() => message.success('Processing complete!')}
+            // onClick={() => message.success('Processing complete!')}
             >
               Done
             </Button>
