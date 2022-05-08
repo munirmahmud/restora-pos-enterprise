@@ -269,15 +269,19 @@ export const Sidebar = ({ settings }) => {
             title="Setting"
             icon={<FontAwesomeIcon icon={faCog} />}
           >
-            <Menu.Item key="application_setting:1">
+            <Menu.Item key="manage_table:1">
+              <Link to="/manage_table">Manage Table</Link>
+            </Menu.Item>
+
+            <Menu.Item key="application_setting:2">
               <Link to="/application_setting">Application Setting</Link>
             </Menu.Item>
 
-            <Menu.Item key="currency:2">
+            <Menu.Item key="currency:3">
               <Link to="/currency">Currency</Link>
             </Menu.Item>
 
-            <Menu.Item key="language:2">
+            <Menu.Item key="language:4">
               <Link to="/language">Language</Link>
             </Menu.Item>
           </SubMenu>
