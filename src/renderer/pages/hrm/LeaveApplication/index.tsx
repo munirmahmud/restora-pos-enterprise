@@ -1,15 +1,15 @@
 import { Col, ConfigProvider, Row } from 'antd';
 import { FC } from 'react';
-import AddLeaveType from 'renderer/components/hrm/AddLeaveType';
 import Sidebar from 'renderer/components/partials/Sidebar';
 import { SettingsProps } from '../../../types';
 import Heading from './../../../components/Heading';
+import AddLeaveApplication from './../../../components/hrm/AddLeaveApplication';
 
 type LeaveTypeProps = {
   setting: SettingsProps;
 };
 
-const LeaveType: FC<LeaveTypeProps> = ({ settings }: any) => {
+const LeaveApplication: FC<LeaveTypeProps> = ({ settings }: any) => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">
@@ -20,10 +20,10 @@ const LeaveType: FC<LeaveTypeProps> = ({ settings }: any) => {
             </Col>
 
             <Col lg={19} xl={21} xxl={21}>
-              <Heading title="Add Leave Type" />
+              <Heading title="Leave Application" />
 
               <div style={{ margin: '0rem 1.5rem' }}>
-                <AddLeaveType />
+                <AddLeaveApplication />
               </div>
             </Col>
           </Row>
@@ -33,4 +33,4 @@ const LeaveType: FC<LeaveTypeProps> = ({ settings }: any) => {
   );
 };
 
-export default LeaveType;
+export default LeaveApplication;

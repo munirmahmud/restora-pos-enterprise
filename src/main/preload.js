@@ -335,7 +335,7 @@ sendDataThroughMiddlewareOn(
   'get_dashboard_data_response'
 );
 
-/****************INSERT EMPLOYEE DESIGNATION****************/
+/****************HUMAN RESOURCE****************/
 sendDataThroughMiddleware(
   'insert_employee_designation', //Event Name
   'insert_employee_designation', // Channel Name
@@ -352,6 +352,57 @@ sendDataThroughMiddleware(
   'delete_employee_designation', //Event Name
   'delete_employee_designation', // Channel Name
   'delete_employee_designation_response' //Response
+);
+
+/****************INSERT DEPARTMENT****************/
+sendDataThroughMiddleware(
+  'insert_department', //Event Name
+  'insert_department', // Channel Name
+  'insert_department_response' //Response
+);
+sendDataThroughMiddleware(
+  'fetch_department', //Event Name
+  'fetch_department', // Channel Name
+  'fetch_department_response' //Response
+);
+sendDataThroughMiddleware(
+  'delete_department', //Event Name
+  'delete_department', // Channel Name
+  'delete_department_response' //Response
+);
+
+// SUB DEPARTMENT
+sendDataThroughMiddleware(
+  'insert_sub_department', //Event Name
+  'insert_sub_department', // Channel Name
+  'insert_sub_department_response' //Response
+);
+sendDataThroughMiddleware(
+  'fetch_sub_department', //Event Name
+  'fetch_sub_department', // Channel Name
+  'fetch_sub_department_response' //Response
+);
+sendDataThroughMiddleware(
+  'delete_sub_department', //Event Name
+  'delete_sub_department', // Channel Name
+  'delete_sub_department_response' //Response
+);
+
+// SALARY ADVANCE
+sendDataThroughMiddleware(
+  'insert_salary_advance', //Event Name
+  'insert_salary_advance', // Channel Name
+  'insert_salary_advance_response' //Response
+);
+sendDataThroughMiddleware(
+  'fetch_salary_advance', //Event Name
+  'fetch_salary_advance', // Channel Name
+  'fetch_salary_advance_response' //Response
+);
+sendDataThroughMiddleware(
+  'delete_salary_advance', //Event Name
+  'delete_salary_advance', // Channel Name
+  'delete_salary_advance_response' //Response
 );
 
 /*======================================================================

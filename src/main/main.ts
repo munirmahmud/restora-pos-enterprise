@@ -19,6 +19,15 @@ declare global {
     get_employee_designation: any;
     insert_employee_designation: any;
     delete_employee_designation: any;
+    insert_department: any;
+    fetch_department: any;
+    delete_department: any;
+    insert_sub_department: any;
+    fetch_sub_department: any;
+    delete_sub_department: any;
+    insert_salary_advance: any;
+    fetch_salary_advance: any;
+    delete_salary_advance: any;
   }
 }
 
@@ -1071,16 +1080,15 @@ ipcMain.on('update_order_info_after_edit', (event, args) => {
 });
 
 // Get all order info
-ipcMain.on('get_all_order_info_ongoing', (event, args) => {
+ipcMain.on('get_all_order_info_ongoing', (_event, args) => {
   let { status } = args;
 
   if (status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
-    let sql = `SELECT * FROM orders
-    where status = 1`;
+    let sql = `SELECT * FROM orders where status = 1`;
 
     db.serialize(() => {
-      db.all(sql, [], (err, rows) => {
+      db.all(sql, [], (err: ErrorType, rows: any) => {
         mainWindow.webContents.send(
           'get_all_order_info_ongoing_response',
           rows
@@ -1137,7 +1145,7 @@ ipcMain.on('get_todays_completed_orders', (event, args) => {
 });
 
 // Complete order info
-ipcMain.on('update_order_info_ongoing', (event, args) => {
+ipcMain.on('update_order_info_ongoing', (_event: any, args: any) => {
   let { order_id, grand_total, discount } = args;
 
   let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
@@ -1154,16 +1162,16 @@ ipcMain.on('update_order_info_ongoing', (event, args) => {
 });
 
 // Get sales report
-ipcMain.on('get_all_order_for_sales_report', (event, args) => {
+ipcMain.on('get_all_order_for_sales_report', (_event, args) => {
   if (args.status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
     let sql = `SELECT orders.*, customer_info.customer_name
     FROM orders
     INNER JOIN customer_info ON orders.customer_id = customer_info.id
     ORDER BY creation_date DESC`;
-    db.all(sql, [], (err, rows) => {
+    db.all(sql, [], (_err: ErrorType, rows: any) => {
       if (rows && rows.length > 0) {
-        const allOrders = rows.map((order, index) => {
+        const allOrders = rows.map((order: any, index: number) => {
           let temp = JSON.parse(order.order_info);
           let amount = 0;
           temp.map((t) => {
@@ -1194,40 +1202,43 @@ ipcMain.on('get_all_order_for_sales_report', (event, args) => {
 });
 
 // Get item sales report
-ipcMain.on('get_order_info_for_item_sales_report', (event, args) => {
-  if (args.status) {
-    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
-    let sql = `SELECT orders.order_info FROM orders`;
-    db.all(sql, [], (err, rows) => {
-      if (rows && rows.length) {
-        let newData = new Array();
+ipcMain.on(
+  'get_order_info_for_item_sales_report',
+  (_event: Electron.IpcMainEvent, args) => {
+    if (args.status) {
+      let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+      let sql = `SELECT orders.order_info FROM orders`;
+      db.all(sql, [], (_err: ErrorType, rows: any) => {
+        if (rows && rows.length) {
+          let newData = new Array();
 
-        rows.forEach((data) => {
-          let temp = JSON.parse(data.order_info);
-          temp.map((t) => newData.push(t));
-        });
+          rows.forEach((data: any) => {
+            let temp = JSON.parse(data.order_info);
+            temp.map((t: any) => newData.push(t));
+          });
 
-        const unique = newData;
+          const unique = newData;
 
-        const group = {};
+          const group: any = {};
 
-        unique.forEach((e) => {
-          const o = (group[e.id] = group[e.id] || { ...e, quantity: 0 });
-          o.quantity += e.quantity;
-        });
+          unique.forEach((e) => {
+            const o = (group[e.id] = group[e.id] || { ...e, quantity: 0 });
+            o.quantity += e.quantity;
+          });
 
-        const res = Object.values(group);
+          const res = Object.values(group);
 
-        mainWindow.webContents.send(
-          'get_order_info_for_item_sales_report_response',
-          res
-        );
-      }
-    });
+          mainWindow.webContents.send(
+            'get_order_info_for_item_sales_report_response',
+            res
+          );
+        }
+      });
 
-    db.close();
+      db.close();
+    }
   }
-});
+);
 
 // Get dashboard report
 ipcMain.on('get_dashboard_data', (event, args) => {
@@ -1848,7 +1859,7 @@ insertData(
   New Customer Name in to POS
 =====================================================*/
 // Insert New Customer Info
-ipcMain.on('insert_customer_info', (event, args) => {
+ipcMain.on('insert_customer_info', (event: string, args) => {
   let {
     id,
     customer_name,
@@ -1912,11 +1923,11 @@ ipcMain.on('insert_customer_info', (event, args) => {
   }
 });
 
-/*==================================================================
+/*================================================================
   Get addons and variants
 ==================================================================*/
-ipcMain.on('get_addons_and_variant', (event, args) => {
-  let food_addon_variants = {};
+ipcMain.on('get_addons_and_variant', (_event: any, args) => {
+  let food_addon_variants: any = {};
   let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
   let sql = `SELECT addons.add_on_id, addons.add_on_name, addons.price
   FROM addons
@@ -1933,10 +1944,10 @@ ipcMain.on('get_addons_and_variant', (event, args) => {
   WHERE item_foods.id = ${args}`;
 
   db.serialize(() => {
-    db.all(sql, [], (err, rows) => {
+    db.all(sql, [], (_err: ErrorType, rows: any) => {
       food_addon_variants['addons'] = rows;
     });
-    db.all(sql2, [], (err, rows) => {
+    db.all(sql2, [], (_err: ErrorType, rows: any) => {
       food_addon_variants['variants'] = rows;
     });
   });
@@ -2056,13 +2067,17 @@ function insertData(eventName, eventResponse, table, columns) {
  * @params string event response
  * @params string database table name
  * */
-function deleteListItem(channel: string, eventResponse: string, table: string) {
+function deleteListItem(
+  channel: string,
+  eventResponse: string,
+  table: string
+): void {
   ipcMain.on(channel, (_event, args) => {
     let { id } = args;
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
 
     db.serialize(() => {
-      db.run(`DELETE FROM ${table} WHERE id = ?`, id, (err) => {
+      db.run(`DELETE FROM ${table} WHERE id = ?`, id, (err: ErrorType) => {
         err
           ? mainWindow.webContents.send(eventResponse, {
               status: err,
@@ -2215,21 +2230,209 @@ getListItems(
   'get_employee_designation_response',
   'emp_designation'
 );
+deleteListItem(
+  'delete_employee_designation',
+  'delete_employee_designation_response',
+  'department'
+);
 
-ipcMain.on('delete_employee_designation', (_event, args) => {
-  let { id } = args;
-  let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
-  db.serialize(() => {
-    db.run(`DELETE FROM emp_designation WHERE id = ?`, id, (err: ErrorType) => {
-      err
-        ? mainWindow.webContents.send('delete_employee_designation_response', {
-            status: err,
-          })
-        : mainWindow.webContents.send('delete_employee_designation_response', {
-            status: true,
-          });
+/*********************
+ * DEPARTMENT
+ ********************/
+// INSERT DEPARTMENT DATA
+ipcMain.on('insert_department', (_event, args) => {
+  let { id, department_name } = args;
+
+  // Execute if the event has row ID / data ID. It is used to update a specific item
+  if (args.id !== undefined) {
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+
+    db.serialize(() => {
+      db.run(
+        `INSERT OR replace INTO department (id, department_name) VALUES (?, ?)`,
+        [id, department_name],
+        (err: ErrorType) => {
+          err
+            ? mainWindow.webContents.send(
+                'insert_department_response',
+                err.message
+              )
+            : mainWindow.webContents.send('insert_department_response', {
+                status: 'updated',
+              });
+        }
+      );
     });
-  });
-
-  db.close();
+    db.close();
+  } else {
+    // Execute if it is new, then insert it
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+    db.serialize(() => {
+      db.run(
+        `CREATE TABLE IF NOT EXISTS department (
+          'id' INTEGER PRIMARY KEY AUTOINCREMENT,
+          'department_name' varchar(150)
+        )`
+      ).run(
+        `INSERT OR REPLACE INTO department (department_name) VALUES (?)`,
+        [department_name],
+        (err: ErrorType) => {
+          err
+            ? mainWindow.webContents.send(
+                'insert_department_response',
+                err.message
+              )
+            : mainWindow.webContents.send('insert_department_response', {
+                status: 'inserted',
+              });
+        }
+      );
+    });
+    db.close();
+  }
 });
+
+// Fetch department data
+getListItems('fetch_department', 'fetch_department_response', 'department');
+deleteListItem('delete_department', 'delete_department_response', 'department');
+
+/*********************
+ * SUB DEPARTMENT
+ ********************/
+// INSERT SUB DEPARTMENT DATA
+ipcMain.on('insert_sub_department', (_event, args) => {
+  let { id, sub_department_name, department_id } = args;
+
+  console.log('args', args);
+
+  // Execute if the event has row ID / data ID. It is used to update a specific item
+  if (args.id !== undefined) {
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+
+    db.serialize(() => {
+      db.run(
+        `INSERT OR replace INTO sub_department (id, sub_department_name, department_id) VALUES (?, ?, ?)`,
+        [id, sub_department_name, department_id],
+        (err: ErrorType) => {
+          err
+            ? mainWindow.webContents.send(
+                'insert_sub_department_response',
+                err.message
+              )
+            : mainWindow.webContents.send('insert_sub_department_response', {
+                status: 'updated',
+              });
+        }
+      );
+    });
+    db.close();
+  } else {
+    // Execute if it is new, then insert it
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+    db.serialize(() => {
+      db.run(
+        `CREATE TABLE IF NOT EXISTS sub_department (
+          'id' INTEGER PRIMARY KEY AUTOINCREMENT,
+          'sub_department_name' varchar(150),
+          'department_id' INT
+        )`
+      ).run(
+        `INSERT OR REPLACE INTO sub_department (sub_department_name, department_id) VALUES (?, ?)`,
+        [sub_department_name, department_id],
+        (err: ErrorType) => {
+          err
+            ? mainWindow.webContents.send(
+                'insert_sub_department_response',
+                err.message
+              )
+            : mainWindow.webContents.send('insert_sub_department_response', {
+                status: 'inserted',
+              });
+        }
+      );
+    });
+    db.close();
+  }
+});
+
+getListItems(
+  'fetch_sub_department',
+  'fetch_sub_department_response',
+  'sub_department'
+);
+deleteListItem(
+  'delete_sub_department',
+  'delete_sub_department_response',
+  'sub_department'
+);
+
+// INSERT SALARY ADVANCE DATA
+ipcMain.on('insert_salary_advance', (_event, args) => {
+  let { id, employee_id, req_amount, release_amount, salary_month } = args;
+
+  console.log('args', args);
+
+  // Execute if the event has row ID / data ID. It is used to update a specific item
+  if (args.id !== undefined) {
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+
+    db.serialize(() => {
+      db.run(
+        `INSERT OR replace INTO salary_advance (id, employee_id, req_amount, release_amount, salary_month) VALUES (?, ?, ?, ?, ?)`,
+        [id, employee_id, req_amount, release_amount, salary_month],
+        (err: ErrorType) => {
+          err
+            ? mainWindow.webContents.send(
+                'insert_salary_advance_response',
+                err.message
+              )
+            : mainWindow.webContents.send('insert_salary_advance_response', {
+                status: 'updated',
+              });
+        }
+      );
+    });
+    db.close();
+  } else {
+    // Execute if it is new, then insert it
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+    db.serialize(() => {
+      db.run(
+        `CREATE TABLE IF NOT EXISTS salary_advance (
+          'id' INTEGER PRIMARY KEY AUTOINCREMENT,
+          'employee_id' INT NOT NULL,
+          'req_amount' INT,
+          'release_amount' INT DEFAULT 0,
+          'salary_month' TEXT,
+          'created_at' DATETIME
+        )`
+      ).run(
+        `INSERT OR REPLACE INTO salary_advance (employee_id, req_amount, release_amount, salary_month, created_at) VALUES (?, ?, ?, ?, ?)`,
+        [employee_id, req_amount, release_amount, salary_month, Date.now()],
+        (err: ErrorType) => {
+          err
+            ? mainWindow.webContents.send(
+                'insert_salary_advance_response',
+                err.message
+              )
+            : mainWindow.webContents.send('insert_salary_advance_response', {
+                status: 'inserted',
+              });
+        }
+      );
+    });
+    db.close();
+  }
+});
+
+//TODO: JOINING QUERY
+getListItems(
+  'fetch_salary_advance',
+  'fetch_salary_advance_response',
+  'salary_advance'
+);
+deleteListItem(
+  'delete_salary_advance',
+  'delete_salary_advance_response',
+  'salary_advance'
+);

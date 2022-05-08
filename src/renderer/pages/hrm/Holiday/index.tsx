@@ -1,15 +1,14 @@
 import { Col, ConfigProvider, Row } from 'antd';
 import { FC } from 'react';
-import AddLeaveType from 'renderer/components/hrm/AddLeaveType';
+import AddHoliday from 'renderer/components/hrm/AddHoliday';
 import Sidebar from 'renderer/components/partials/Sidebar';
 import { SettingsProps } from '../../../types';
 import Heading from './../../../components/Heading';
-
-type LeaveTypeProps = {
+type HolidayProps = {
   setting: SettingsProps;
 };
 
-const LeaveType: FC<LeaveTypeProps> = ({ settings }: any) => {
+const Holiday: FC<HolidayProps> = ({ settings }: any) => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">
@@ -23,7 +22,7 @@ const LeaveType: FC<LeaveTypeProps> = ({ settings }: any) => {
               <Heading title="Add Leave Type" />
 
               <div style={{ margin: '0rem 1.5rem' }}>
-                <AddLeaveType />
+                <AddHoliday />
               </div>
             </Col>
           </Row>
@@ -33,4 +32,4 @@ const LeaveType: FC<LeaveTypeProps> = ({ settings }: any) => {
   );
 };
 
-export default LeaveType;
+export default Holiday;

@@ -1,15 +1,17 @@
 import { Col, ConfigProvider, Row } from 'antd';
 import { FC } from 'react';
-import AddLeaveType from 'renderer/components/hrm/AddLeaveType';
+import AddEmployeeInfo from 'renderer/components/hrm/AddEmployeeInfo';
 import Sidebar from 'renderer/components/partials/Sidebar';
+import Heading from '../../../components/Heading';
 import { SettingsProps } from '../../../types';
-import Heading from './../../../components/Heading';
 
-type LeaveTypeProps = {
-  setting: SettingsProps;
+type VoucherReportProps = {
+  settings: SettingsProps;
 };
 
-const LeaveType: FC<LeaveTypeProps> = ({ settings }: any) => {
+const MonthlyDeduction: FC<VoucherReportProps> = ({
+  settings,
+}): JSX.Element => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">
@@ -20,10 +22,10 @@ const LeaveType: FC<LeaveTypeProps> = ({ settings }: any) => {
             </Col>
 
             <Col lg={19} xl={21} xxl={21}>
-              <Heading title="Add Leave Type" />
+              <Heading title="Monthly Deduction" />
 
               <div style={{ margin: '0rem 1.5rem' }}>
-                <AddLeaveType />
+                <AddEmployeeInfo />
               </div>
             </Col>
           </Row>
@@ -33,4 +35,4 @@ const LeaveType: FC<LeaveTypeProps> = ({ settings }: any) => {
   );
 };
 
-export default LeaveType;
+export default MonthlyDeduction;

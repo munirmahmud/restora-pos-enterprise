@@ -14,6 +14,7 @@ import {
   Space,
   Table,
 } from 'antd';
+import { getDataFromDatabase } from 'helpers';
 import { Key, ReactNode, useEffect, useState } from 'react';
 
 const { confirm } = Modal;
@@ -21,13 +22,14 @@ const { Option } = Select;
 
 type DataType = {
   key: Key;
-  sl_no: number;
+  id: number;
   department_name: string;
 };
 
 type UpdateSubDepartmentType = {
   sub_department_name?: string;
-  department_name?: string;
+  department_id?: number;
+  id?: number;
 };
 type SubDepartmentType = {
   name: string | number | (string | number)[];
@@ -38,7 +40,15 @@ type SubDepartmentType = {
   warnings?: string[];
 };
 
+type DepartmentType = {
+  id: number;
+  department_name: string;
+};
+
 const SubDepartmentsTable = () => {
+  window.fetch_department.send('fetch_department', { status: true });
+  window.fetch_sub_department.send('fetch_sub_department', { status: true });
+
   const [form] = Form.useForm();
 
   const [isOpenSubDepartmentModal, setOpenSubDepartmentModal] = useState(false);
@@ -47,20 +57,42 @@ const SubDepartmentsTable = () => {
   const [addSubDepartment, setAddSubDepartment] = useState<SubDepartmentType[]>(
     []
   );
+  const [departments, setDepartments] = useState<DepartmentType[]>([]);
+  const [subDepartments, setSubDepartments] = useState([]);
+
   const [reRender, setReRender] = useState(false);
 
   useEffect(() => {
+    getDataFromDatabase(
+      'fetch_sub_department_response',
+      window.fetch_sub_department
+    ).then((response) => setSubDepartments(response));
+
     setAddSubDepartment([
       {
         name: ['sub_department_name'],
         value: updateSubDepartmentData?.sub_department_name,
       },
       {
-        name: ['department_name'],
-        value: updateSubDepartmentData?.department_name,
+        name: ['department_id'],
+        value: updateSubDepartmentData?.department_id,
       },
     ]);
   }, [reRender]);
+
+  useEffect(() => {
+    getDataFromDatabase(
+      'fetch_department_response',
+      window.fetch_department
+    ).then((response) =>
+      setDepartments(
+        response.map((item: UpdateSubDepartmentType, i: number) => ({
+          id: i + 1,
+          ...item,
+        }))
+      )
+    );
+  }, []);
 
   const handleOpenModal = () => {
     form.resetFields();
@@ -68,13 +100,46 @@ const SubDepartmentsTable = () => {
   };
 
   const onChange = (value: string) => {
-    console.log('value', value);
+    console.log('onchange value', value);
   };
 
-  const handleSubmit = (value: UpdateSubDepartmentType) => {
-    console.log('value', value);
+  console.log('updateSubDepartmentData', updateSubDepartmentData);
+
+  const handleSubmit = (values: UpdateSubDepartmentType) => {
+    console.log('values', values);
 
     // addNewDepartment.id = updateSubDepartmentData?.id;
+    if (updateSubDepartmentData?.id) {
+      console.log('hi', {
+        id: updateSubDepartmentData.id,
+        ...values,
+      });
+
+      window.insert_sub_department.send('insert_sub_department', {
+        id: updateSubDepartmentData.id,
+        ...values,
+      });
+
+      message.success({
+        content: 'Department updated successfully',
+        className: 'custom-class',
+        duration: 1,
+        style: {
+          marginTop: '5vh',
+          float: 'right',
+        },
+      });
+      form.resetFields();
+      setReRender((prevState) => !prevState);
+      setOpenSubDepartmentModal(false);
+
+      return;
+    }
+    const data = {
+      department_id: values.department_id,
+      sub_department_name: values.sub_department_name,
+    };
+    window.insert_sub_department.send('insert_sub_department', data);
 
     message.success({
       content: 'Department added successfully',
@@ -101,14 +166,14 @@ const SubDepartmentsTable = () => {
   const columns: any = [
     {
       title: 'SL No',
-      dataIndex: 'sl_no',
-      key: 'sl_no',
+      dataIndex: 'id',
+      key: 'id',
       width: '15%',
     },
     {
-      title: 'Department Name',
-      dataIndex: 'department_name',
-      key: 'department_name',
+      title: 'Sub department Name',
+      dataIndex: 'sub_department_name',
+      key: 'sub_department_name',
       width: '70%',
     },
     {
@@ -138,24 +203,6 @@ const SubDepartmentsTable = () => {
     },
   ];
 
-  const subDepartmentData = [
-    {
-      key: 1,
-      sl_no: 1,
-      department_name: 'Sales Manager',
-    },
-    {
-      key: 2,
-      sl_no: 2,
-      department_name: 'Senior Accountant',
-    },
-    {
-      key: 3,
-      sl_no: 3,
-      department_name: 'Human Resource',
-    },
-  ];
-
   const handleEditSubDepartment = (data: DataType) => {
     console.log('edit data', data);
     setReRender((prevState) => !prevState);
@@ -169,17 +216,31 @@ const SubDepartmentsTable = () => {
       title: 'Are you sure to delete this item?',
       icon: <ExclamationCircleOutlined />,
       content:
-        'If you click on the ok button the item will be deleted permanently from the database. Undo is not possible.',
+        'If you click on the yes button, the item will be deleted permanently from the database. Undo is not possible.',
       onOk() {
-        message.success({
-          content: 'Sub Department deleted successfully',
-          className: 'custom-class',
-          duration: 1,
-          style: {
-            marginTop: '5vh',
-            float: 'right',
-          },
+        window.delete_sub_department.send('delete_sub_department', {
+          id: data.id,
         });
+
+        window.delete_sub_department.once(
+          'delete_sub_department_response',
+          ({ status }: { status: boolean }) => {
+            if (status) {
+              // Rerender the component
+              setReRender((render) => !render);
+
+              message.success({
+                content: 'Sub department deleted successfully',
+                className: 'custom-class',
+                duration: 1,
+                style: {
+                  marginTop: '5vh',
+                  float: 'right',
+                },
+              });
+            }
+          }
+        );
       },
       onCancel() {},
     });
@@ -198,9 +259,9 @@ const SubDepartmentsTable = () => {
       <Table
         bordered
         columns={columns}
-        dataSource={subDepartmentData}
+        dataSource={subDepartments}
         pagination={false}
-        rowKey={(record) => record.key}
+        rowKey={(record) => record.id}
       />
 
       <Modal
@@ -209,6 +270,7 @@ const SubDepartmentsTable = () => {
         onOk={() => setOpenSubDepartmentModal(false)}
         onCancel={() => setOpenSubDepartmentModal(false)}
         footer={null}
+        okText="Yes"
       >
         <Form
           form={form}
@@ -232,7 +294,7 @@ const SubDepartmentsTable = () => {
           </Form.Item>
 
           <Form.Item
-            name="department_name"
+            name="department_id"
             label="Department Name"
             rules={[{ required: true, message: 'Department Name is required' }]}
           >
@@ -245,8 +307,12 @@ const SubDepartmentsTable = () => {
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
             >
-              <Option value="technical">Technical</Option>
-              <Option value="marketing">Marketing</Option>
+              {departments.map((department) => (
+                <Option key={department.id} value={department.id}>
+                  {department.department_name}
+                </Option>
+              ))}
+              {/* <Option value="marketing">Marketing</Option> */}
             </Select>
           </Form.Item>
 

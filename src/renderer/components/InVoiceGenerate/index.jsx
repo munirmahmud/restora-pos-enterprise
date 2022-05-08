@@ -2,7 +2,7 @@
 import { Image } from 'antd';
 import { CalculatePrice, checkTokenLength } from 'helpers';
 import moment from 'moment';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import restoraPosLogo from '../../../../assets/retora_pos.png';
 import './InVoiceGenerate.style.scss';
 
@@ -25,25 +25,30 @@ const spanStyles = {
   marginBottom: 0,
 };
 
-const InVoiceGenerate = ({
-  settings,
-  foodItems,
-  foodData,
-  invoicePrintDivId,
-  customerName,
-  grandTotal,
-  customDiscountAmount,
-  serviceCharge,
-}) => {
+const InVoiceGenerate = (props) => {
+  const {
+    settings,
+    foodItems,
+    foodData,
+    setInvoicePrintDivId,
+    customerName,
+    grandTotal,
+    customDiscountAmount,
+    serviceCharge,
+  } = props;
   const date = new Date();
   const invoiceWrapperRef = useRef(null);
   const calc = new CalculatePrice(settings, foodItems);
   const receiptNo = foodData?.order_id?.toString().length;
 
+  useEffect(() => {
+    setInvoicePrintDivId(invoiceWrapperRef.current);
+  }, [invoiceWrapperRef]);
+
   return (
     <div
+      ref={invoiceWrapperRef}
       className="inVoice_wrapper"
-      id={`${invoicePrintDivId}`}
       style={{
         padding: '0px 20px',
         margin: 0,

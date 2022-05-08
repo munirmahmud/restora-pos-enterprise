@@ -30,12 +30,13 @@ const QuickOrderModal = ({
   const [onGoingOrderData, setOnGoingOrderData] = useState(null);
   const [customerName, setCustomerName] = useState('');
   const [foodData, setFoodData] = useState(null);
+  const [isPayButtonClicked, setIsPayButtonClicked] = useState(false);
 
-  const [invoicePrintDivId] = useState('invoicePrintDivId');
+  const [invoicePrintDivId, setInvoicePrintDivId] = useState(null);
 
   const [invoiceData, setInvoiceData] = useState(null);
   const [customDiscountAmount, setCustomDiscountAmount] = useState(0);
-  const [grandTotal, setGrandTotal] = useState();
+  const [grandTotal, setGrandTotal] = useState(0);
 
   let calc = new CalculatePrice(settings, foodData);
 
@@ -47,12 +48,13 @@ const QuickOrderModal = ({
       (invoiceData?.vat ? invoiceData?.vat : 0);
 
     setGrandTotal(totalAmount);
-  }, [customDiscountAmount]);
+  }, [customDiscountAmount, grandTotal]);
 
   useEffect(() => {
     const orderData = localStorage.getItem('order');
     if (orderData) {
       const parsedData = JSON.parse(orderData);
+
       setCustomDiscountAmount(parsedData.discount);
       setInvoiceData(parsedData);
       setGrandTotal(parsedData.grandTotal);
@@ -117,14 +119,15 @@ const QuickOrderModal = ({
         const index = ongoingOrders.findIndex(
           (item) => item.order_id === foodItems.order_id
         );
+
         const updateOngoingOrders = ongoingOrders.splice(index, 1);
 
         setOngoingOrders(ongoingOrders);
         setReRender((prevState) => !prevState);
       }
-
-      printInvoice();
     });
+
+    posPrintInvoice();
 
     // window.update_order_info_ongoing.once(
     //   'update_order_info_ongoing_response',
@@ -144,13 +147,16 @@ const QuickOrderModal = ({
     setCustomDiscountAmount((prevState) => parseInt(prevState) - 1);
   };
 
-  const printInvoice = () => {
-    var printContents = document.getElementById(invoicePrintDivId).innerHTML;
+  function posPrintInvoice() {
+    var printContents = document.querySelector(
+      `.${invoicePrintDivId.classList.value}`
+    ).innerHTML;
+
     var originalContents = document.body.innerHTML;
     document.body.innerHTML = printContents;
     window.print();
     window.location.reload();
-  };
+  }
 
   return (
     <>
@@ -363,7 +369,7 @@ const QuickOrderModal = ({
         settings={settings}
         foodItems={onGoingOrderData}
         foodData={foodItems}
-        invoicePrintDivId={invoicePrintDivId}
+        setInvoicePrintDivId={setInvoicePrintDivId}
         customerName={customerName}
         grandTotal={grandTotal}
         customDiscountAmount={customDiscountAmount}

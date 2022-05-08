@@ -65,9 +65,17 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
   const [addFoodNoteToItem, setAddFoodNoteToItem] = useState({});
 
   useEffect(() => {
-    setCustomDiscount(settings?.discountrate);
+    if (settings?.discountrate) {
+      setCustomDiscount(settings?.discountrate);
+    } else {
+      setCustomDiscount(0);
+    }
 
-    setCustomServiceCharge(settings?.servicecharge);
+    if (settings?.servicecharge) {
+      setCustomServiceCharge(settings?.servicecharge);
+    } else {
+      setCustomServiceCharge(0);
+    }
 
     getDataFromDatabase(
       'get_customer_names_response',
@@ -115,7 +123,6 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
   };
 
   const handleDeleteItem = (item) => {
-    console.log('item cart', item);
     // CartItems is array
     const updateCart = cartItems.filter(
       (cartItem) => cartItem.cartId !== item.cartId
@@ -629,6 +636,7 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
         warmingModal={warmingModal}
       />
 
+      {/* {confirmOrder && ( */}
       <ConfirmOrderModal
         confirmOrder={confirmOrder}
         setConfirmOrder={setConfirmOrder}
@@ -638,6 +646,7 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
         quickOrderAdditionalData={quickOrderAdditionalData}
         state={state}
       />
+      {/* )} */}
 
       <PremiumVersion
         premiumVersion={premiumVersion}

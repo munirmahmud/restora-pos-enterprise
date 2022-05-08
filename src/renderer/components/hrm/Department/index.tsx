@@ -5,18 +5,21 @@ import {
   PlusCircleOutlined,
 } from '@ant-design/icons';
 import { Button, Form, Input, message, Modal, Space, Table } from 'antd';
+import { getDataFromDatabase } from 'helpers';
 import { Key, ReactNode, useEffect, useState } from 'react';
 
 const { confirm } = Modal;
 
 type DataType = {
+  id: number;
   key: Key;
   sl_no: number;
   department_name: string;
 };
 
 type UpdateDepartmentType = {
-  department_name?: string;
+  id: number;
+  department_name: string;
 };
 type DepartmentType = {
   name: string | number | (string | number)[];
@@ -27,17 +30,26 @@ type DepartmentType = {
   warnings?: string[];
 };
 
-const DepartmentsTable = () => {
+const Department = () => {
+  window.fetch_department.send('fetch_department', {
+    status: true,
+  });
+
   const [form] = Form.useForm();
 
   const [isOpenDepartmentModal, setOpenDepartmentModal] = useState(false);
   const [updateDepartmentData, setUpdateDepartmentData] =
-    useState<UpdateDepartmentType>({});
-  const [addDepartment, setAddDepartment] = useState<DepartmentType[]>([]);
+    useState<UpdateDepartmentType>({
+      id: null,
+      department_name: '',
+    });
+  const [addDepartment, setDepartment] = useState<DepartmentType[]>([]);
+  const [departMentList, setDepartMentList] = useState([]);
+
   const [reRender, setReRender] = useState(false);
 
   useEffect(() => {
-    setAddDepartment([
+    setDepartment([
       {
         name: ['department_name'],
         value: updateDepartmentData?.department_name,
@@ -45,15 +57,43 @@ const DepartmentsTable = () => {
     ]);
   }, [reRender]);
 
+  useEffect(() => {
+    getDataFromDatabase(
+      'fetch_department_response',
+      window.fetch_department
+    ).then((response: any) => setDepartMentList(response));
+  }, [reRender]);
+
   const handleOpenModal = () => {
     form.resetFields();
     setOpenDepartmentModal(true);
   };
 
-  const handleSubmit = (value: UpdateDepartmentType) => {
-    console.log('value', value);
+  const handleSubmit = (values: UpdateDepartmentType) => {
+    if (updateDepartmentData.id) {
+      window.insert_department.send('insert_department', {
+        id: updateDepartmentData.id,
+        ...values,
+      });
 
-    // addNewDepartment.id = updateDepartmentData?.id;
+      message.success({
+        content: 'Department updated successfully',
+        className: 'custom-class',
+        duration: 1,
+        style: {
+          marginTop: '5vh',
+          float: 'right',
+        },
+      });
+
+      form.resetFields();
+      setReRender((render) => !render);
+      setOpenDepartmentModal(false);
+
+      return;
+    }
+
+    window.insert_department.send('insert_department', values);
 
     message.success({
       content: 'Department added successfully',
@@ -64,8 +104,9 @@ const DepartmentsTable = () => {
         float: 'right',
       },
     });
+
     form.resetFields();
-    setReRender((prevState) => !prevState);
+    setReRender((render) => !render);
     setOpenDepartmentModal(false);
   };
 
@@ -80,8 +121,8 @@ const DepartmentsTable = () => {
   const columns: any = [
     {
       title: 'SL No',
-      dataIndex: 'sl_no',
-      key: 'sl_no',
+      dataIndex: 'id',
+      key: 'id',
       width: '15%',
     },
     {
@@ -114,24 +155,6 @@ const DepartmentsTable = () => {
     },
   ];
 
-  const designationData = [
-    {
-      key: 1,
-      sl_no: 1,
-      department_name: 'Sales Manager',
-    },
-    {
-      key: 2,
-      sl_no: 2,
-      department_name: 'Senior Accountant',
-    },
-    {
-      key: 3,
-      sl_no: 3,
-      department_name: 'Human Resource',
-    },
-  ];
-
   const handleEditDepartment = (data: DataType) => {
     console.log('edit data', data);
     setReRender((prevState) => !prevState);
@@ -140,22 +163,35 @@ const DepartmentsTable = () => {
   };
 
   const handleDeleteDepartment = (data: DataType) => {
-    console.log('delete data', data);
     confirm({
       title: 'Are you sure to delete this item?',
       icon: <ExclamationCircleOutlined />,
       content:
-        'If you click on the ok button the item will be deleted permanently from the database. Undo is not possible.',
+        'If you click on the yes button the item will be deleted permanently from the database. Undo is not possible.',
       onOk() {
-        message.success({
-          content: 'Department deleted successfully',
-          className: 'custom-class',
-          duration: 1,
-          style: {
-            marginTop: '5vh',
-            float: 'right',
-          },
+        window.delete_department.send('delete_department', {
+          id: data.id,
         });
+
+        window.delete_department.once(
+          'delete_department_response',
+          ({ status }: { status: boolean }) => {
+            if (status) {
+              // Rerender the component
+              setReRender((render) => !render);
+
+              message.success({
+                content: 'Designation deleted successfully',
+                className: 'custom-class',
+                duration: 1,
+                style: {
+                  marginTop: '5vh',
+                  float: 'right',
+                },
+              });
+            }
+          }
+        );
       },
       onCancel() {},
     });
@@ -168,13 +204,14 @@ const DepartmentsTable = () => {
         onClick={handleOpenModal}
         style={{ marginBottom: '1.5rem', float: 'right' }}
       >
-        <PlusCircleOutlined /> Add Designation
+        <PlusCircleOutlined /> Add Department
       </Button>
 
       <Table
         bordered
         columns={columns}
-        dataSource={designationData}
+        dataSource={departMentList}
+        rowKey={(record) => record.id}
         pagination={false}
       />
 
@@ -192,7 +229,7 @@ const DepartmentsTable = () => {
           onFinishFailed={onFinishFailed}
           fields={addDepartment}
           onFieldsChange={(_, allFields: DepartmentType[]): void =>
-            setAddDepartment(allFields)
+            setDepartment(allFields)
           }
           autoComplete="off"
         >
@@ -219,4 +256,4 @@ const DepartmentsTable = () => {
   );
 };
 
-export default DepartmentsTable;
+export default Department;
