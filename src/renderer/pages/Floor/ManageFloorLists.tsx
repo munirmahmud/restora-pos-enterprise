@@ -16,6 +16,7 @@ import {
 } from 'antd';
 import { ReactNode, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { getDataFromDatabase } from './../../../helpers';
 
 const { confirm } = Modal;
 
@@ -27,9 +28,17 @@ type DataType = {
   icon: string;
 };
 
+type FloorType = {
+  id?: number;
+  floor_name?: string;
+};
+
 const ManageFloorLists = () => {
   const [form] = Form.useForm();
   const [addFloor, setAddFloor] = useState([]);
+  const [reRender, setReRender] = useState(false);
+  const [updateFloorData, setUpdateFloorData] = useState<FloorType>({});
+  const [floorListsData, setFloorListsData] = useState([]);
 
   useEffect(() => {
     setAddFloor([
@@ -38,6 +47,16 @@ const ManageFloorLists = () => {
         value: '',
       },
     ]);
+  }, [reRender]);
+
+  useEffect(() => {
+    getDataFromDatabase('fetch_floor_response', window.fetch_floor).then(
+      (response: any) => {
+        console.log('response', response);
+
+        setFloorListsData(response);
+      }
+    );
   }, []);
 
   const columns = [
@@ -76,23 +95,9 @@ const ManageFloorLists = () => {
     },
   ];
 
-  const data = [
-    {
-      sl_no: 1,
-      floor_name: 'Main Floor',
-    },
-    {
-      sl_no: 2,
-      floor_name: 'Jim Green',
-    },
-    {
-      sl_no: 3,
-      floor_name: 'Joe Black',
-    },
-  ];
-
   const handleEditFloor = (data: DataType) => {
     console.log('Edit data', data);
+    setUpdateFloorData(data);
   };
 
   const handleDeleteFloor = (data: DataType) => {
@@ -103,23 +108,73 @@ const ManageFloorLists = () => {
       content:
         'If you click on the ok button the item will be deleted permanently from the database. Undo is not possible.',
       onOk() {
-        message.success({
-          content: 'Floor deleted successfully',
-          className: 'custom-class',
-          duration: 1,
-          style: {
-            marginTop: '5vh',
-            float: 'right',
-          },
+        window.delete_floor.send('delete_floor', {
+          id: data.id,
         });
+
+        window.delete_floor.once(
+          'delete_floor_response',
+          ({ status }: { status: boolean }) => {
+            if (status) {
+              // Rerender the component
+              setReRender((prevState) => !prevState);
+
+              message.success({
+                content: 'Floor deleted successfully',
+                className: 'custom-class',
+                duration: 1,
+                style: {
+                  marginTop: '5vh',
+                  float: 'right',
+                },
+              });
+            }
+          }
+        );
       },
       onCancel() {},
     });
   };
 
-  const handleSubmit = (values: any) => {
-    console.log(values);
-    form.resetFields();
+  const handleSubmit = (values: FloorType) => {
+    if (updateFloorData?.id) {
+      window.insert_floor.send('insert_floor', {
+        id: updateFloorData.id,
+        ...values,
+      });
+
+      setReRender((prevState) => !prevState);
+
+      message.success({
+        content: 'Floor updated successfully',
+        className: 'custom-class',
+        duration: 1,
+        style: {
+          marginTop: '5vh',
+          float: 'right',
+        },
+      });
+
+      form.resetFields();
+    } else {
+      window.insert_floor.send('insert_floor', {
+        floorName: values.floor_name,
+      });
+
+      setReRender((prevState) => !prevState);
+
+      message.success({
+        content: 'Floor added successfully',
+        className: 'custom-class',
+        duration: 1,
+        style: {
+          marginTop: '5vh',
+          float: 'right',
+        },
+      });
+
+      form.resetFields();
+    }
   };
 
   const onReset = () => {
@@ -186,7 +241,7 @@ const ManageFloorLists = () => {
         <Table
           bordered
           columns={columns}
-          dataSource={data}
+          dataSource={floorListsData}
           rowKey={(record) => record.sl_no}
           pagination={false}
         />
