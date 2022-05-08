@@ -2567,15 +2567,14 @@ ipcMain.on('insert_employee', (_event, args) => {
       'custom_field_type' VARCHAR(255)
       )`)
       .run(`CREATE TABLE IF NOT EXISTS employees_salary (
-        'id' INTEGER PRIMARY KEY AUTOINCREMENT,
-        'emp_id' INT NOT NULL,
-        'basic_salary' REAL,
-        'house_rent' REAL,
-        'medical' REAL,
-        'others_allowance' REAL,
-        'gross_salary' REAL NOT NULL,
-        'tranport_allowance' REAL
-        )`)
+    'id' INTEGER PRIMARY KEY AUTOINCREMENT,
+    'basic_salary' REAL,
+    'house_rent' REAL,
+    'medical' REAL,
+    'others_allowance' REAL,
+    'gross_salary' REAL NOT NULL,
+    'tranport_allowance' REAL
+    )`)
       .run(`INSERT INTO employees (
         first_name,
         last_name,
@@ -2704,11 +2703,21 @@ ipcMain.on('insert_employee', (_event, args) => {
           custom_field_name ? custom_field_name : null,
           custom_value ? custom_value : null,
           custom_field_type ? custom_field_type : null
-        ]
+        ],
+        (err: ErrorType) => {
+          err
+            ? mainWindow.webContents.send(
+              'insert_employee_response',
+              err.message
+            )
+            : mainWindow.webContents.send('insert_employee_response', {
+              status: 'inserted',
+            });
+        }
       )
       .run(`INSERT INTO employees_salary
-      (emp_id, basic_salary, house_rent, medical, others_allowance,
-      gross_salary, tranport_allowance) VALUES (?,?,?,?,?,?,?)`,
+    (basic_salary, house_rent, medical, others_allowance,
+    gross_salary, tranport_allowance) VALUES (?,?,?,?,?,?)`,
         [
           basic_salary ? basic_salary : null,
           house_rent ? house_rent : null,
@@ -2718,9 +2727,8 @@ ipcMain.on('insert_employee', (_event, args) => {
           tranport_allowance ? tranport_allowance : null
         ]
       )
-
   })
-
+  db.close();
 })
 
 //TODO: JOINING QUERY

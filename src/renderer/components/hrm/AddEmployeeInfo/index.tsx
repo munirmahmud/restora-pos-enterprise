@@ -11,6 +11,8 @@ import EmergencyContact from './EmergencyContact';
 import PositionalInfo from './PositionalInfo';
 import SalaryInfo from './SalaryInfo';
 import Supervisor from './Supervisor';
+import { getDataFromDatabase } from 'helpers';
+
 
 const { Step } = Steps;
 
@@ -93,7 +95,6 @@ const AddEmployeeInfo = () => {
     emergency_home_phone: '',
     emergency_contact_relation: '',
     alt_emergency_home_phone: '',
-
     custom_field_name: '',
     custom_value: '',
     custom_field_type: '',
@@ -271,5 +272,12 @@ const AddEmployeeInfo = () => {
     </div>
   );
 };
+
+getDataFromDatabase(
+  'get_employee_designation_response',
+  window.get_employee_designation
+).then((response: any) => {
+  console.log(response);
+});
 
 export default AddEmployeeInfo;
