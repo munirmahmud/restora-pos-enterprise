@@ -2488,7 +2488,7 @@ ipcMain.on('insert_floor', (_event, args) => {
   }
 });
 
-getListItems('fetch_floor', 'fetch_floor_response', 'floor');
+getListItems('fetch_floor', 'fetch_floor_response', 'floor', 'id, floorName');
 deleteListItem('delete_floor', 'delete_floor_response', 'floor');
 
 // INSERT TABLE DATA
