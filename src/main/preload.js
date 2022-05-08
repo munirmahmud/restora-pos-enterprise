@@ -430,6 +430,13 @@ sendDataThroughMiddleware(
   'delete_floor_response' //Response
 );
 
+// TABLE
+sendDataThroughMiddleware(
+  'insert_table', //Event Name
+  'insert_table', // Channel Name
+  'insert_table_response' //Response
+);
+
 /*======================================================================
   FUNCTION DECLARATIONS
 ========================================================================*/

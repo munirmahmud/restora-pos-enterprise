@@ -14,9 +14,9 @@ import {
   Space,
   Table,
 } from 'antd';
+import { getDataFromDatabase } from 'helpers';
 import { ReactNode, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getDataFromDatabase } from './../../../helpers';
 
 const { confirm } = Modal;
 
@@ -30,10 +30,12 @@ type DataType = {
 
 type FloorType = {
   id?: number;
-  floor_name?: string;
+  floorName?: string;
 };
 
 const ManageFloorLists = () => {
+  window.fetch_floor.send('fetch_floor', { status: true });
+
   const [form] = Form.useForm();
   const [addFloor, setAddFloor] = useState([]);
   const [reRender, setReRender] = useState(false);
@@ -43,33 +45,29 @@ const ManageFloorLists = () => {
   useEffect(() => {
     setAddFloor([
       {
-        name: ['floor_name'],
+        name: ['floorName'],
         value: '',
       },
     ]);
-  }, [reRender]);
 
-  useEffect(() => {
     getDataFromDatabase('fetch_floor_response', window.fetch_floor).then(
       (response: any) => {
-        console.log('response', response);
-
         setFloorListsData(response);
       }
     );
-  }, []);
+  }, [reRender]);
 
   const columns = [
     {
       title: 'SL NO',
-      dataIndex: 'sl_no',
-      key: 'sl_no',
+      dataIndex: 'id',
+      key: 'id',
       width: '10%',
     },
     {
       title: 'Floor Name',
-      dataIndex: 'floor_name',
-      key: 'floor_name',
+      dataIndex: 'floorName',
+      key: 'floorName',
     },
     {
       title: 'Action',
@@ -101,7 +99,6 @@ const ManageFloorLists = () => {
   };
 
   const handleDeleteFloor = (data: DataType) => {
-    console.log('Delete data', data);
     confirm({
       title: 'Are you sure to delete this item?',
       icon: <ExclamationCircleOutlined />,
@@ -158,7 +155,7 @@ const ManageFloorLists = () => {
       form.resetFields();
     } else {
       window.insert_floor.send('insert_floor', {
-        floorName: values.floor_name,
+        floorName: values.floorName,
       });
 
       setReRender((prevState) => !prevState);
@@ -214,9 +211,11 @@ const ManageFloorLists = () => {
                 <Row gutter={20}>
                   <Col lg={16}>
                     <Form.Item
-                      name="floor_name"
+                      name="floorName"
                       label="Floor Name"
-                      rules={[{ required: true }]}
+                      rules={[
+                        { required: true, message: 'Floor name is required' },
+                      ]}
                     >
                       <Input placeholder="Add Table Name" />
                     </Form.Item>
@@ -242,7 +241,7 @@ const ManageFloorLists = () => {
           bordered
           columns={columns}
           dataSource={floorListsData}
-          rowKey={(record) => record.sl_no}
+          rowKey={(record) => record.id}
           pagination={false}
         />
       </div>
