@@ -744,7 +744,7 @@ ipcMain.on('add_new_foods', (event, args) => {
 
   // Set food images and icons path
   let foods_images_folder_name = 'foods_images';
-  setImagePath(
+  setImagePath(3RXNJqe5BkxjSNXWGPgP
     foods_images_folder_name, // Food images folder name
     '', // Food icons folder name
     product_img?.path, // Food image path
