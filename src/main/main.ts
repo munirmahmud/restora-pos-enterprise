@@ -2429,7 +2429,7 @@ ipcMain.on('insert_salary_advance', (_event, args) => {
 
 // INSERT EMPLOYEE
 ipcMain.on('insert_employee', (_event, args) => {
-  console.log('2429: Employee table created.');
+  console.log('2429: Employee table created.', args);
   let {
     first_name,
     last_name,
@@ -2502,6 +2502,7 @@ ipcMain.on('insert_employee', (_event, args) => {
     tranport_allowance
   } = args
   let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+  console.log('2502: inserting...');
   db.serialize(() => {
     db.run(`CREATE TABLE IF NOT EXISTS employees (
       'id' INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -2626,6 +2627,7 @@ ipcMain.on('insert_employee', (_event, args) => {
         marital_status,
         ssn,
         citizenship,
+        pp_image,
         home_email,
         home_phone,
         cell_phone,
@@ -2641,7 +2643,7 @@ ipcMain.on('insert_employee', (_event, args) => {
         custom_field_name,
         custom_value,
         custom_field_type
-        ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+        ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
         [
           first_name,
           last_name ? last_name : null,
@@ -2684,7 +2686,7 @@ ipcMain.on('insert_employee', (_event, args) => {
           date_of_birth,
           eeo_class ? eeo_class : null,
           work_in_state,
-          gender ? gender : null,
+          gender,
           ethnic_group ? ethnic_group : null,
           live_in_state ? live_in_state : null,
           marital_status ? marital_status : null,
@@ -2693,14 +2695,14 @@ ipcMain.on('insert_employee', (_event, args) => {
           pp_image ? pp_image : null,
           home_email ? home_email : null,
           home_phone ? home_phone : null,
-          cell_phone ? cell_phone : null,
+          cell_phone,
           business_email ? business_email : null,
           business_phone ? business_phone : null,
-          emergency_contact ? emergency_contact : null,
-          emergency_work_phone ? emergency_work_phone : null,
+          emergency_contact,
+          emergency_work_phone,
           alter_emergency_contact ? emergency_contact : null,
           alt_emergency_work_phone ? alt_emergency_work_phone : null,
-          emergency_home_phone ? emergency_home_phone : null,
+          emergency_home_phone,
           emergency_contact_relation ? emergency_contact_relation : null,
           alt_emergency_home_phone ? alt_emergency_home_phone : null,
           custom_field_name ? custom_field_name : null,
@@ -2708,6 +2710,8 @@ ipcMain.on('insert_employee', (_event, args) => {
           custom_field_type ? custom_field_type : null
         ],
         (err: ErrorType) => {
+          console.log('2709: ', err);
+
           err
             ? mainWindow.webContents.send(
               'insert_employee_response',
@@ -2732,9 +2736,10 @@ ipcMain.on('insert_employee', (_event, args) => {
       )
   })
   db.close();
+  console.log('2733: inserted.');
 })
 
-//TODO: JOINING QUERY
+// TODO: JOINING QUERY
 getListItems(
   'fetch_salary_advance',
   'fetch_salary_advance_response',
