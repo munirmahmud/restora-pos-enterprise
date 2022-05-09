@@ -2433,8 +2433,7 @@ ipcMain.on('insert_salary_advance', (_event, args) => {
 });
 
 // INSERT EMPLOYEE
-ipcMain.on('insert_employee', (_event, args) => {
-  // console.log('2429: Employee table created.', args);
+ipcMain.on('insert_employee', (_event: Electron.IpcMainEvent, args) => {
   let {
     first_name,
     last_name,
@@ -2731,9 +2730,7 @@ ipcMain.on('insert_employee', (_event, args) => {
         }
       )
       .run(
-        `INSERT INTO employees_salary
-    (basic_salary, house_rent, medical, others_allowance,
-    gross_salary, tranport_allowance) VALUES (?,?,?,?,?,?)`,
+        `INSERT INTO employees_salary (basic_salary, house_rent, medical, others_allowance, gross_salary, tranport_allowance) VALUES (?,?,?,?,?,?)`,
         [
           basic_salary ? basic_salary : null,
           house_rent ? house_rent : null,
@@ -2807,7 +2804,6 @@ ipcMain.on('insert_floor', (_event, args) => {
     db.close();
   }
 });
-
 getListItems('fetch_floor', 'fetch_floor_response', 'floor', 'id, floorName');
 deleteListItem('delete_floor', 'delete_floor_response', 'floor');
 
