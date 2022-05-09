@@ -1,8 +1,34 @@
 import { Col, DatePicker, Form, Input, Row, Select } from 'antd';
+import { useEffect, useState } from 'react';
+import { getDataFromDatabase } from './../../../../helpers';
 import './AddEmployeeInfo.style.scss';
 const { Option } = Select;
 
 const PositionalInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
+  window.get_employee_designation.send('get_employee_designation', {
+    status: true,
+  });
+  window.fetch_department.send('fetch_department', {
+    status: true,
+  });
+
+  const [designationList, setDesignationList] = useState([]);
+  const [departMentList, setDepartMentList] = useState([]);
+
+  useEffect(() => {
+    getDataFromDatabase(
+      'get_employee_designation_response',
+      window.get_employee_designation
+    ).then((response: any) => {
+      setDesignationList(response);
+    });
+
+    getDataFromDatabase(
+      'fetch_department_response',
+      window.fetch_department
+    ).then((response: any) => setDepartMentList(response));
+  }, []);
+
   const handleChangeDivision = (value: string) => {
     setEmployeeInfo({ ...employeeInfo, division: value });
   };
@@ -32,13 +58,13 @@ const PositionalInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
       <Row gutter={20}>
         <Col lg={8} xl={8} xxl={8}>
           <Form.Item
-            label="Division"
-            name="division"
+            label="Department"
+            name="department_name"
             rules={[{ required: true, message: '' }]}
           >
             <Select
               showSearch
-              placeholder="Select a Division"
+              placeholder="Select a Department"
               allowClear
               size="large"
               style={{ textAlign: 'left' }}
@@ -47,8 +73,11 @@ const PositionalInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
               }
               onChange={handleChangeDivision}
             >
-              <Option value="Bangladesh">Bangladesh</Option>
-              <Option value="India">India</Option>
+              {departMentList.map((departmentName) => (
+                <Option key={departmentName?.id} value={departmentName?.id}>
+                  {departmentName?.department_name}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
 
@@ -150,10 +179,11 @@ const PositionalInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
               }
               onChange={handleChangeDesignation}
             >
-              <Option value="accounts">Accounts</Option>
-              <Option value="sales man">Sales Man</Option>
-              <Option value="kitchen manager">Kitchen Manager</Option>
-              <Option value="manager">Manager</Option>
+              {designationList.map((designationName) => (
+                <Option key={designationName?.id} value={designationName?.id}>
+                  {designationName?.designation}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
 
@@ -208,9 +238,9 @@ const PositionalInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
               }
               onChange={handleChangePayFrequency}
             >
-              <Option value="weekly">Weekly</Option>
-              <Option value="monthly">Monthly</Option>
-              <Option value="annual">Annual</Option>
+              <Option value="1">Weekly</Option>
+              <Option value="2">Monthly</Option>
+              <Option value="3">Annual</Option>
             </Select>
           </Form.Item>
 
@@ -268,9 +298,9 @@ const PositionalInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
               }
               onChange={handleChangeDutyType}
             >
-              <Option value="full time">Full Time</Option>
-              <Option value="part time">Part Time</Option>
-              <Option value="contractual">Contractual</Option>
+              <Option value="1">Full Time</Option>
+              <Option value="2">Part Time</Option>
+              <Option value="3">Contractual</Option>
             </Select>
           </Form.Item>
 
@@ -301,8 +331,8 @@ const PositionalInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
               }
               onChange={handleChangeRateType}
             >
-              <Option value="hourly">Hourly</Option>
-              <Option value="salary">Salary</Option>
+              <Option value="1">Hourly</Option>
+              <Option value="2">Salary</Option>
             </Select>
           </Form.Item>
 

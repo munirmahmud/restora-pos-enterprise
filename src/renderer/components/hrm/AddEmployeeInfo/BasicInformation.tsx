@@ -73,7 +73,9 @@ const BasicInformation = ({ employeeInfo, setEmployeeInfo }: any) => {
             >
               <Option value="Bangladesh">Bangladesh</Option>
               {countryData.country?.map((countryName) => (
-                <Option value={countryName?.name}>{countryName?.name}</Option>
+                <Option key={countryName?.name} value={countryName?.name}>
+                  {countryName?.name}
+                </Option>
               ))}
             </Select>
           </Form.Item>
@@ -146,8 +148,8 @@ const BasicInformation = ({ employeeInfo, setEmployeeInfo }: any) => {
               }
               onChange={handleChangeState}
             >
-              <Option value="Bangladesh">Bangladesh</Option>
-              <Option value="India">India</Option>
+              <Option value="1">Bangladesh</Option>
+              <Option value="2">India</Option>
             </Select>
           </Form.Item>
 

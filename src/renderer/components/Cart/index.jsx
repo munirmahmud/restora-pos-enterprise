@@ -37,7 +37,15 @@ const { Option } = Select;
 const { TextArea } = Input;
 
 const Cart = ({ settings, cartItems, setCartItems, state }) => {
+
   window.get_customer_names.send('get_customer_names', { status: true });
+  window.get_waiter_names.send('get_waiter_names', { status: true });
+
+  window.get_waiter_names.once('get_waiter_names_response', (args)=>{
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!',args);
+  })
+
+
 
   const format = 'HH:mm';
   const [form] = Form.useForm();
@@ -328,18 +336,17 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
                     label="Customer Type"
                     className="custom_level"
                     name="customer_type"
-                    onClick={() => setPremiumVersion(true)}
                   >
                     <Select
                       placeholder="Select a Customer Type"
                       size="large"
                       allowClear
-                      disabled
                     >
-                      <Option value="walkIn">Walk In</Option>
-                      <Option value="onlineCustomer">Online Customer</Option>
-                      <Option value="thirdParty">Third Party</Option>
-                      <Option value="takeWay">Take Way</Option>
+
+                      <Option value="1">Walk In</Option>
+                      <Option value="2">Online Customer</Option>
+                      <Option value="3">Third Party</Option>
+                      <Option value="4">Take Way</Option>
                     </Select>
                   </Form.Item>
                 </Col>
@@ -353,30 +360,18 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
                     label="Waiter"
                     className="custom_level"
                     name="waiter"
-                    onClick={() => setPremiumVersion(true)}
                   >
-                    <Select
-                      placeholder="Select Waiter"
-                      size="large"
-                      allowClear
-                      disabled
-                    >
-                      <Option value="kabir">Kabir</Option>
-                      <Option value="junayed">Junayed</Option>
-                      <Option value="devid">Devid</Option>
-                      <Option value="smith">Smith</Option>
+                    <Select placeholder="Select Waiter" size="large" allowClear>
+                      <Option value="1">Kabir</Option>
+                      <Option value="2">Junayed</Option>
+                      <Option value="3">Devid</Option>
+                      <Option value="4">Smith</Option>
                     </Select>
                   </Form.Item>
                 </Col>
 
                 <Col lg={4} xl={3} xxl={3}>
-                  <Button
-                    size="large"
-                    type="primary"
-                    className="add_customer"
-                    disabled
-                    onClick={() => setPremiumVersion(true)}
-                  >
+                  <Button size="large" type="primary" className="add_customer">
                     Person
                   </Button>
                 </Col>
@@ -386,13 +381,11 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
                     label="Table"
                     className="custom_level"
                     name="table_no"
-                    onClick={() => setPremiumVersion(true)}
                   >
                     <Select
                       placeholder="Select Table No"
                       size="large"
                       allowClear
-                      disabled
                     >
                       <Option value="1">1</Option>
                       <Option value="2">2</Option>
@@ -407,13 +400,11 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
                     label="Cooking Time"
                     className="custom_level"
                     name="cookingTime"
-                    onClick={() => setPremiumVersion(true)}
                   >
                     <TimePicker
                       size="large"
                       onChange={selectTime}
                       format={format}
-                      disabled
                     />
                   </Form.Item>
                 </Col>

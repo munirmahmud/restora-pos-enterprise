@@ -27,8 +27,8 @@ const Supervisor = ({ employeeInfo, setEmployeeInfo }: any) => {
               }
               onChange={handleChangeSupervisorName}
             >
-              <Option value="john">Jhon</Option>
-              <Option value="devid">Devid</Option>
+              <Option value="1">Jhon</Option>
+              <Option value="2">Devid</Option>
             </Select>
           </Form.Item>
 

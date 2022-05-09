@@ -79,7 +79,7 @@ const BiographicalInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
 
           <Form.Item label="Work in State" name="work_in_state">
             <Select
-              placeholder="Select  State"
+              placeholder="Select a State"
               allowClear
               style={{ textAlign: 'left' }}
               size="large"
@@ -134,9 +134,9 @@ const BiographicalInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
               }
               onChange={handleChangeGender}
             >
-              <Option value="male">Male</Option>
-              <Option value="female">Female</Option>
-              <Option value="other">Other</Option>
+              <Option value="1">Male</Option>
+              <Option value="2">Female</Option>
+              <Option value="3">Other</Option>
             </Select>
           </Form.Item>
 
@@ -185,8 +185,8 @@ const BiographicalInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
               }
               onChange={handleChangeMaritalStatus}
             >
-              <Option value="single">Single</Option>
-              <Option value="married">Married</Option>
+              <Option value="1">Single</Option>
+              <Option value="2">Married</Option>
             </Select>
           </Form.Item>
 
@@ -216,8 +216,8 @@ const BiographicalInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
               }
               onChange={handleChangeCitizenship}
             >
-              <Option value="citizen">Citizen</Option>
-              <Option value="non-citizen">Non Citizen</Option>
+              <Option value="1">Citizen</Option>
+              <Option value="2">Non Citizen</Option>
             </Select>
           </Form.Item>
         </Col>

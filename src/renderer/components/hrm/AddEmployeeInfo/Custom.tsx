@@ -41,8 +41,8 @@ const Custom = ({ employeeInfo, setEmployeeInfo }: any) => {
               }
               onChange={handleChangeCustomFiledType}
             >
-              <Option value="text">Text</Option>
-              <Option value="data">Data</Option>
+              <Option value="1">Text</Option>
+              <Option value="2">Data</Option>
             </Select>
           </Form.Item>
         </Col>
@@ -99,8 +99,8 @@ const Custom = ({ employeeInfo, setEmployeeInfo }: any) => {
                           .indexOf(input.toLowerCase()) >= 0
                       }
                     >
-                      <Option value="Bangladesh">Bangladesh</Option>
-                      <Option value="India">India</Option>
+                      <Option value="1">Bangladesh</Option>
+                      <Option value="2">India</Option>
                     </Select>
                   </Form.Item>
                 </Col>

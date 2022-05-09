@@ -1,4 +1,5 @@
 import { Button, Form, message, Steps } from 'antd';
+import { getDataFromDatabase } from 'helpers';
 import { useState } from 'react';
 import './AddEmployeeInfo.style.scss';
 import AdditionalAddress from './AdditionalAddress';
@@ -11,7 +12,6 @@ import EmergencyContact from './EmergencyContact';
 import PositionalInfo from './PositionalInfo';
 import SalaryInfo from './SalaryInfo';
 import Supervisor from './Supervisor';
-
 
 const { Step } = Steps;
 
@@ -100,7 +100,6 @@ const AddEmployeeInfo = () => {
     custom_value: '',
     custom_field_type: '',
   });
-
 
   const steps = [
     {
@@ -194,7 +193,7 @@ const AddEmployeeInfo = () => {
 
   const handleSubmit = () => {
     console.log('employeeInfo', employeeInfo);
-    window.insert_employee.send('insert_employee', employeeInfo)
+    window.insert_employee.send('insert_employee', employeeInfo);
 
     message.success({
       content: 'Employee information added successfully',
@@ -222,7 +221,7 @@ const AddEmployeeInfo = () => {
   return (
     <div className="add_employee_wrapper">
       <Form
-        name="basic"
+        // name="basic"
         initialValues={{ remember: true }}
         onFinish={handleSubmit}
         onFinishFailed={onFinishFailed}
@@ -230,8 +229,8 @@ const AddEmployeeInfo = () => {
         autoComplete="off"
       >
         <Steps current={current}>
-          {steps.map((item) => (
-            <Step key={item.title} title={item.title} />
+          {steps?.map((item) => (
+            <Step key={item?.title} title={item?.title} />
           ))}
         </Steps>
 
@@ -240,7 +239,7 @@ const AddEmployeeInfo = () => {
         <div className="steps_action">
           {current > 0 && (
             <Button
-              className="submit_btn"
+              // className="submit_btn"
               style={{ margin: '0 8px' }}
               onClick={() => prev()}
             >
@@ -252,8 +251,8 @@ const AddEmployeeInfo = () => {
             <Button
               type="primary"
               htmlType="submit"
-              className="submit_btn"
-            // onClick={() => message.success('Processing complete!')}
+              // className="submit_btn"
+              // onClick={() => message.success('Processing complete!')}
             >
               Done
             </Button>
@@ -261,7 +260,7 @@ const AddEmployeeInfo = () => {
 
           {current < steps.length - 1 && (
             <Button
-              className="submit_btn"
+              // className="submit_btn"
               type="primary"
               onClick={() => next()}
             >

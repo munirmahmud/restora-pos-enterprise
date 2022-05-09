@@ -20,22 +20,21 @@ import { Link } from 'react-router-dom';
 
 const { confirm } = Modal;
 
-type DataType = {
-  id: number;
-  sl_no: number;
-  table_name: string;
-  capacity: number;
-  icon: string;
+type ColumnTypes = {
+  title: string;
+  dataIndex?: string;
+  key: string;
+  width?: string;
+  align?: string;
+  render?: (_text: string, record: FloorType) => ReactNode;
 };
 
 type FloorType = {
-  id?: number;
-  floorName?: string;
+  id: number;
+  floorName: string;
 };
 
 const ManageFloorLists = () => {
-  window.fetch_floor.send('fetch_floor', { status: true });
-
   const [form] = Form.useForm();
   const [addFloor, setAddFloor] = useState([]);
   const [reRender, setReRender] = useState(false);
@@ -46,10 +45,11 @@ const ManageFloorLists = () => {
     setAddFloor([
       {
         name: ['floorName'],
-        value: '',
+        value: updateFloorData?.floorName,
       },
     ]);
 
+    window.fetch_floor.send('fetch_floor', { status: true });
     getDataFromDatabase('fetch_floor_response', window.fetch_floor).then(
       (response: any) => {
         setFloorListsData(response);
@@ -57,7 +57,7 @@ const ManageFloorLists = () => {
     );
   }, [reRender]);
 
-  const columns = [
+  const columns: ColumnTypes[] = [
     {
       title: 'SL NO',
       dataIndex: 'id',
@@ -74,7 +74,7 @@ const ManageFloorLists = () => {
       key: 'action',
       align: 'center',
       width: '20%',
-      render: (_text: string, record: DataType): ReactNode => (
+      render: (_text: string, record: FloorType): ReactNode => (
         <Space size="middle">
           <Button type="primary" onClick={() => handleEditFloor(record)}>
             <EditOutlined />
@@ -94,11 +94,11 @@ const ManageFloorLists = () => {
   ];
 
   const handleEditFloor = (data: DataType) => {
-    console.log('Edit data', data);
+    setReRender((prevState) => !prevState);
     setUpdateFloorData(data);
   };
 
-  const handleDeleteFloor = (data: DataType) => {
+  const handleDeleteFloor = (data: FloorType) => {
     confirm({
       title: 'Are you sure to delete this item?',
       icon: <ExclamationCircleOutlined />,
