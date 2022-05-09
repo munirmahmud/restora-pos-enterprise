@@ -219,7 +219,7 @@ const AddEmployeeInfo = () => {
   return (
     <div className="add_employee_wrapper">
       <Form
-        name="basic"
+        // name="basic"
         initialValues={{ remember: true }}
         onFinish={handleSubmit}
         onFinishFailed={onFinishFailed}
@@ -237,7 +237,7 @@ const AddEmployeeInfo = () => {
         <div className="steps_action">
           {current > 0 && (
             <Button
-              className="submit_btn"
+              // className="submit_btn"
               style={{ margin: '0 8px' }}
               onClick={() => prev()}
             >
@@ -249,7 +249,7 @@ const AddEmployeeInfo = () => {
             <Button
               type="primary"
               htmlType="submit"
-              className="submit_btn"
+              // className="submit_btn"
               // onClick={() => message.success('Processing complete!')}
             >
               Done
@@ -258,7 +258,7 @@ const AddEmployeeInfo = () => {
 
           {current < steps.length - 1 && (
             <Button
-              className="submit_btn"
+              // className="submit_btn"
               type="primary"
               onClick={() => next()}
             >

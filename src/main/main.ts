@@ -142,7 +142,7 @@ ipcMain.on('parent_category', (_event, args) => {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
     db.serialize(() => {
       let sql = `SELECT category_id, category_name, parent_id, category_is_active FROM add_item_category ORDER BY category_id DESC`;
-      db.all(sql, [], (err: ErrorType, rows: any) => {
+      db.all(sql, [], (_err: ErrorType, rows: any) => {
         mainWindow.webContents.send('parent_category', rows);
       });
     });
@@ -308,7 +308,7 @@ getListItems(
 );
 
 // Get Settings for the whole application
-ipcMain.on('get_settings', (event, args) => {
+ipcMain.on('get_settings', (_event: Electron.IpcMainEvent, args) => {
   let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
   let { status } = args;
   let sql = `SELECT setting.*, currency.currency_icon, currency.position
@@ -316,7 +316,7 @@ ipcMain.on('get_settings', (event, args) => {
 
   if (status) {
     db.serialize(() => {
-      db.all(sql, [], (err, rows) => {
+      db.all(sql, [], (_err: ErrorType, rows: any) => {
         if (rows) {
           const settingsData = {
             ...rows[0],
@@ -520,7 +520,7 @@ ipcMain.on('insertCategoryData', (event, args) => {
           offer_end_date,
           category_color,
         ],
-        (err) => {
+        (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
                 'after_insert_get_response',
@@ -913,14 +913,14 @@ ipcMain.on('add_new_foods', (event, args) => {
 });
 
 // Get all food list to display in the food list page
-ipcMain.on('get_food_list', (event, args) => {
+ipcMain.on('get_food_list', (_event: Electron.IpcMainEvent, args) => {
   let { status } = args;
   let sql = `SELECT item_foods.id, item_foods.category_id, add_item_category.category_name, item_foods.product_name, item_foods.product_image, item_foods.component, item_foods.description, item_foods.item_note, item_foods.menu_type, item_foods.product_vat, item_foods.special, item_foods.offers_rate, item_foods.offer_is_available, item_foods.offer_start_date, item_foods.offer_end_date, item_foods.kitchen_id, item_foods.is_custom_quantity, item_foods.cooked_time, item_foods.is_active FROM item_foods INNER JOIN add_item_category ON item_foods.category_id=add_item_category.category_id`;
 
   if (status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
     db.serialize(() => {
-      db.all(sql, [], (err, rows) => {
+      db.all(sql, [], (_err: ErrorType, rows: any) => {
         mainWindow.webContents.send('get_food_list_response', rows);
       });
     });
@@ -931,7 +931,7 @@ ipcMain.on('get_food_list', (event, args) => {
 // item_foods.menu_type, item_foods.is_active
 // Food list for the POS with (variants & addons)
 // SELECT variants.id, variants.food_id, variants.variant_name, variants.price FROM variants
-ipcMain.on('get_food_list_pos', (event, args) => {
+ipcMain.on('get_food_list_pos', (_event: Electron.IpcMainEvent, args) => {
   let { status } = args;
   // let sql = `SELECT item_foods.id, item_foods.category_id, item_foods.product_name, item_foods.product_image, item_foods.item_note, item_foods.product_vat, item_foods.special, item_foods.offers_rate, item_foods.offer_is_available, item_foods.is_custom_quantity,
   // variants.id AS variant_id, variants.food_id, variants.variant_name, variants.price
@@ -944,7 +944,7 @@ ipcMain.on('get_food_list_pos', (event, args) => {
   if (status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
     db.serialize(() => {
-      db.all(sql, [], (err, rows) => {
+      db.all(sql, [], (_err: ErrorType, rows: any) => {
         mainWindow.webContents.send('get_food_list_pos_response', rows);
       });
     });
@@ -2504,6 +2504,7 @@ ipcMain.on('insert_employee', (_event, args) => {
     tranport_allowance,
   } = args;
   let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+
   db.serialize(() => {
     db.run(
       `CREATE TABLE IF NOT EXISTS employees (
@@ -2633,6 +2634,7 @@ ipcMain.on('insert_employee', (_event, args) => {
         marital_status,
         ssn,
         citizenship,
+        pp_image,
         home_email,
         home_phone,
         cell_phone,
@@ -2648,7 +2650,7 @@ ipcMain.on('insert_employee', (_event, args) => {
         custom_field_name,
         custom_value,
         custom_field_type
-        ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+        ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
         [
           first_name,
           last_name ? last_name : null,
@@ -2691,7 +2693,7 @@ ipcMain.on('insert_employee', (_event, args) => {
           date_of_birth,
           eeo_class ? eeo_class : null,
           work_in_state,
-          gender ? gender : null,
+          gender,
           ethnic_group ? ethnic_group : null,
           live_in_state ? live_in_state : null,
           marital_status ? marital_status : null,
@@ -2700,14 +2702,14 @@ ipcMain.on('insert_employee', (_event, args) => {
           pp_image ? pp_image : null,
           home_email ? home_email : null,
           home_phone ? home_phone : null,
-          cell_phone ? cell_phone : null,
+          cell_phone,
           business_email ? business_email : null,
           business_phone ? business_phone : null,
-          emergency_contact ? emergency_contact : null,
-          emergency_work_phone ? emergency_work_phone : null,
+          emergency_contact,
+          emergency_work_phone,
           alter_emergency_contact ? emergency_contact : null,
           alt_emergency_work_phone ? alt_emergency_work_phone : null,
-          emergency_home_phone ? emergency_home_phone : null,
+          emergency_home_phone,
           emergency_contact_relation ? emergency_contact_relation : null,
           alt_emergency_home_phone ? alt_emergency_home_phone : null,
           custom_field_name ? custom_field_name : null,
@@ -2742,7 +2744,7 @@ ipcMain.on('insert_employee', (_event, args) => {
   db.close();
 });
 
-//TODO: JOINING QUERY
+// TODO: JOINING QUERY
 getListItems(
   'fetch_salary_advance',
   'fetch_salary_advance_response',
@@ -2760,7 +2762,6 @@ ipcMain.on('insert_floor', (_event, args) => {
 
   // Execute if the event has row ID / data ID. It is used to update a specific item
   if (args.id !== undefined) {
-    console.log('args', args);
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
 
     db.serialize(() => {
@@ -2808,8 +2809,8 @@ getListItems('fetch_floor', 'fetch_floor_response', 'floor', 'id, floorName');
 deleteListItem('delete_floor', 'delete_floor_response', 'floor');
 
 // INSERT TABLE DATA
-ipcMain.on('insert_table', (_event, args) => {
-  let { id, floorName } = args;
+ipcMain.on('insert_customer_table', (_event, args) => {
+  let { id, tablename, person_capicity, table_icon, floor, status } = args;
 
   console.log('args', args);
 
@@ -2820,12 +2821,15 @@ ipcMain.on('insert_table', (_event, args) => {
     db.serialize(() => {
       db.run(
         // `INSERT OR replace INTO floor (id, floorName) VALUES (?, ?)`,
-        `UPDATE floor floorName = ${floorName} WHERE id = ${id}`,
-        [id, floorName],
+        `UPDATE customer_table SET status = 1 WHERE id = ?`,
+        [id],
         (err: ErrorType) => {
           err
-            ? mainWindow.webContents.send('insert_table_response', err.message)
-            : mainWindow.webContents.send('insert_table_response', {
+            ? mainWindow.webContents.send(
+                'insert_customer_table_response',
+                err.message
+              )
+            : mainWindow.webContents.send('insert_customer_table_response', {
                 status: 'updated',
               });
         }
@@ -2837,18 +2841,25 @@ ipcMain.on('insert_table', (_event, args) => {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
     db.serialize(() => {
       db.run(
-        `CREATE TABLE IF NOT EXISTS table (
+        `CREATE TABLE IF NOT EXISTS customer_table (
           'id' INTEGER PRIMARY KEY AUTOINCREMENT,
-          'floorName' varchar(15) NOT NULL,
-          'created_at' DATETIME
+          'tablename' varchar(50) NOT NULL,
+          'person_capicity' INT NOT NULL,
+          'table_icon' TEXT,
+          'floor' INT,
+          'status' INT NOT NULL,
+          'created_at' INT
         )`
       ).run(
-        `INSERT OR REPLACE INTO table (floorName, created_at) VALUES (?, ?)`,
-        [floorName, Date.now()],
+        `INSERT OR REPLACE INTO customer_table (tablename, person_capicity, table_icon, floor, status, created_at) VALUES (?, ?, ?, ?, ?, ?)`,
+        [tablename, person_capicity, table_icon, floor, status, Date.now()],
         (err: ErrorType) => {
           err
-            ? mainWindow.webContents.send('insert_table_response', err.message)
-            : mainWindow.webContents.send('insert_table_response', {
+            ? mainWindow.webContents.send(
+                'insert_customer_table_response',
+                err.message
+              )
+            : mainWindow.webContents.send('insert_customer_table_response', {
                 status: 'inserted',
               });
         }
@@ -2857,3 +2868,14 @@ ipcMain.on('insert_table', (_event, args) => {
     db.close();
   }
 });
+
+getListItems(
+  'fetch_customer_table',
+  'fetch_customer_table_response',
+  'customer_table'
+);
+deleteListItem(
+  'delete_customer_table',
+  'delete_customer_table_response',
+  'customer_table'
+);
