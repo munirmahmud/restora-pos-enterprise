@@ -2766,7 +2766,6 @@ ipcMain.on('insert_floor', (_event, args) => {
 
     db.serialize(() => {
       db.run(
-        // `INSERT OR replace INTO floor (id, floorName) VALUES (?, ?)`,
         `UPDATE floor SET floorName = ? WHERE id = ?`,
         [floorName, id],
         (err: ErrorType) => {
@@ -2811,16 +2810,18 @@ deleteListItem('delete_floor', 'delete_floor_response', 'floor');
 ipcMain.on('insert_customer_table', (_event, args) => {
   let { id, tablename, person_capacity, table_icon, floor, status } = args;
 
-  console.log('args', args);
-
   // Execute if the event has row ID / data ID. It is used to update a specific item
   if (args.id !== undefined) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
 
     db.serialize(() => {
       db.run(
+<<<<<<< HEAD
+        `UPDATE customer_table SET tablename = ? person_capacity = ? table_icon = ? floor = ? WHERE id = ?`,
+=======
         // `INSERT OR replace INTO floor (id, floorName) VALUES (?, ?)`,
         `UPDATE customer_table SET tablename = ?, person_capacity = ?, table_icon = ?, floor = ? WHERE id = ?`,
+>>>>>>> master
         [tablename, person_capacity, table_icon, floor, id],
         (err: ErrorType) => {
           err
