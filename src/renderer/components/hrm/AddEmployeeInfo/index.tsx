@@ -1,4 +1,5 @@
 import { Button, Form, message, Steps } from 'antd';
+import { getDataFromDatabase } from 'helpers';
 import { useState } from 'react';
 import './AddEmployeeInfo.style.scss';
 import AdditionalAddress from './AdditionalAddress';
@@ -11,8 +12,6 @@ import EmergencyContact from './EmergencyContact';
 import PositionalInfo from './PositionalInfo';
 import SalaryInfo from './SalaryInfo';
 import Supervisor from './Supervisor';
-import { getDataFromDatabase } from 'helpers';
-
 
 const { Step } = Steps;
 
@@ -99,7 +98,6 @@ const AddEmployeeInfo = () => {
     custom_value: '',
     custom_field_type: '',
   });
-
 
   const steps = [
     {
@@ -193,7 +191,7 @@ const AddEmployeeInfo = () => {
 
   const handleSubmit = () => {
     console.log('employeeInfo', employeeInfo);
-    window.insert_employee.send('insert_employee', employeeInfo)
+    window.insert_employee.send('insert_employee', employeeInfo);
 
     message.success({
       content: 'Employee information added successfully',
@@ -229,8 +227,8 @@ const AddEmployeeInfo = () => {
         autoComplete="off"
       >
         <Steps current={current}>
-          {steps.map((item) => (
-            <Step key={item.title} title={item.title} />
+          {steps?.map((item) => (
+            <Step key={item?.title} title={item?.title} />
           ))}
         </Steps>
 
@@ -252,7 +250,7 @@ const AddEmployeeInfo = () => {
               type="primary"
               htmlType="submit"
               className="submit_btn"
-            // onClick={() => message.success('Processing complete!')}
+              // onClick={() => message.success('Processing complete!')}
             >
               Done
             </Button>

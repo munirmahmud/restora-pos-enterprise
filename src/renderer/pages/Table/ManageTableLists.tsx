@@ -32,6 +32,7 @@ const ManageTableLists = () => {
   const [form] = Form.useForm();
   const [openModal, setOpenModal] = useState(false);
   const [addTable, setAddTable] = useState([]);
+  const [openTableImageModal, setOpenTableImageModal] = useState(false);
 
   useEffect(() => {
     setAddTable([]);
@@ -211,10 +212,15 @@ const ManageTableLists = () => {
 
             <div className="flex content_between item_center">
               <Form.Item name="table_icon" label="Table Icon">
-                <Input disabled />
+                <Input style={{ cursor: 'no-drop' }} />
               </Form.Item>
 
-              <Button type="primary">Show</Button>
+              <Button
+                type="primary"
+                onClick={() => setOpenTableImageModal(true)}
+              >
+                Show
+              </Button>
             </div>
 
             <Space>
@@ -226,6 +232,29 @@ const ManageTableLists = () => {
               </Button>
             </Space>
           </Form>
+        </Modal>
+
+        <Modal
+          title=""
+          visible={openTableImageModal}
+          onOk={() => setOpenTableImageModal(false)}
+          onCancel={() => setOpenTableImageModal(false)}
+          footer={null}
+          width={600}
+        >
+          <div
+            style={{
+              marginTop: '2rem',
+              padding: '1rem',
+              boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px',
+            }}
+          >
+            <div className="flex content_end">
+              <Button className="" type="primary">
+                Upload Image
+              </Button>
+            </div>
+          </div>
         </Modal>
       </div>
     </div>

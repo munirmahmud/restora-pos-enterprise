@@ -135,8 +135,6 @@ const ManageFloorLists = () => {
 
   const handleSubmit = (values: FloorType) => {
     if (updateFloorData?.id) {
-      console.log('updateFloorData?.id', updateFloorData?.id);
-
       window.insert_floor.send('insert_floor', {
         id: updateFloorData.id,
         ...values,

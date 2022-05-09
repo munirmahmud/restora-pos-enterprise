@@ -2766,7 +2766,7 @@ ipcMain.on('insert_floor', (_event, args) => {
     db.serialize(() => {
       db.run(
         // `INSERT OR replace INTO floor (id, floorName) VALUES (?, ?)`,
-        `UPDATE TABLE floor SET floorName = ? WHERE id = ?`,
+        `UPDATE floor SET floorName = ? WHERE id = ?`,
         [floorName, id],
         (err: ErrorType) => {
           err
