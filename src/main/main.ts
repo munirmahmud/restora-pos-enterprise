@@ -28,11 +28,13 @@ declare global {
     insert_salary_advance: any;
     fetch_salary_advance: any;
     delete_salary_advance: any;
+    insert_employee: any;
     insert_floor: any;
     delete_floor: any;
     fetch_floor: any;
-    insert_employee: any;
     insert_customer_table: any;
+    fetch_customer_table: any;
+    delete_customer_table: any;
   }
 }
 
