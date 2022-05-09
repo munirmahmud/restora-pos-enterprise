@@ -11,12 +11,13 @@ import EmergencyContact from './EmergencyContact';
 import PositionalInfo from './PositionalInfo';
 import SalaryInfo from './SalaryInfo';
 import Supervisor from './Supervisor';
-import { getDataFromDatabase } from 'helpers';
 
 
 const { Step } = Steps;
 
 type EmployeeInfoTypes = {};
+
+window.send_status_to_create_table.send('send_status_to_create_table', {"status": true})
 
 const AddEmployeeInfo = () => {
   const [current, setCurrent] = useState(0);
@@ -273,11 +274,8 @@ const AddEmployeeInfo = () => {
   );
 };
 
-getDataFromDatabase(
-  'get_employee_designation_response',
-  window.get_employee_designation
-).then((response: any) => {
-  console.log(response);
-});
+window.insert_employee.once('insert_employee_response', (arg)=>{
+  console.log(arg);
+})
 
 export default AddEmployeeInfo;

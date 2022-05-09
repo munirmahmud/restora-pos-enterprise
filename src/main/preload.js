@@ -338,10 +338,16 @@ sendDataThroughMiddlewareOn(
 /****************HUMAN RESOURCE****************/
 
 // ADD EMPLOYEE
-sendDataThroughMiddlewareOn(
+sendDataThroughMiddleware(
   'insert_employee',
   'insert_employee',
   'insert_employee_response'
+)
+
+sendDataThroughMiddleware(
+  'send_status_to_create_table',
+  'send_status_to_create_table',
+  'send_status_to_create_table_response'
 )
 
 sendDataThroughMiddleware(
