@@ -21,6 +21,7 @@ import {
 } from 'antd';
 import { ReactNode, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import defaultImage from '../../../../assets/default.jpg';
 import imagesData from '../../../static/images.json';
 import { getDataFromDatabase } from './../../../helpers';
 
@@ -67,6 +68,7 @@ const ManageTableLists = () => {
       }
     );
 
+    window.fetch_customer_table.send('fetch_customer_table', { status: true });
     getDataFromDatabase(
       'fetch_customer_table_response',
       window.fetch_customer_table
@@ -99,27 +101,36 @@ const ManageTableLists = () => {
   const columns = [
     {
       title: 'SL NO',
-      dataIndex: 'sl_no',
-      key: 'sl_no',
+      dataIndex: 'id',
+      key: 'id',
       width: '7%',
     },
     {
       title: 'Table Name',
-      dataIndex: 'table_name',
-      key: 'table_name',
+      dataIndex: 'tablename',
+      key: 'tablename',
       width: '30%',
     },
     {
       title: 'Capacity',
-      dataIndex: 'capacity',
-      key: 'capacity',
+      dataIndex: 'person_capacity',
+      key: 'person_capacity',
       width: '25%',
     },
     {
       title: 'Icon',
-      dataIndex: 'icon',
-      key: 'icon',
+      dataIndex: 'table_icon',
+      key: 'table_icon',
       width: '20%',
+      render: (_text, record: any) => (
+        <Image
+          src={record.table_icon ? record.table_icon : ''}
+          width={50}
+          height={50}
+          fallback={defaultImage}
+          preview={false}
+        />
+      ),
     },
     {
       title: 'Action',
@@ -211,13 +222,6 @@ const ManageTableLists = () => {
       setImageSource('');
       form.resetFields();
     } else {
-      console.log('data', {
-        ...values,
-        person_capacity: parseInt(values.person_capacity),
-        table_icon: imageSource?.imageSrc,
-        status: 0,
-      });
-
       window.insert_customer_table.send('insert_customer_table', {
         ...values,
         person_capacity: parseInt(values.person_capacity),
