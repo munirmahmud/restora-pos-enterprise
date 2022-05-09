@@ -2820,8 +2820,8 @@ ipcMain.on('insert_customer_table', (_event, args) => {
     db.serialize(() => {
       db.run(
         // `INSERT OR replace INTO floor (id, floorName) VALUES (?, ?)`,
-        `UPDATE customer_table SET status = 1 WHERE id = ?`,
-        [id],
+        `UPDATE customer_table SET tablename = ? person_capacity = ? table_icon = ? floor = ? WHERE id = ?`,
+        [tablename, person_capacity, table_icon, floor, id],
         (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
@@ -2871,7 +2871,8 @@ ipcMain.on('insert_customer_table', (_event, args) => {
 getListItems(
   'fetch_customer_table',
   'fetch_customer_table_response',
-  'customer_table'
+  'customer_table',
+  'id, tablename, person_capacity, table_icon, floor'
 );
 deleteListItem(
   'delete_customer_table',
