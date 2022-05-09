@@ -342,7 +342,7 @@ sendDataThroughMiddlewareOn(
   'insert_employee',
   'insert_employee',
   'insert_employee_response'
-)
+);
 
 sendDataThroughMiddleware(
   'insert_employee_designation', //Event Name
@@ -432,9 +432,14 @@ sendDataThroughMiddleware(
 
 // TABLE
 sendDataThroughMiddleware(
-  'insert_table', //Event Name
-  'insert_table', // Channel Name
-  'insert_table_response' //Response
+  'insert_customer_table', //Event Name
+  'insert_customer_table', // Channel Name
+  'insert_customer_table_response' //Response
+);
+sendDataThroughMiddleware(
+  'fetch_customer_table', //Event Name
+  'fetch_customer_table', // Channel Name
+  'fetch_customer_table_response' //Response
 );
 
 /*======================================================================
