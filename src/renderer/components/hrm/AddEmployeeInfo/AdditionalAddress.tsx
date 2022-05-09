@@ -43,6 +43,7 @@ const AdditionalAddress = ({ employeeInfo, setEmployeeInfo }: any) => {
             />
           </Form.Item>
         </Col>
+
         <Col lg={12} xl={12} xxl={12}>
           <Form.Item label="Business Email" name="business_email">
             <Input

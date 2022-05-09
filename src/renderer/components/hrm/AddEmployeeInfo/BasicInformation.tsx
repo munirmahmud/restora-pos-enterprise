@@ -148,8 +148,8 @@ const BasicInformation = ({ employeeInfo, setEmployeeInfo }: any) => {
               }
               onChange={handleChangeState}
             >
-              <Option value="Bangladesh">Bangladesh</Option>
-              <Option value="India">India</Option>
+              <Option value="1">Bangladesh</Option>
+              <Option value="2">India</Option>
             </Select>
           </Form.Item>
 

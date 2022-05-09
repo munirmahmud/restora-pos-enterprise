@@ -47,8 +47,8 @@ const PositionalInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
               }
               onChange={handleChangeDivision}
             >
-              <Option value="Bangladesh">Bangladesh</Option>
-              <Option value="India">India</Option>
+              <Option value="1">Bangladesh</Option>
+              <Option value="2">India</Option>
             </Select>
           </Form.Item>
 
@@ -150,10 +150,10 @@ const PositionalInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
               }
               onChange={handleChangeDesignation}
             >
-              <Option value="accounts">Accounts</Option>
-              <Option value="sales man">Sales Man</Option>
-              <Option value="kitchen manager">Kitchen Manager</Option>
-              <Option value="manager">Manager</Option>
+              <Option value="1">Accounts</Option>
+              <Option value="2">Sales Man</Option>
+              <Option value="3">Kitchen Manager</Option>
+              <Option value="4">Manager</Option>
             </Select>
           </Form.Item>
 
@@ -208,9 +208,9 @@ const PositionalInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
               }
               onChange={handleChangePayFrequency}
             >
-              <Option value="weekly">Weekly</Option>
-              <Option value="monthly">Monthly</Option>
-              <Option value="annual">Annual</Option>
+              <Option value="1">Weekly</Option>
+              <Option value="2">Monthly</Option>
+              <Option value="3">Annual</Option>
             </Select>
           </Form.Item>
 
@@ -268,9 +268,9 @@ const PositionalInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
               }
               onChange={handleChangeDutyType}
             >
-              <Option value="full time">Full Time</Option>
-              <Option value="part time">Part Time</Option>
-              <Option value="contractual">Contractual</Option>
+              <Option value="1">Full Time</Option>
+              <Option value="2">Part Time</Option>
+              <Option value="3">Contractual</Option>
             </Select>
           </Form.Item>
 
@@ -301,8 +301,8 @@ const PositionalInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
               }
               onChange={handleChangeRateType}
             >
-              <Option value="hourly">Hourly</Option>
-              <Option value="salary">Salary</Option>
+              <Option value="1">Hourly</Option>
+              <Option value="2">Salary</Option>
             </Select>
           </Form.Item>
 

@@ -3,19 +3,26 @@ import {
   EditOutlined,
   ExclamationCircleOutlined,
   PlusCircleOutlined,
+  UploadOutlined,
 } from '@ant-design/icons';
 import {
   Button,
+  Col,
   Form,
+  Image,
   Input,
   message,
   Modal,
+  Row,
   Select,
   Space,
   Table,
+  Upload,
 } from 'antd';
 import { ReactNode, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import imagesData from '../../../static/images.json';
+import { getDataFromDatabase } from './../../../helpers';
 
 const { Option } = Select;
 const { confirm } = Modal;
@@ -28,15 +35,39 @@ type DataType = {
   icon: string;
 };
 
+type TableDataTypes = {
+  id: string;
+  imageSrc: string;
+};
+
+const customImageCSS = {
+  padding: '14px',
+  border: '1px solid rgb(227, 234, 239)',
+  borderRadius: '5px',
+  cursor: 'pointer',
+};
+
 const ManageTableLists = () => {
+  window.fetch_floor.send('fetch_floor', { status: true });
+
   const [form] = Form.useForm();
   const [openModal, setOpenModal] = useState(false);
   const [addTable, setAddTable] = useState([]);
   const [openTableImageModal, setOpenTableImageModal] = useState(false);
+  const [floorListsData, setFloorListsData] = useState([]);
+  const [imageSource, setImageSource] = useState({});
+  const [reRender, setReRender] = useState(false);
+  const [updateTableData, setUpdateTableData] = useState({});
 
   useEffect(() => {
+    getDataFromDatabase('fetch_floor_response', window.fetch_floor).then(
+      (response: any) => {
+        setFloorListsData(response);
+      }
+    );
+
     setAddTable([]);
-  }, []);
+  }, [reRender]);
 
   const columns = [
     {
@@ -109,6 +140,8 @@ const ManageTableLists = () => {
 
   const handleEditTable = (data: DataType) => {
     console.log('Edit data', data);
+    setReRender((prevState) => !prevState);
+    setUpdateTableData(data);
   };
 
   const handleDeleteTable = (data: DataType) => {
@@ -134,12 +167,63 @@ const ManageTableLists = () => {
   };
 
   const handleSubmit = (values: any) => {
-    console.log(values);
-    form.resetFields();
+    if (updateTableData?.id) {
+      window.insert_customer_table.send('insert_customer_table', {
+        id: updateTableData.id,
+        ...values,
+      });
+
+      setReRender((prevState) => !prevState);
+
+      message.success({
+        content: 'Table updated successfully',
+        className: 'custom-class',
+        duration: 1,
+        style: {
+          marginTop: '5vh',
+          float: 'right',
+        },
+      });
+
+      form.resetFields();
+    } else {
+      console.log('data', {
+        ...values,
+        person_capacity: parseInt(values.person_capacity),
+        table_icon: imageSource?.imageSrc,
+        status: 0,
+      });
+
+      window.insert_customer_table.send('insert_customer_table', {
+        ...values,
+        person_capacity: parseInt(values.person_capacity),
+        table_icon: imageSource?.imageSrc,
+        status: 0,
+      });
+
+      setReRender((prevState) => !prevState);
+
+      message.success({
+        content: 'Table added successfully',
+        className: 'custom-class',
+        duration: 1,
+        style: {
+          marginTop: '5vh',
+          float: 'right',
+        },
+      });
+
+      form.resetFields();
+    }
   };
 
   const onReset = () => {
     form.resetFields();
+  };
+
+  const handleTableImage = (imageData: TableDataTypes) => {
+    setImageSource(imageData);
+    setOpenTableImageModal(false);
   };
 
   return (
@@ -191,36 +275,52 @@ const ManageTableLists = () => {
             }}
           >
             <Form.Item
-              name="table_name"
+              name="tablename"
               label="Table Name"
-              rules={[{ required: true }]}
+              rules={[{ required: true, message: 'Table name is required' }]}
             >
               <Input placeholder="Add Table Name" />
             </Form.Item>
 
-            <Form.Item name="capacity" label="Capacity">
+            <Form.Item name="person_capacity" label="Capacity">
               <Input placeholder="Add Capacity" />
             </Form.Item>
 
-            <Form.Item name="select_floor" label="Floor Select">
+            <Form.Item name="floor" label="Floor Select">
               <Select placeholder="Select a option" allowClear>
-                <Option value="1">Main Floor</Option>
-                <Option value="2">VIP Floor</Option>
-                <Option value="3">Hall Floor</Option>
+                {floorListsData?.map((data) => (
+                  <Option key={data?.id} value={data?.id}>
+                    {data?.floorName}
+                  </Option>
+                ))}
               </Select>
             </Form.Item>
 
-            <div className="flex content_between item_center">
-              <Form.Item name="table_icon" label="Table Icon">
-                <Input style={{ cursor: 'no-drop' }} />
-              </Form.Item>
-
-              <Button
-                type="primary"
-                onClick={() => setOpenTableImageModal(true)}
-              >
-                Show
-              </Button>
+            <div>
+              <Row gutter={10}>
+                <Col lg={20}>
+                  <Form.Item name="table_icon" label="Table Icon">
+                    {imageSource?.imageSrc ? (
+                      <Image
+                        src={imageSource?.imageSrc}
+                        preview={false}
+                        width={50}
+                      />
+                    ) : (
+                      <p>No icon is selected</p>
+                    )}
+                  </Form.Item>
+                </Col>
+                <Col lg={4} className="flex content_between item_center">
+                  <Button
+                    type="primary"
+                    onClick={() => setOpenTableImageModal(true)}
+                    style={{ marginTop: '0.4rem' }}
+                  >
+                    Show
+                  </Button>
+                </Col>
+              </Row>
             </div>
 
             <Space>
@@ -235,24 +335,36 @@ const ManageTableLists = () => {
         </Modal>
 
         <Modal
-          title=""
+          title="Table Images"
           visible={openTableImageModal}
           onOk={() => setOpenTableImageModal(false)}
           onCancel={() => setOpenTableImageModal(false)}
           footer={null}
-          width={600}
+          width={900}
         >
-          <div
-            style={{
-              marginTop: '2rem',
-              padding: '1rem',
-              boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px',
-            }}
-          >
+          <div>
             <div className="flex content_end">
-              <Button className="" type="primary">
-                Upload Image
-              </Button>
+              <Upload>
+                <Button className="" type="primary" icon={<UploadOutlined />}>
+                  Click to Upload
+                </Button>
+              </Upload>
+            </div>
+
+            <div className="image_wrapper" style={{ marginTop: '2rem' }}>
+              <Row gutter={[20, 20]}>
+                {imagesData.images?.map((image) => (
+                  <Col lg={4} key={image?.id}>
+                    <div
+                      className="flex content_center"
+                      style={customImageCSS}
+                      onClick={() => handleTableImage(image)}
+                    >
+                      <Image preview={false} width={80} src={image?.imageSrc} />
+                    </div>
+                  </Col>
+                ))}
+              </Row>
             </div>
           </div>
         </Modal>
