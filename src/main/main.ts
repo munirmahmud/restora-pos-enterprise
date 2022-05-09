@@ -2438,6 +2438,7 @@ ipcMain.on('send_status_to_create_table', (_event, args) => {
 
         if (rows) {
           console.log("2437: Table already exist");
+          
         }
         else {
           console.log('2443: Table created');
@@ -2450,14 +2451,6 @@ ipcMain.on('send_status_to_create_table', (_event, args) => {
                 "id" INTEGER PRIMARY KEY AUTOINCREMENT,
                 "emp_type" VARCHAR(100)
                 )`)
-              .run(`CREATE TABLE IF NOT EXISTS emp_divisions (
-                "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-                "division" VARCHAR(100)
-                )`)
-              .run(`CREATE TABLE IF NOT EXISTS emp_designation (
-                  "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-                  "designation" VARCHAR(100)
-                  )`)
               .run(`CREATE TABLE IF NOT EXISTS emp_pay_frequency (
                 "id" INTEGER PRIMARY KEY AUTOINCREMENT,
                 "frequency" VARCHAR(100)
@@ -2472,8 +2465,6 @@ ipcMain.on('send_status_to_create_table', (_event, args) => {
                   )`)
               .run(`INSERT INTO emp_attendance_time(attendance_time) VALUES("Attendance Time (15:30 - 20:30)"),("Attendance Time (15:30 - 20:30)")`)
               .run(`INSERT INTO emp_types(emp_type) VALUES("Full Time"),("Part Time")`)
-              .run(`INSERT INTO emp_divisions(division) VALUES("Accounts"),("HR")`)
-              .run(`INSERT INTO emp_designation(designation) VALUES("Accounts"),("HR")`)
               .run(`INSERT INTO emp_pay_frequency(frequency) VALUES("Weekly"),("Monthly"),("Annual")`)
               .run(`INSERT INTO emp_duty_types(duty_type) VALUES("Full Time"),("Part Time"),("Contractual")`)
               .run(`INSERT INTO emp_rate_types(rate_type) VALUES("Hourly"),("Monthly")`)
