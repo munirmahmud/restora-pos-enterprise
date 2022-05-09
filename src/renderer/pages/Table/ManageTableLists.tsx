@@ -209,9 +209,17 @@ const ManageTableLists = () => {
               </Select>
             </Form.Item>
 
+            <div className="flex content_between item_center">
+              <Form.Item name="table_icon" label="Table Icon">
+                <Input disabled />
+              </Form.Item>
+
+              <Button type="primary">Show</Button>
+            </div>
+
             <Space>
               <Button type="primary" htmlType="submit">
-                Submit
+                Add
               </Button>
               <Button type="primary" danger onClick={onReset}>
                 Reset

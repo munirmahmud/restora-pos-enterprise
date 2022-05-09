@@ -46,7 +46,7 @@ const ManageFloorLists = () => {
     setAddFloor([
       {
         name: ['floorName'],
-        value: '',
+        value: updateFloorData?.floorName,
       },
     ]);
 
@@ -94,7 +94,7 @@ const ManageFloorLists = () => {
   ];
 
   const handleEditFloor = (data: DataType) => {
-    console.log('Edit data', data);
+    setReRender((prevState) => !prevState);
     setUpdateFloorData(data);
   };
 
@@ -135,6 +135,8 @@ const ManageFloorLists = () => {
 
   const handleSubmit = (values: FloorType) => {
     if (updateFloorData?.id) {
+      console.log('updateFloorData?.id', updateFloorData?.id);
+
       window.insert_floor.send('insert_floor', {
         id: updateFloorData.id,
         ...values,
