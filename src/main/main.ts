@@ -31,6 +31,9 @@ declare global {
     insert_floor: any;
     delete_floor: any;
     fetch_floor: any;
+    insert_customer_table: any;
+    fetch_customer_table: any;
+    delete_customer_table: any;
   }
 }
 
