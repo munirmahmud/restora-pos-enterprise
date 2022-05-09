@@ -2809,7 +2809,7 @@ deleteListItem('delete_floor', 'delete_floor_response', 'floor');
 
 // INSERT TABLE DATA
 ipcMain.on('insert_customer_table', (_event, args) => {
-  let { id, tablename, person_capicity, table_icon, floor, status } = args;
+  let { id, tablename, person_capacity, table_icon, floor, status } = args;
 
   console.log('args', args);
 
@@ -2843,15 +2843,15 @@ ipcMain.on('insert_customer_table', (_event, args) => {
         `CREATE TABLE IF NOT EXISTS customer_table (
           'id' INTEGER PRIMARY KEY AUTOINCREMENT,
           'tablename' varchar(50) NOT NULL,
-          'person_capicity' INT NOT NULL,
+          'person_capacity' INT NOT NULL,
           'table_icon' TEXT,
           'floor' INT,
           'status' INT NOT NULL,
           'created_at' INT
         )`
       ).run(
-        `INSERT OR REPLACE INTO customer_table (tablename, person_capicity, table_icon, floor, status, created_at) VALUES (?, ?, ?, ?, ?, ?)`,
-        [tablename, person_capicity, table_icon, floor, status, Date.now()],
+        `INSERT OR REPLACE INTO customer_table (tablename, person_capacity, table_icon, floor, status, created_at) VALUES (?, ?, ?, ?, ?, ?)`,
+        [tablename, person_capacity, table_icon, floor, status, Date.now()],
         (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
