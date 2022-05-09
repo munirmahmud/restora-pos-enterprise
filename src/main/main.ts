@@ -2432,6 +2432,57 @@ ipcMain.on('insert_salary_advance', (_event, args) => {
   }
 });
 
+// CREATE TABLE: emp_attendance_time, emp_types, emp_divisions, emp_designation, emp_designation, emp_pay_frequency, emp_duty_types, emp_rate_types
+ipcMain.on('send_status_to_create_table', (_event, args) => {
+  if (args.status) {
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+    db.serialize(() => {
+      db.all(`SELECT * FROM emp_types`, [], (err, rows) => {
+        console.log('2436: ',err);
+        console.log('2437', rows);
+
+        if (rows) {
+          console.log("2437: Table already exist");
+
+        }
+        else {
+          console.log('2443: Table created');
+          db.serialize(() => {
+            db.run(`CREATE TABLE IF NOT EXISTS emp_attendance_time (
+              "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+              "attendance_time" VARCHAR(100)
+              )`)
+              .run(`CREATE TABLE IF NOT EXISTS emp_types (
+                "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+                "emp_type" VARCHAR(100)
+                )`)
+              .run(`CREATE TABLE IF NOT EXISTS emp_pay_frequency (
+                "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+                "frequency" VARCHAR(100)
+                )`)
+              .run(`CREATE TABLE IF NOT EXISTS emp_duty_types (
+                  "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+                  "duty_type" VARCHAR(100)
+                  )`)
+              .run(`CREATE TABLE IF NOT EXISTS emp_rate_types (
+                  "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+                  "rate_type" VARCHAR(100)
+                  )`)
+              .run(`INSERT INTO emp_attendance_time(attendance_time) VALUES("Attendance Time (15:30 - 20:30)"),("Attendance Time (15:30 - 20:30)")`)
+              .run(`INSERT INTO emp_types(emp_type) VALUES("Full Time"),("Part Time")`)
+              .run(`INSERT INTO emp_pay_frequency(frequency) VALUES("Weekly"),("Monthly"),("Annual")`)
+              .run(`INSERT INTO emp_duty_types(duty_type) VALUES("Full Time"),("Part Time"),("Contractual")`)
+              .run(`INSERT INTO emp_rate_types(rate_type) VALUES("Hourly"),("Monthly")`)
+          })
+        }
+      })
+    })
+    db.close()
+  }
+
+})
+
+
 // INSERT EMPLOYEE
 ipcMain.on('insert_employee', (_event: Electron.IpcMainEvent, args) => {
   let {
@@ -2772,8 +2823,8 @@ ipcMain.on('insert_floor', (_event, args) => {
           err
             ? mainWindow.webContents.send('insert_floor_response', err.message)
             : mainWindow.webContents.send('insert_floor_response', {
-                status: 'updated',
-              });
+              status: 'updated',
+            });
         }
       );
     });
@@ -2795,8 +2846,8 @@ ipcMain.on('insert_floor', (_event, args) => {
           err
             ? mainWindow.webContents.send('insert_floor_response', err.message)
             : mainWindow.webContents.send('insert_floor_response', {
-                status: 'inserted',
-              });
+              status: 'inserted',
+            });
         }
       );
     });
@@ -2816,12 +2867,8 @@ ipcMain.on('insert_customer_table', (_event, args) => {
 
     db.serialize(() => {
       db.run(
-<<<<<<< HEAD
-        `UPDATE customer_table SET tablename = ? person_capacity = ? table_icon = ? floor = ? WHERE id = ?`,
-=======
         // `INSERT OR replace INTO floor (id, floorName) VALUES (?, ?)`,
         `UPDATE customer_table SET tablename = ?, person_capacity = ?, table_icon = ?, floor = ? WHERE id = ?`,
->>>>>>> master
         [tablename, person_capacity, table_icon, floor, id],
         (err: ErrorType) => {
           err
@@ -2868,6 +2915,23 @@ ipcMain.on('insert_customer_table', (_event, args) => {
     db.close();
   }
 });
+
+// Get waiter Name
+ipcMain.on('get_waiter_names', (_event, args)=>{
+  if (args.status) {
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+    let sql = `SELECT employees.id, employees.first_name, employees.last_name from employees
+    WHERE employees.designation = (SELECT id FROM emp_designation WHERE designation = 'Accounts')`
+    db.serialize(()=>{
+      db.all(sql, [], (err, rows)=>{
+        console.log('2927: ', rows[0]);
+
+        mainWindow.webContents.send('get_waiter_names_response', rows[0])
+      })
+    })
+
+  }
+})
 
 getListItems(
   'fetch_customer_table',
