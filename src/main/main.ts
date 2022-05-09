@@ -2433,8 +2433,7 @@ ipcMain.on('insert_salary_advance', (_event, args) => {
 });
 
 // INSERT EMPLOYEE
-ipcMain.on('insert_employee', (_event, args) => {
-  // console.log('2429: Employee table created.', args);
+ipcMain.on('insert_employee', (_event: Electron.IpcMainEvent, args) => {
   let {
     first_name,
     last_name,
@@ -2731,9 +2730,7 @@ ipcMain.on('insert_employee', (_event, args) => {
         }
       )
       .run(
-        `INSERT INTO employees_salary
-    (basic_salary, house_rent, medical, others_allowance,
-    gross_salary, tranport_allowance) VALUES (?,?,?,?,?,?)`,
+        `INSERT INTO employees_salary (basic_salary, house_rent, medical, others_allowance, gross_salary, tranport_allowance) VALUES (?,?,?,?,?,?)`,
         [
           basic_salary ? basic_salary : null,
           house_rent ? house_rent : null,
@@ -2807,13 +2804,12 @@ ipcMain.on('insert_floor', (_event, args) => {
     db.close();
   }
 });
-
 getListItems('fetch_floor', 'fetch_floor_response', 'floor', 'id, floorName');
 deleteListItem('delete_floor', 'delete_floor_response', 'floor');
 
 // INSERT TABLE DATA
 ipcMain.on('insert_customer_table', (_event, args) => {
-  let { id, tablename, person_capicity, table_icon, floor, status } = args;
+  let { id, tablename, person_capacity, table_icon, floor, status } = args;
 
   console.log('args', args);
 
@@ -2847,15 +2843,15 @@ ipcMain.on('insert_customer_table', (_event, args) => {
         `CREATE TABLE IF NOT EXISTS customer_table (
           'id' INTEGER PRIMARY KEY AUTOINCREMENT,
           'tablename' varchar(50) NOT NULL,
-          'person_capicity' INT NOT NULL,
+          'person_capacity' INT NOT NULL,
           'table_icon' TEXT,
           'floor' INT,
           'status' INT NOT NULL,
           'created_at' INT
         )`
       ).run(
-        `INSERT OR REPLACE INTO customer_table (tablename, person_capicity, table_icon, floor, status, created_at) VALUES (?, ?, ?, ?, ?, ?)`,
-        [tablename, person_capicity, table_icon, floor, status, Date.now()],
+        `INSERT OR REPLACE INTO customer_table (tablename, person_capacity, table_icon, floor, status, created_at) VALUES (?, ?, ?, ?, ?, ?)`,
+        [tablename, person_capacity, table_icon, floor, status, Date.now()],
         (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
