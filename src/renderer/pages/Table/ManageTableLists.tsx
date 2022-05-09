@@ -21,6 +21,7 @@ import {
 } from 'antd';
 import { ReactNode, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import defaultImage from '../../../../assets/default.jpg';
 import imagesData from '../../../static/images.json';
 import { getDataFromDatabase } from './../../../helpers';
 
@@ -58,6 +59,7 @@ const ManageTableLists = () => {
   const [imageSource, setImageSource] = useState({});
   const [reRender, setReRender] = useState(false);
   const [updateTableData, setUpdateTableData] = useState({});
+  const [tableDataLists, setTableDataLists] = useState([]);
 
   useEffect(() => {
     getDataFromDatabase('fetch_floor_response', window.fetch_floor).then(
@@ -66,33 +68,67 @@ const ManageTableLists = () => {
       }
     );
 
-    setAddTable([]);
+    window.fetch_customer_table.send('fetch_customer_table', { status: true });
+    getDataFromDatabase(
+      'fetch_customer_table_response',
+      window.fetch_customer_table
+    ).then((response: any) => {
+      setTableDataLists(response);
+    });
+
+    setAddTable([
+      {
+        name: ['tablename'],
+        value: updateTableData?.tablename,
+      },
+      {
+        name: ['person_capacity'],
+        value: updateTableData?.person_capacity,
+      },
+      {
+        name: ['floor'],
+        value: updateTableData?.floor,
+      },
+      {
+        name: ['table_icon'],
+        value: updateTableData?.table_icon,
+      },
+    ]);
   }, [reRender]);
 
   const columns = [
     {
       title: 'SL NO',
-      dataIndex: 'sl_no',
-      key: 'sl_no',
+      dataIndex: 'id',
+      key: 'id',
       width: '7%',
     },
     {
       title: 'Table Name',
-      dataIndex: 'table_name',
-      key: 'table_name',
+      dataIndex: 'tablename',
+      key: 'tablename',
       width: '30%',
     },
     {
       title: 'Capacity',
-      dataIndex: 'capacity',
-      key: 'capacity',
+      dataIndex: 'person_capacity',
+      key: 'person_capacity',
       width: '25%',
     },
     {
       title: 'Icon',
-      dataIndex: 'icon',
-      key: 'icon',
+      dataIndex: 'table_icon',
+      key: 'table_icon',
       width: '20%',
+      render: (_text, record: any) => (
+        <Image
+          src={record.table_icon ? record.table_icon : ''}
+          width={50}
+          height={50}
+          fallback={defaultImage}
+          preview={false}
+        />
+      ),
     },
     {
       title: 'Action',
@@ -117,30 +153,9 @@ const ManageTableLists = () => {
     },
   ];
 
-  const data = [
-    {
-      sl_no: 1,
-      table_name: 'John Brown',
-      capacity: 32,
-      icon: '',
-    },
-    {
-      sl_no: 2,
-      table_name: 'Jim Green',
-      capacity: 42,
-      icon: '',
-    },
-    {
-      sl_no: 3,
-      table_name: 'Joe Black',
-      capacity: 32,
-      icon: '',
-    },
-  ];
-
   const handleEditTable = (data: DataType) => {
-    console.log('Edit data', data);
     setReRender((prevState) => !prevState);
+    setOpenModal(true);
     setUpdateTableData(data);
   };
 
@@ -152,15 +167,29 @@ const ManageTableLists = () => {
       content:
         'If you click on the ok button the item will be deleted permanently from the database. Undo is not possible.',
       onOk() {
-        message.success({
-          content: 'Table deleted successfully',
-          className: 'custom-class',
-          duration: 1,
-          style: {
-            marginTop: '5vh',
-            float: 'right',
-          },
+        window.delete_customer_table.send('delete_customer_table', {
+          id: data.id,
         });
+
+        window.delete_customer_table.once(
+          'delete_customer_table_response',
+          ({ status }: { status: boolean }) => {
+            if (status) {
+              // Rerender the component
+              setReRender((prevState) => !prevState);
+
+              message.success({
+                content: 'Table deleted successfully',
+                className: 'custom-class',
+                duration: 1,
+                style: {
+                  marginTop: '5vh',
+                  float: 'right',
+                },
+              });
+            }
+          }
+        );
       },
       onCancel() {},
     });
@@ -169,7 +198,9 @@ const ManageTableLists = () => {
   const handleSubmit = (values: any) => {
     if (updateTableData?.id) {
       window.insert_customer_table.send('insert_customer_table', {
-        id: updateTableData.id,
+        id: updateTableData?.id,
+        person_capacity: parseInt(values?.person_capacity),
+        table_icon: (values.table_icon = imageSource?.imageSrc),
         ...values,
       });
 
@@ -185,15 +216,10 @@ const ManageTableLists = () => {
         },
       });
 
+      setOpenModal(false);
+      setImageSource('');
       form.resetFields();
     } else {
-      console.log('data', {
-        ...values,
-        person_capacity: parseInt(values.person_capacity),
-        table_icon: imageSource?.imageSrc,
-        status: 0,
-      });
-
       window.insert_customer_table.send('insert_customer_table', {
         ...values,
         person_capacity: parseInt(values.person_capacity),
@@ -213,11 +239,14 @@ const ManageTableLists = () => {
         },
       });
 
+      setOpenModal(false);
+      setImageSource('');
       form.resetFields();
     }
   };
 
   const onReset = () => {
+    setImageSource('');
     form.resetFields();
   };
 
@@ -251,8 +280,8 @@ const ManageTableLists = () => {
         <Table
           bordered
           columns={columns}
-          dataSource={data}
-          rowKey={(record) => record.sl_no}
+          dataSource={tableDataLists}
+          rowKey={(record) => record?.id}
           pagination={false}
         />
 
@@ -282,7 +311,13 @@ const ManageTableLists = () => {
               <Input placeholder="Add Table Name" />
             </Form.Item>
 
-            <Form.Item name="person_capacity" label="Capacity">
+            <Form.Item
+              name="person_capacity"
+              label="Capacity"
+              rules={[
+                { required: true, message: 'Person capacity is required' },
+              ]}
+            >
               <Input placeholder="Add Capacity" />
             </Form.Item>
 
@@ -307,7 +342,17 @@ const ManageTableLists = () => {
                         width={50}
                       />
                     ) : (
-                      <p>No icon is selected</p>
+                      <>
+                        {updateTableData?.table_icon ? (
+                          <Image
+                            src={updateTableData?.table_icon}
+                            preview={false}
+                            width={50}
+                          />
+                        ) : (
+                          <p>No icon is selected</p>
+                        )}
+                      </>
                     )}
                   </Form.Item>
                 </Col>
