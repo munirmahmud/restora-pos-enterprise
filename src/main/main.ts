@@ -28,6 +28,7 @@ declare global {
     insert_salary_advance: any;
     fetch_salary_advance: any;
     delete_salary_advance: any;
+    insert_employee: any;
     insert_floor: any;
     delete_floor: any;
     fetch_floor: any;
@@ -2433,6 +2434,7 @@ ipcMain.on('insert_salary_advance', (_event, args) => {
 
 // INSERT EMPLOYEE
 ipcMain.on('insert_employee', (_event, args) => {
+  // console.log('2429: Employee table created.', args);
   let {
     first_name,
     last_name,
@@ -2760,8 +2762,6 @@ deleteListItem(
 // INSERT FLOOR
 ipcMain.on('insert_floor', (_event, args) => {
   let { id, floorName } = args;
-
-  console.log('args', args);
 
   // Execute if the event has row ID / data ID. It is used to update a specific item
   if (args.id !== undefined) {

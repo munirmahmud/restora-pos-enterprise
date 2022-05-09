@@ -35,8 +35,6 @@ type FloorType = {
 };
 
 const ManageFloorLists = () => {
-  window.fetch_floor.send('fetch_floor', { status: true });
-
   const [form] = Form.useForm();
   const [addFloor, setAddFloor] = useState([]);
   const [reRender, setReRender] = useState(false);
@@ -47,10 +45,11 @@ const ManageFloorLists = () => {
     setAddFloor([
       {
         name: ['floorName'],
-        value: '',
+        value: updateFloorData?.floorName,
       },
     ]);
 
+    window.fetch_floor.send('fetch_floor', { status: true });
     getDataFromDatabase('fetch_floor_response', window.fetch_floor).then(
       (response: any) => {
         setFloorListsData(response);
@@ -94,8 +93,8 @@ const ManageFloorLists = () => {
     },
   ];
 
-  const handleEditFloor = (data: FloorType) => {
-    console.log('Edit data', data);
+  const handleEditFloor = (data: DataType) => {
+    setReRender((prevState) => !prevState);
     setUpdateFloorData(data);
   };
 
