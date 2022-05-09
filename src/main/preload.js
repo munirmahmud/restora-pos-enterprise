@@ -441,6 +441,11 @@ sendDataThroughMiddleware(
   'fetch_customer_table', // Channel Name
   'fetch_customer_table_response' //Response
 );
+sendDataThroughMiddleware(
+  'delete_customer_table', //Event Name
+  'delete_customer_table', // Channel Name
+  'delete_customer_table_response' //Response
+);
 
 /*======================================================================
   FUNCTION DECLARATIONS

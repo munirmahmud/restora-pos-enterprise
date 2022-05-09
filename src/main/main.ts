@@ -2430,7 +2430,6 @@ ipcMain.on('insert_salary_advance', (_event, args) => {
 
 // INSERT EMPLOYEE
 ipcMain.on('insert_employee', (_event, args) => {
-  console.log('2429: Employee table created.', args);
   let {
     first_name,
     last_name,
@@ -2503,7 +2502,7 @@ ipcMain.on('insert_employee', (_event, args) => {
     tranport_allowance,
   } = args;
   let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
-  console.log('2502: inserting...');
+
   db.serialize(() => {
     db.run(
       `CREATE TABLE IF NOT EXISTS employees (
@@ -2716,8 +2715,6 @@ ipcMain.on('insert_employee', (_event, args) => {
           custom_field_type ? custom_field_type : null,
         ],
         (err: ErrorType) => {
-          console.log('2709: ', err);
-
           err
             ? mainWindow.webContents.send(
                 'insert_employee_response',
@@ -2877,4 +2874,8 @@ getListItems(
   'fetch_customer_table_response',
   'customer_table'
 );
-deleteListItem('delete_floor', 'delete_floor_response', 'customer_table');
+deleteListItem(
+  'delete_customer_table',
+  'delete_customer_table_response',
+  'customer_table'
+);
