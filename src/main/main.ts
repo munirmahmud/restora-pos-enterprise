@@ -32,6 +32,7 @@ declare global {
     delete_floor: any;
     fetch_floor: any;
     insert_employee: any;
+    insert_customer_table: any;
   }
 }
 

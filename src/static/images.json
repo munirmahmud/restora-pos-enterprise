@@ -1,0 +1,14 @@
+{
+  "images": [
+    {"id": 1, "imageSrc": "https://restorapos.com/newrpos/assets/img/icons/resttable/2.png"},
+    {"id": 2, "imageSrc": "https://restorapos.com/newrpos/assets/img/icons/resttable/8(2).png"},
+    {"id": 3, "imageSrc": "https://restorapos.com/newrpos/assets/img/icons/resttable/r-3(1).png"},
+    {"id": 4, "imageSrc": "https://restorapos.com/newrpos/assets/img/icons/resttable/table-reservation1.png"},
+    {"id": 5, "imageSrc": "https://restorapos.com/newrpos/assets/img/icons/resttable/21.png"},
+    {"id": 6, "imageSrc": "https://restorapos.com/newrpos/assets/img/icons/resttable/81.png"},
+    {"id": 7, "imageSrc": "https://restorapos.com/newrpos/assets/img/icons/resttable/5.png"},
+    {"id": 8, "imageSrc": "https://restorapos.com/newrpos/assets/img/icons/resttable/r-4(1).png"},
+    {"id": 9, "imageSrc": "https://restorapos.com/newrpos/assets/img/icons/resttable/8.png"},
+    {"id": 10, "imageSrc": "https://restorapos.com/newrpos/assets/img/icons/resttable/r-2.png"}
+  ]
+}
