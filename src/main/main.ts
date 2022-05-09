@@ -28,6 +28,9 @@ declare global {
     insert_salary_advance: any;
     fetch_salary_advance: any;
     delete_salary_advance: any;
+    insert_floor: any;
+    delete_floor: any;
+    fetch_floor: any;
   }
 }
 
@@ -1088,7 +1091,7 @@ ipcMain.on('get_all_order_info_ongoing', (_event, args) => {
     let sql = `SELECT * FROM orders where status = 1`;
 
     db.serialize(() => {
-      db.all(sql, [], (err: ErrorType, rows: any) => {
+      db.all(sql, [], (_err: ErrorType, rows: any) => {
         mainWindow.webContents.send(
           'get_all_order_info_ongoing_response',
           rows
@@ -1100,7 +1103,7 @@ ipcMain.on('get_all_order_info_ongoing', (_event, args) => {
 });
 
 // Get only today's completed order
-ipcMain.on('get_todays_completed_orders', (event, args) => {
+ipcMain.on('get_todays_completed_orders', (_event, args) => {
   let { status } = args;
 
   if (status) {
@@ -2747,3 +2750,108 @@ deleteListItem(
   'delete_salary_advance_response',
   'salary_advance'
 );
+
+// INSERT FLOOR
+ipcMain.on('insert_floor', (_event, args) => {
+  let { id, floorName } = args;
+
+  console.log('args', args);
+
+  // Execute if the event has row ID / data ID. It is used to update a specific item
+  if (args.id !== undefined) {
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+
+    db.serialize(() => {
+      db.run(
+        // `INSERT OR replace INTO floor (id, floorName) VALUES (?, ?)`,
+        `UPDATE floor floorName = ${floorName} WHERE id = ${id}`,
+        [id, floorName],
+        (err: ErrorType) => {
+          err
+            ? mainWindow.webContents.send('insert_floor_response', err.message)
+            : mainWindow.webContents.send('insert_floor_response', {
+                status: 'updated',
+              });
+        }
+      );
+    });
+    db.close();
+  } else {
+    // Execute if it is new, then insert it
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+    db.serialize(() => {
+      db.run(
+        `CREATE TABLE IF NOT EXISTS floor (
+          'id' INTEGER PRIMARY KEY AUTOINCREMENT,
+          'floorName' varchar(15) NOT NULL,
+          'created_at' DATETIME
+        )`
+      ).run(
+        `INSERT OR REPLACE INTO floor (floorName, created_at) VALUES (?, ?)`,
+        [floorName, Date.now()],
+        (err: ErrorType) => {
+          err
+            ? mainWindow.webContents.send('insert_floor_response', err.message)
+            : mainWindow.webContents.send('insert_floor_response', {
+                status: 'inserted',
+              });
+        }
+      );
+    });
+    db.close();
+  }
+});
+
+getListItems('fetch_floor', 'fetch_floor_response', 'floor', 'id, floorName');
+deleteListItem('delete_floor', 'delete_floor_response', 'floor');
+
+// INSERT TABLE DATA
+ipcMain.on('insert_table', (_event, args) => {
+  let { id, floorName } = args;
+
+  console.log('args', args);
+
+  // Execute if the event has row ID / data ID. It is used to update a specific item
+  if (args.id !== undefined) {
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+
+    db.serialize(() => {
+      db.run(
+        // `INSERT OR replace INTO floor (id, floorName) VALUES (?, ?)`,
+        `UPDATE floor floorName = ${floorName} WHERE id = ${id}`,
+        [id, floorName],
+        (err: ErrorType) => {
+          err
+            ? mainWindow.webContents.send('insert_table_response', err.message)
+            : mainWindow.webContents.send('insert_table_response', {
+                status: 'updated',
+              });
+        }
+      );
+    });
+    db.close();
+  } else {
+    // Execute if it is new, then insert it
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+    db.serialize(() => {
+      db.run(
+        `CREATE TABLE IF NOT EXISTS table (
+          'id' INTEGER PRIMARY KEY AUTOINCREMENT,
+          'floorName' varchar(15) NOT NULL,
+          'created_at' DATETIME
+        )`
+      ).run(
+        `INSERT OR REPLACE INTO table (floorName, created_at) VALUES (?, ?)`,
+        [floorName, Date.now()],
+        (err: ErrorType) => {
+          err
+            ? mainWindow.webContents.send('insert_table_response', err.message)
+            : mainWindow.webContents.send('insert_table_response', {
+                status: 'inserted',
+              });
+        }
+      );
+    });
+    db.close();
+  }
+});

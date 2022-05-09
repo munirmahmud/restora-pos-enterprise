@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { MemoryRouter as Router, Route, Routes } from 'react-router-dom';
 import SystemMenu from './components/partials/SystemMenu';
 import { ContextData } from './contextApi';
+import { TodaysOrder } from './pages';
 import BankBook from './pages/accounts/BankBook';
 import Cash from './pages/accounts/Cash';
 import CashBook from './pages/accounts/CashBook';
@@ -20,6 +21,7 @@ import VoucherReport from './pages/accounts/VoucherReport';
 import Contact from './pages/Contact';
 import Currency from './pages/Currency';
 import DashBoard from './pages/DashBoard';
+import Floor from './pages/Floor';
 import AddAddons from './pages/foodManagement/manageAddons/AddAddons';
 import AddonsAssignList from './pages/foodManagement/manageAddons/AddonsAssignList';
 import AddonsList from './pages/foodManagement/manageAddons/AddonsList';
@@ -47,7 +49,7 @@ import OnGoingOrder from './pages/OnGoingOrder';
 import ItemSalesReport from './pages/report/ItemSalesReport';
 import SalesReport from './pages/report/SalesReport';
 import ApplicationSettings from './pages/settings/ApplicationSettings';
-import TodaysOrder from './pages/TodaysOrder';
+import Table from './pages/Table';
 
 export default function App() {
   window.get_settings.send('get_settings', { status: true });
@@ -242,6 +244,8 @@ export default function App() {
           />
 
           {/* Application Settings */}
+          <Route path="/manage_table" element={<Table settings={settings} />} />
+          <Route path="/manage_floor" element={<Floor settings={settings} />} />
           <Route
             path="/application_setting"
             element={
