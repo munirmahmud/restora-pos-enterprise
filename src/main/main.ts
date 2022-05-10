@@ -165,8 +165,8 @@ ipcMain.on('parent_category', (_event, args) => {
 ========================================================*/
 // Insert & Update Settings
 ipcMain.on('insert_settings', (_event, args) => {
-  let appFavicon:any = null,
-    appLogo:any = null;
+  let appFavicon: any = null,
+    appLogo: any = null;
 
   if (args.newFavicon) {
     appFavicon = JSON.parse(args.favicon);
@@ -293,7 +293,7 @@ ipcMain.on('insert_settings', (_event, args) => {
           powerbytxt,
           footer_text,
         ],
-        (err:ErrorType) => {
+        (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
               'insert_settings_response',
@@ -364,12 +364,12 @@ ipcMain.on('get_settings', (_event: Electron.IpcMainEvent, args) => {
  */
 
 function setImagePath(
-  images_folder_name:string,
-  icons_folder_name:string,
-  image_path:string,
-  image_name:string,
-  icon_path:string,
-  icon_name:string
+  images_folder_name: string,
+  icons_folder_name: string,
+  image_path: string,
+  image_name: string,
+  icon_path: string,
+  icon_name: string
 ) {
   try {
     mkdirSync(path.join(app.getPath('userData'), 'assets'));
@@ -459,8 +459,8 @@ function setImagePath(
 
 // Insert and Update Category data
 ipcMain.on('insertCategoryData', (_event, args) => {
-  let cat_img:any = null,
-    cat_icon:any = null;
+  let cat_img: any = null,
+    cat_icon: any = null;
 
   if (args.new_category_image) {
     cat_img = JSON.parse(args.category_image);
@@ -591,7 +591,7 @@ ipcMain.on('insertCategoryData', (_event, args) => {
           offer_end_date,
           category_color,
         ],
-        (err:ErrorType) => {
+        (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
               'after_insert_get_response',
@@ -620,10 +620,10 @@ ipcMain.on('sendResponseForCategory', (_event: Electron.IpcMainEvent, args) => {
     let sqlQ2 = `SELECT * FROM add_item_category WHERE parent_id IS NOT NULL`;
 
     db.serialize(() => {
-      db.all(sqlQ, [], (_err: ErrorType, categories:any) => {
-        db2.all(sqlQ2, [], (_err: ErrorType, sub_categories:any) => {
-          sub_categories?.map((s:any) => {
-            categories?.map((c:any) => {
+      db.all(sqlQ, [], (_err: ErrorType, categories: any) => {
+        db2.all(sqlQ2, [], (_err: ErrorType, sub_categories: any) => {
+          sub_categories?.map((s: any) => {
+            categories?.map((c: any) => {
               if (c.category_id === s.parent_id) {
                 let sub_cat = {
                   category_id: s.category_id,
@@ -662,7 +662,7 @@ ipcMain.on('delete_category', (_event, args) => {
   let { id } = args;
   let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
   db.serialize(() => {
-    db.run(`DELETE FROM add_item_category WHERE category_id = ?`, id, (err:ErrorType) => {
+    db.run(`DELETE FROM add_item_category WHERE category_id = ?`, id, (err: ErrorType) => {
       err
         ? mainWindow.webContents.send('delete_category_response', {
           status: err,
@@ -686,7 +686,7 @@ ipcMain.on('add_addons', (_event, args) => {
       db.run(
         `INSERT OR REPLACE INTO addons ( add_on_id, add_on_name, price, is_active, date_inserted ) VALUES ( ?, ?, ?, ?, ?)`,
         [args.add_on_id, add_on_name, price, is_active, Date.now()],
-        (err:ErrorType) => {
+        (err: ErrorType) => {
 
           err
             ? mainWindow.webContents.send('add_addons_response', err.message)
@@ -713,7 +713,7 @@ ipcMain.on('add_addons', (_event, args) => {
       ).run(
         `INSERT OR REPLACE INTO addons ( add_on_name, price, is_active, date_inserted ) VALUES ( ?, ?, ?, ?)`,
         [add_on_name, price, is_active, Date.now()],
-        (err:ErrorType) => {
+        (err: ErrorType) => {
           err
             ? mainWindow.webContents.send('add_addons_response', err.message)
             : mainWindow.webContents.send('add_addons_response', {
@@ -740,7 +740,7 @@ ipcMain.on('delete_addons', (_event, args) => {
   let { id } = args;
   let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
   db.serialize(() => {
-    db.run(`DELETE FROM addons WHERE add_on_id = ?`, id, (err:ErrorType) => {
+    db.run(`DELETE FROM addons WHERE add_on_id = ?`, id, (err: ErrorType) => {
       err
         ? mainWindow.webContents.send('delete_addons_response', { status: err })
         : mainWindow.webContents.send('delete_addons_response', {
@@ -755,7 +755,7 @@ ipcMain.on('delete_addons', (_event, args) => {
 Insert and update foods to DB
 ==================================================================*/
 ipcMain.on('add_new_foods', (_event, args) => {
-  let product_img:any;
+  let product_img: any;
 
   try {
     if (args?.food_image) {
@@ -830,7 +830,7 @@ ipcMain.on('add_new_foods', (_event, args) => {
           food_status,
           date_inserted,
         ],
-        (err:ErrorType) => {
+        (err: ErrorType) => {
           err
             ? mainWindow.webContents.send('add_new_foods_response', err.message)
             : mainWindow.webContents.send('add_new_foods_response', {
@@ -909,7 +909,7 @@ ipcMain.on('add_new_foods', (_event, args) => {
           food_status,
           Date.now(),
         ],
-        (err:ErrorType) => {
+        (err: ErrorType) => {
           err
             ? mainWindow.webContents.send('add_new_foods_response', err.message)
             : mainWindow.webContents.send('add_new_foods_response', {
@@ -970,7 +970,7 @@ const tokenGenaretor = () => {
       db.all(
         'SELECT token_no, creation_date FROM orders ORDER BY order_id DESC LIMIT 1',
         [],
-        (err:ErrorType, rows:any) => {
+        (err: ErrorType, rows: any) => {
           if (err) reject(err);
           resolve(rows);
         }
@@ -982,12 +982,12 @@ const tokenGenaretor = () => {
 
 
 // Insert order
-ipcMain.on('insert_order_info', (_event, args:any) => {
+ipcMain.on('insert_order_info', (_event, args: any) => {
   let { cartItems, customer_id, grandTotal, discount, serviceCharge, vat } =
     args;
 
   tokenGenaretor()
-    .then((results:any) => {
+    .then((results: any) => {
       let date = new Date(results[0].creation_date);
       let existingDateFormat = date.toLocaleDateString('en', { year: 'numeric', month: 'numeric', day: 'numeric' });
 
@@ -1068,7 +1068,7 @@ ipcMain.on('insert_order_info', (_event, args:any) => {
 });
 
 // Update order info after edit
-ipcMain.on('update_order_info_after_edit', (event, args) => {
+ipcMain.on('update_order_info_after_edit', (_event, args) => {
   let { order_info, order_id, discount, serviceCharge, vat, grand_total } =
     args;
   let order_info_to_string = JSON.stringify(order_info);
@@ -1134,9 +1134,9 @@ ipcMain.on('get_todays_completed_orders', (_event, args) => {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
 
     db.serialize(() => {
-      db.all(sql, [creation_date], (_err:ErrorType, rows:any) => {
+      db.all(sql, [creation_date], (_err: ErrorType, rows: any) => {
         if (rows && rows.length > 0) {
-          const todaysOrders = rows.map((order:any) => {
+          const todaysOrders = rows.map((order: any) => {
             return {
               creation_date: moment(order.creation_date).format('ll'),
               order_id: order.order_id,
@@ -1187,7 +1187,7 @@ ipcMain.on('get_all_order_for_sales_report', (_event, args) => {
         const allOrders = rows.map((order: any, index: number) => {
           let temp = JSON.parse(order.order_info);
           let amount = 0;
-          temp.map((t:any) => {
+          temp.map((t: any) => {
             return (amount = t.total_price + amount);
           });
           return {
@@ -1254,7 +1254,7 @@ ipcMain.on(
 );
 
 // Get dashboard report
-ipcMain.on('get_dashboard_data', (event, args) => {
+ipcMain.on('get_dashboard_data', (_event, args) => {
   if (args.status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
     let sql = `SELECT creation_date FROM orders`;
@@ -1266,9 +1266,9 @@ ipcMain.on('get_dashboard_data', (event, args) => {
     let todaysOrderQ = `SELECT COUNT(*) FROM orders where creation_date > ?`;
 
     let promise1 = new Promise((resolve, _reject) => {
-      db.all(sql, [], (_err:ErrorType, rows:any) => {
+      db.all(sql, [], (_err: ErrorType, rows: any) => {
         if (rows && rows.length > 0) {
-          let orderCount = rows.map((row:any) =>
+          let orderCount = rows.map((row: any) =>
             moment(row.creation_date).format('MMMM')
           );
           const ordersCounts = {
@@ -1285,7 +1285,7 @@ ipcMain.on('get_dashboard_data', (event, args) => {
             November: 0,
             December: 0,
           };
-          orderCount?.forEach((x:any) => {
+          orderCount?.forEach((x: any) => {
             ordersCounts[x] = (ordersCounts[x] || 0) + 1;
           });
           resolve(ordersCounts);
@@ -1293,9 +1293,9 @@ ipcMain.on('get_dashboard_data', (event, args) => {
       });
     });
     let promise2 = new Promise((resolve, _reject) => {
-      db.all(sql2, [], (_err:ErrorType, rows:any) => {
+      db.all(sql2, [], (_err: ErrorType, rows: any) => {
         if (rows && rows.length > 0) {
-          let salesCount = rows.map((row:any) =>
+          let salesCount = rows.map((row: any) =>
             moment(row.creation_date).format('MMMM')
           );
           const salesCounts = {
@@ -1312,7 +1312,7 @@ ipcMain.on('get_dashboard_data', (event, args) => {
             November: 0,
             December: 0,
           };
-          salesCount?.forEach((x:any) => {
+          salesCount?.forEach((x: any) => {
             salesCounts[x] = (salesCounts[x] || 0) + 1;
           });
           resolve(salesCounts);
@@ -1321,7 +1321,7 @@ ipcMain.on('get_dashboard_data', (event, args) => {
     });
 
     let promise3 = new Promise((resolve, _reject) => {
-      db.all(lifeTimeOrderQ, [], (_err:ErrorType, rows:any) => {
+      db.all(lifeTimeOrderQ, [], (_err: ErrorType, rows: any) => {
         if (rows && rows.length > 0) {
           resolve(rows[0]['COUNT(*)']);
         }
@@ -1342,7 +1342,7 @@ ipcMain.on('get_dashboard_data', (event, args) => {
 
       let creation_date = milliseconds.toString();
       let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
-      db.all(todaysSalesQ, [creation_date], (_err:ErrorType, rows:any) => {
+      db.all(todaysSalesQ, [creation_date], (_err: ErrorType, rows: any) => {
         if (rows && rows.length > 0) {
           resolve(rows[0]['COUNT(*)']);
         }
@@ -1351,7 +1351,7 @@ ipcMain.on('get_dashboard_data', (event, args) => {
     });
 
     let promise5 = new Promise((resolve, _reject) => {
-      db.all(totalCustomerQ, [], (_err:ErrorType, rows:any) => {
+      db.all(totalCustomerQ, [], (_err: ErrorType, rows: any) => {
         if (rows && rows.length > 0) {
           resolve(rows[0]['COUNT(*)']);
         }
@@ -1373,7 +1373,7 @@ ipcMain.on('get_dashboard_data', (event, args) => {
       let creation_date = milliseconds.toString();
       let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
 
-      db.all(todaysOrderQ, [creation_date], (_err:ErrorType, rows:any) => {
+      db.all(todaysOrderQ, [creation_date], (_err: ErrorType, rows: any) => {
         if (rows && rows.length > 0) {
           resolve(rows[0]['COUNT(*)']);
         }
@@ -1441,7 +1441,7 @@ ipcMain.on('add_new_foods_variant', (_event, args) => {
         `INSERT OR REPLACE INTO variants (id, food_id, variant_name, price, date_inserted)
         VALUES (?, ?, ?, ?, ?)`,
         [args.id, food_id, food_variant, Number(food_price), date_inserted],
-        (err:ErrorType) => {
+        (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
               'add_new_foods_variant_response',
@@ -1469,7 +1469,7 @@ ipcMain.on('add_new_foods_variant', (_event, args) => {
         `INSERT OR REPLACE INTO variants (food_id, variant_name, price, date_inserted)
           VALUES (?, ?, ?, ?)`,
         [food_id, food_variant, Number(food_price), Date.now()],
-        (err:ErrorType) => {
+        (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
               'add_new_foods_variant_response',
@@ -1486,14 +1486,14 @@ ipcMain.on('add_new_foods_variant', (_event, args) => {
 });
 
 // get all variant list from DB
-ipcMain.on('variant_lists_channel', (event, args) => {
+ipcMain.on('variant_lists_channel', (_event, args) => {
   if (args.status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
     let sql = `SELECT variants.id, variants.variant_name, variants.price, variants.food_id, variants.date_inserted, item_foods.product_name
     FROM variants
     INNER JOIN item_foods ON variants.food_id=item_foods.id`;
     db.serialize(() => {
-      db.all(sql, [], (_err:ErrorType, rows:any) => {
+      db.all(sql, [], (_err: ErrorType, rows: any) => {
         mainWindow.webContents.send('variant_lists_response', rows);
       });
     });
@@ -1513,7 +1513,7 @@ deleteListItem(
 ==================================================================*/
 // Insert Food availability data
 // Insert and update foods variant
-ipcMain.on('context_bridge_food_available_time', (event, args) => {
+ipcMain.on('context_bridge_food_available_time', (_event, args) => {
   let { food_id, avail_day, avail_time, is_active } = args;
 
   if (args.id !== undefined) {
@@ -1524,7 +1524,7 @@ ipcMain.on('context_bridge_food_available_time', (event, args) => {
         `INSERT OR REPLACE INTO food_variable (id, food_id, avail_day, avail_time, is_active)
         VALUES (?, ?, ?, ?, ?)`,
         [args.id, food_id, avail_day, avail_time, is_active],
-        (err:ErrorType) => {
+        (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
               'context_bridge_food_available_time_response',
@@ -1555,7 +1555,7 @@ ipcMain.on('context_bridge_food_available_time', (event, args) => {
         `INSERT OR REPLACE INTO food_variable (food_id, avail_day, avail_time, is_active)
           VALUES (?, ?, ?, ?)`,
         [food_id, avail_day, avail_time, is_active],
-        (err:ErrorType) => {
+        (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
               'context_bridge_food_available_time_response',
@@ -1574,13 +1574,13 @@ ipcMain.on('context_bridge_food_available_time', (event, args) => {
   }
 });
 
-ipcMain.on('get_food_availability_lists_channel', (event, args) => {
+ipcMain.on('get_food_availability_lists_channel', (_event, args) => {
   if (args.status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
 
     let sql = `SELECT food_variable.*, item_foods.product_name FROM food_variable, item_foods WHERE food_variable.food_id == item_foods.id`;
     db.serialize(() => {
-      db.all(sql, [], (_err:ErrorType, rows:any) => {
+      db.all(sql, [], (_err: ErrorType, rows: any) => {
         mainWindow.webContents.send(
           'get_food_availability_lists_channel_response',
           rows
@@ -1606,11 +1606,11 @@ deleteListItem(
 ipcMain.on('context_bridge_menu_type', (_event, args) => {
   let { id, menu_type, menu_icon, is_active } = args;
 
-  let menu_type_icon:any;
+  let menu_type_icon: any;
 
   try {
-    if (args.menu_icon) {
-      menu_type_icon = JSON.parse(args.menu_icon);
+    if (menu_icon) {
+      menu_type_icon = JSON.parse(menu_icon);
     }
   } catch (error) {
     menu_type_icon = args.menu_icon;
@@ -1649,7 +1649,7 @@ ipcMain.on('context_bridge_menu_type', (_event, args) => {
             : menu_type_icon,
           is_active,
         ],
-        (err:ErrorType) => {
+        (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
               'context_bridge_menu_type_response',
@@ -1688,7 +1688,7 @@ ipcMain.on('context_bridge_menu_type', (_event, args) => {
             : menu_type_icon,
           is_active,
         ],
-        (err:ErrorType) => {
+        (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
               'context_bridge_menu_type_response',
@@ -1743,7 +1743,7 @@ ipcMain.on('context_bridge_menu_addons', (_event, args) => {
         `INSERT OR REPLACE INTO menu_add_on (id, menu_id, add_on_id, is_active, date_inserted)
         VALUES (?, ?, ?, ?, ?)`,
         [id, menu_id, add_on_id, is_active, date_inserted],
-        (err:ErrorType) => {
+        (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
               'context_bridge_menu_addons_response',
@@ -1775,7 +1775,7 @@ ipcMain.on('context_bridge_menu_addons', (_event, args) => {
         `INSERT OR REPLACE INTO menu_add_on (menu_id, add_on_id, is_active, date_inserted)
           VALUES (?, ?, ?, ?)`,
         [menu_id, add_on_id, is_active, Date.now()],
-        (err:ErrorType) => {
+        (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
               'context_bridge_menu_addons_response',
@@ -1818,7 +1818,7 @@ getListItems(
   true
 );
 
-ipcMain.on('get_addons_list_for_pos', (event, args) => {
+ipcMain.on('get_addons_list_for_pos', (_event, args) => {
   let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
   let { status } = args;
   // let sql = `SELECT ${query} FROM ${table} ${
@@ -1831,7 +1831,7 @@ ipcMain.on('get_addons_list_for_pos', (event, args) => {
 
   if (status) {
     db.serialize(() => {
-      db.all(sql, [], (_err:ErrorType, rows:any) => {
+      db.all(sql, [], (_err: ErrorType, rows: any) => {
         mainWindow.webContents.send('get_addons_list_for_pos_response', rows);
       });
     });
@@ -1870,7 +1870,7 @@ insertData(
   New Customer Name in to POS
 =====================================================*/
 // Insert New Customer Info
-ipcMain.on('insert_customer_info', (_event, args:any) => {
+ipcMain.on('insert_customer_info', (_event, args: any) => {
   let {
     id,
     customer_name,
@@ -1888,7 +1888,7 @@ ipcMain.on('insert_customer_info', (_event, args:any) => {
         `INSERT OR REPLACE INTO customer_info (id, customer_name, customer_email, customer_phone, customer_address)
         VALUES (?, ?, ?, ?, ?)`,
         [id, customer_name, customer_email, customer_phone, customer_address],
-        (err:ErrorType) => {
+        (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
               'insert_customer_info_response',
@@ -1917,7 +1917,7 @@ ipcMain.on('insert_customer_info', (_event, args:any) => {
         `INSERT OR REPLACE INTO customer_info (customer_name, customer_email, customer_phone, customer_address)
           VALUES (?, ?, ?, ?)`,
         [customer_name, customer_email, customer_phone, customer_address],
-        (err:ErrorType) => {
+        (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
               'insert_customer_info_response',
@@ -1997,7 +1997,7 @@ ipcMain.on('get_language', (_event, args) => {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
     let sql = `SELECT language.* FROM language`;
     db.serialize(() => {
-      db.all(sql, [], (_err:ErrorType, rows:any) => {
+      db.all(sql, [], (_err: ErrorType, rows: any) => {
         mainWindow.webContents.send('get_language_response', rows);
       });
     });
@@ -2016,7 +2016,7 @@ ipcMain.on('get_language', (_event, args) => {
  * @params string database table name
  * @params string event name
  */
-function insertData(eventName:any, eventResponse:any, table:any, columns:any) {
+function insertData(eventName: any, eventResponse: any, table: any, columns: any) {
   ipcMain.on(eventName, (_event, args) => {
     let { id, currency_name, currency_icon, position, currency_rate } = args;
 
@@ -2055,7 +2055,7 @@ function insertData(eventName:any, eventResponse:any, table:any, columns:any) {
           `INSERT OR REPLACE INTO ${table} (${columns})
             VALUES (?, ?, ?, ?)`,
           [currency_name, currency_icon, position, currency_rate],
-          (err:ErrorType) => {
+          (err: ErrorType) => {
             console.log('curr insert err', err);
             err
               ? mainWindow.webContents.send(eventResponse, err.message)
@@ -2135,7 +2135,7 @@ ipcMain.on('get_data_to_create_token', (_event, args) => {
       db.all(
         `SELECT * FROM orders ORDER BY order_id DESC LIMIT 1`,
         [],
-        (_err:ErrorType, rows:any) => {
+        (_err: ErrorType, rows: any) => {
           if (rows) {
             mainWindow.webContents.send(
               'get_data_to_create_token_response',
@@ -2440,83 +2440,49 @@ ipcMain.on('insert_salary_advance', (_event, args) => {
 ipcMain.on('send_status_to_create_table', (_event, args) => {
   if (args.status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
-    try {
-      db.serialize(() => {
-        db.all(`SELECT * FROM emp_types`, [], (err: ErrorType, rows: any) => {
-          console.log('2436: ', err);
-          console.log('2437: ', rows);
-          if (rows) {
-            console.log("2444: Table already exist");
-          }
-          else {
-            console.log('2443: Table created');
-            db.serialize(() => {
-              db.run(`CREATE TABLE IF NOT EXISTS emp_attendance_time (
-                "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-                "attendance_time" VARCHAR(100)
-                )`)
-                .run(`CREATE TABLE IF NOT EXISTS emp_types (
-                  "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-                  "emp_type" VARCHAR(100)
-                  )`)
-                .run(`CREATE TABLE IF NOT EXISTS emp_pay_frequency (
-                  "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-                  "frequency" VARCHAR(100)
-                  )`)
-                .run(`CREATE TABLE IF NOT EXISTS emp_duty_types (
-                    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-                    "duty_type" VARCHAR(100)
-                    )`)
-                .run(`CREATE TABLE IF NOT EXISTS emp_rate_types (
-                    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-                    "rate_type" VARCHAR(100)
-                    )`)
-                .run(`INSERT INTO emp_attendance_time(attendance_time) VALUES("Attendance Time (15:30 - 20:30)"),("Attendance Time (15:30 - 20:30)")`)
-                .run(`INSERT INTO emp_types(emp_type) VALUES("Full Time"),("Part Time")`)
-                .run(`INSERT INTO emp_pay_frequency(frequency) VALUES("Weekly"),("Monthly"),("Annual")`)
-                .run(`INSERT INTO emp_duty_types(duty_type) VALUES("Full Time"),("Part Time"),("Contractual")`)
-                .run(`INSERT INTO emp_rate_types(rate_type) VALUES("Hourly"),("Monthly")`)
-            })
-          }
-        })
-      })
-      db.close()
-    } catch (error) {
-      db.serialize(() => {
-        db.run(`CREATE TABLE IF NOT EXISTS emp_attendance_time (
+
+    db.serialize(() => {
+      db.run(`CREATE TABLE IF NOT EXISTS emp_attendance_time (
           "id" INTEGER PRIMARY KEY AUTOINCREMENT,
           "attendance_time" VARCHAR(100)
           )`)
-          .run(`CREATE TABLE IF NOT EXISTS emp_types (
+        .run(`CREATE TABLE IF NOT EXISTS emp_types (
             "id" INTEGER PRIMARY KEY AUTOINCREMENT,
             "emp_type" VARCHAR(100)
             )`)
-          .run(`CREATE TABLE IF NOT EXISTS emp_pay_frequency (
+        .run(`CREATE TABLE IF NOT EXISTS emp_pay_frequency (
             "id" INTEGER PRIMARY KEY AUTOINCREMENT,
             "frequency" VARCHAR(100)
             )`)
-          .run(`CREATE TABLE IF NOT EXISTS emp_duty_types (
+        .run(`CREATE TABLE IF NOT EXISTS emp_duty_types (
               "id" INTEGER PRIMARY KEY AUTOINCREMENT,
               "duty_type" VARCHAR(100)
               )`)
-          .run(`CREATE TABLE IF NOT EXISTS emp_rate_types (
+        .run(`CREATE TABLE IF NOT EXISTS emp_rate_types (
               "id" INTEGER PRIMARY KEY AUTOINCREMENT,
               "rate_type" VARCHAR(100)
               )`)
-          .run(`INSERT INTO emp_attendance_time(attendance_time) VALUES("Attendance Time (15:30 - 20:30)"),("Attendance Time (15:30 - 20:30)")`)
-          .run(`INSERT INTO emp_types(emp_type) VALUES("Full Time"),("Part Time")`)
-          .run(`INSERT INTO emp_pay_frequency(frequency) VALUES("Weekly"),("Monthly"),("Annual")`)
-          .run(`INSERT INTO emp_duty_types(duty_type) VALUES("Full Time"),("Part Time"),("Contractual")`)
-          .run(`INSERT INTO emp_rate_types(rate_type) VALUES("Hourly"),("Monthly")`)
-      })
-      db.close()
-    }
-
+        .all(`SELECT * FROM emp_types`, [], (_err: ErrorType, rows: any) => {
+          if (!rows.length) {
+            db.run(`INSERT INTO emp_attendance_time(attendance_time) VALUES("Attendance Time (15:30 - 20:30)"),("Attendance Time (15:30 - 20:30)")`)
+              .run(`INSERT INTO emp_types(emp_type) VALUES("Full Time"),("Part Time")`)
+              .run(`INSERT INTO emp_pay_frequency(frequency) VALUES("Weekly"),("Monthly"),("Annual")`)
+              .run(`INSERT INTO emp_duty_types(duty_type) VALUES("Full Time"),("Part Time"),("Contractual")`)
+              .run(`INSERT INTO emp_rate_types(rate_type) VALUES("Hourly"),("Monthly")`)
+            db.close()
+          }
+          else {
+            console.log("2470: ", rows.length);
+            db.close()
+          }
+        })
+    })
   }
 });
 
+
 // INSERT EMPLOYEE
-ipcMain.on('insert_employee', (_event: Electron.IpcMainEvent, args:any) => {
+ipcMain.on('insert_employee', (_event: Electron.IpcMainEvent, args: any) => {
   let {
     first_name,
     last_name,
@@ -2855,8 +2821,8 @@ ipcMain.on('insert_floor', (_event, args) => {
           err
             ? mainWindow.webContents.send('insert_floor_response', err.message)
             : mainWindow.webContents.send('insert_floor_response', {
-                status: 'updated',
-              });
+              status: 'updated',
+            });
         }
       );
     });
@@ -2878,8 +2844,8 @@ ipcMain.on('insert_floor', (_event, args) => {
           err
             ? mainWindow.webContents.send('insert_floor_response', err.message)
             : mainWindow.webContents.send('insert_floor_response', {
-                status: 'inserted',
-              });
+              status: 'inserted',
+            });
         }
       );
     });
@@ -2954,7 +2920,7 @@ ipcMain.on('get_waiter_names', (_event, args) => {
     let sql = `SELECT employees.id, employees.first_name, employees.last_name from employees
     WHERE employees.designation = (SELECT id FROM emp_designation WHERE waiter = 1)`;
     db.serialize(() => {
-      db.all(sql, [], (_err:ErrorType, rows:any) => {
+      db.all(sql, [], (_err: ErrorType, rows: any) => {
         mainWindow.webContents.send('get_waiter_names_response', rows);
       });
     });
