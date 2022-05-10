@@ -115,7 +115,6 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
       'get_waiter_names_response',
       window.get_waiter_names
     ).then((args = []) => {
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!! waiterLists', args);
       setWaiterLists(args);
     });
 

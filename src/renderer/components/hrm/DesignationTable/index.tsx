@@ -4,7 +4,7 @@ import {
   ExclamationCircleOutlined,
   PlusCircleOutlined,
 } from '@ant-design/icons';
-import { Button, Form, Input, message, Modal, Space, Table } from 'antd';
+import { Button, Form, Input, message, Modal, Radio, Space, Table } from 'antd';
 import { getDataFromDatabase } from 'helpers';
 import { Key, useEffect, useState } from 'react';
 
@@ -215,6 +215,13 @@ const DesignationTable = () => {
     console.log('Failed:', errorInfo);
   };
 
+  const [value, setValue] = useState();
+
+  const onChange = (e) => {
+    console.log('radio checked', e.target.value);
+    setValue(e.target.value);
+  };
+
   return (
     <div className="box_shadow">
       <Button
@@ -257,6 +264,14 @@ const DesignationTable = () => {
             rules={[{ required: true, message: 'Designation is required' }]}
           >
             <Input size="large" placeholder="Designation" />
+          </Form.Item>
+
+          <Form.Item label="Select type">
+            <Radio.Group onChange={onChange} value={value}>
+              <Radio value={1}>isWaiter</Radio>
+              <Radio value={2}>isChef</Radio>
+              <Radio value={3}>isManager</Radio>
+            </Radio.Group>
           </Form.Item>
 
           <Form.Item name="designation_details" label="Description">
