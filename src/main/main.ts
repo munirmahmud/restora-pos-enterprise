@@ -2436,7 +2436,7 @@ ipcMain.on('insert_salary_advance', (_event, args) => {
   }
 });
 
-// CREATE TABLE: emp_attendance_time, emp_types, emp_divisions, emp_designation, emp_designation, emp_pay_frequency, emp_duty_types, emp_rate_types
+// CREATE TABLE: emp_attendance_time, emp_types, emp_divisions, emp_designation, emp_pay_frequency, emp_duty_types, emp_rate_types
 ipcMain.on('send_status_to_create_table', (_event, args) => {
   if (args.status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
