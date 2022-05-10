@@ -2172,7 +2172,8 @@ app
  ***********************************************/
 // INSERT DESIGNATION DATA
 ipcMain.on('insert_employee_designation', (_event, args) => {
-  let { id, designation, designation_details } = args;
+  let { id, designation, designation_details, isWaiter, isChef, isManager } =
+    args;
 
   // Execute if the event has row ID / data ID. It is used to update a specific item
   if (args.id !== undefined) {
@@ -2180,10 +2181,9 @@ ipcMain.on('insert_employee_designation', (_event, args) => {
 
     db.serialize(() => {
       db.run(
-        `INSERT OR replace INTO emp_designation (id, designation, designation_details) VALUES (?, ?, ?)`,
-        [id, designation, designation_details],
+        `INSERT OR replace INTO emp_designation (id, designation, designation_details, isWaiter, isChef, isManager) VALUES (?, ?, ?, ?, ?, ?)`,
+        [id, designation, designation_details, isWaiter, isChef, isManager],
         (err: ErrorType) => {
-          console.log('hello', err);
           err
             ? mainWindow.webContents.send(
                 'insert_employee_designation_response',
@@ -2208,11 +2208,14 @@ ipcMain.on('insert_employee_designation', (_event, args) => {
           'id' INTEGER PRIMARY KEY AUTOINCREMENT,
           'designation' varchar(150),
           'designation_details' varchar(100)
+          'isWaiter' INT,
+          'isChef' INT,
+          'isManager' INT,
         )`
       ).run(
-        `INSERT OR REPLACE INTO emp_designation (designation, designation_details)
-          VALUES (?, ?)`,
-        [designation, designation_details],
+        `INSERT OR REPLACE INTO emp_designation (designation, designation_details, isWaiter, isChef, isManager)
+          VALUES (?, ?, ?, ?, ?)`,
+        [designation, designation_details, isWaiter, isChef, isManager],
         (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
@@ -2438,50 +2441,66 @@ ipcMain.on('send_status_to_create_table', (_event, args) => {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
     db.serialize(() => {
       db.all(`SELECT * FROM emp_types`, [], (err, rows) => {
-        console.log('2436: ',err);
+        console.log('2436: ', err);
         console.log('2437', rows);
 
         if (rows) {
-          console.log("2437: Table already exist");
-
-        }
-        else {
+          console.log('2437: Table already exist');
+        } else {
           console.log('2443: Table created');
           db.serialize(() => {
-            db.run(`CREATE TABLE IF NOT EXISTS emp_attendance_time (
+            db.run(
+              `CREATE TABLE IF NOT EXISTS emp_attendance_time (
               "id" INTEGER PRIMARY KEY AUTOINCREMENT,
               "attendance_time" VARCHAR(100)
-              )`)
-              .run(`CREATE TABLE IF NOT EXISTS emp_types (
+              )`
+            )
+              .run(
+                `CREATE TABLE IF NOT EXISTS emp_types (
                 "id" INTEGER PRIMARY KEY AUTOINCREMENT,
                 "emp_type" VARCHAR(100)
-                )`)
-              .run(`CREATE TABLE IF NOT EXISTS emp_pay_frequency (
+                )`
+              )
+              .run(
+                `CREATE TABLE IF NOT EXISTS emp_pay_frequency (
                 "id" INTEGER PRIMARY KEY AUTOINCREMENT,
                 "frequency" VARCHAR(100)
-                )`)
-              .run(`CREATE TABLE IF NOT EXISTS emp_duty_types (
+                )`
+              )
+              .run(
+                `CREATE TABLE IF NOT EXISTS emp_duty_types (
                   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
                   "duty_type" VARCHAR(100)
-                  )`)
-              .run(`CREATE TABLE IF NOT EXISTS emp_rate_types (
+                  )`
+              )
+              .run(
+                `CREATE TABLE IF NOT EXISTS emp_rate_types (
                   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
                   "rate_type" VARCHAR(100)
-                  )`)
-              .run(`INSERT INTO emp_attendance_time(attendance_time) VALUES("Attendance Time (15:30 - 20:30)"),("Attendance Time (15:30 - 20:30)")`)
-              .run(`INSERT INTO emp_types(emp_type) VALUES("Full Time"),("Part Time")`)
-              .run(`INSERT INTO emp_pay_frequency(frequency) VALUES("Weekly"),("Monthly"),("Annual")`)
-              .run(`INSERT INTO emp_duty_types(duty_type) VALUES("Full Time"),("Part Time"),("Contractual")`)
-              .run(`INSERT INTO emp_rate_types(rate_type) VALUES("Hourly"),("Monthly")`)
-          })
+                  )`
+              )
+              .run(
+                `INSERT INTO emp_attendance_time(attendance_time) VALUES("Attendance Time (15:30 - 20:30)"),("Attendance Time (15:30 - 20:30)")`
+              )
+              .run(
+                `INSERT INTO emp_types(emp_type) VALUES("Full Time"),("Part Time")`
+              )
+              .run(
+                `INSERT INTO emp_pay_frequency(frequency) VALUES("Weekly"),("Monthly"),("Annual")`
+              )
+              .run(
+                `INSERT INTO emp_duty_types(duty_type) VALUES("Full Time"),("Part Time"),("Contractual")`
+              )
+              .run(
+                `INSERT INTO emp_rate_types(rate_type) VALUES("Hourly"),("Monthly")`
+              );
+          });
         }
-      })
-    })
-    db.close()
+      });
+    });
+    db.close();
   }
-
-})
-
+});
 
 // INSERT EMPLOYEE
 ipcMain.on('insert_employee', (_event: Electron.IpcMainEvent, args) => {
@@ -2823,8 +2842,8 @@ ipcMain.on('insert_floor', (_event, args) => {
           err
             ? mainWindow.webContents.send('insert_floor_response', err.message)
             : mainWindow.webContents.send('insert_floor_response', {
-              status: 'updated',
-            });
+                status: 'updated',
+              });
         }
       );
     });
@@ -2846,8 +2865,8 @@ ipcMain.on('insert_floor', (_event, args) => {
           err
             ? mainWindow.webContents.send('insert_floor_response', err.message)
             : mainWindow.webContents.send('insert_floor_response', {
-              status: 'inserted',
-            });
+                status: 'inserted',
+              });
         }
       );
     });
@@ -2867,10 +2886,6 @@ ipcMain.on('insert_customer_table', (_event, args) => {
 
     db.serialize(() => {
       db.run(
-<<<<<<< HEAD
-=======
-        // `INSERT OR replace INTO floor (id, floorName) VALUES (?, ?)`,
->>>>>>> master
         `UPDATE customer_table SET tablename = ?, person_capacity = ?, table_icon = ?, floor = ? WHERE id = ?`,
         [tablename, person_capacity, table_icon, floor, id],
         (err: ErrorType) => {
@@ -2920,21 +2935,20 @@ ipcMain.on('insert_customer_table', (_event, args) => {
 });
 
 // Get waiter Name
-ipcMain.on('get_waiter_names', (_event, args)=>{
+ipcMain.on('get_waiter_names', (_event, args) => {
   if (args.status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
     let sql = `SELECT employees.id, employees.first_name, employees.last_name from employees
-    WHERE employees.designation = (SELECT id FROM emp_designation WHERE designation = 'Accounts')`
-    db.serialize(()=>{
-      db.all(sql, [], (err, rows)=>{
+    WHERE employees.designation = (SELECT id FROM emp_designation WHERE designation = 'Accounts')`;
+    db.serialize(() => {
+      db.all(sql, [], (err, rows) => {
         console.log('2927: ', rows[0]);
 
-        mainWindow.webContents.send('get_waiter_names_response', rows[0])
-      })
-    })
-
+        mainWindow.webContents.send('get_waiter_names_response', rows[0]);
+      });
+    });
   }
-})
+});
 
 getListItems(
   'fetch_customer_table',
