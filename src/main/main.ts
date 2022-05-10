@@ -2941,9 +2941,7 @@ ipcMain.on('get_waiter_names', (_event, args) => {
     let sql = `SELECT employees.id, employees.first_name, employees.last_name from employees
     WHERE employees.designation = (SELECT id FROM emp_designation WHERE designation = 'Accounts')`;
     db.serialize(() => {
-      db.all(sql, [], (err, rows) => {
-        console.log('2927: ', rows[0]);
-
+      db.all(sql, [], (_err: ErrorType, rows: any) => {
         mainWindow.webContents.send('get_waiter_names_response', rows[0]);
       });
     });
