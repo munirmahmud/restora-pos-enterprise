@@ -2172,7 +2172,8 @@ app
  ***********************************************/
 // INSERT DESIGNATION DATA
 ipcMain.on('insert_employee_designation', (_event, args) => {
-  let { id, designation, designation_details } = args;
+  let { id, designation, designation_details, isWaiter, isChef, isManager } =
+    args;
 
   // Execute if the event has row ID / data ID. It is used to update a specific item
   if (args.id !== undefined) {
@@ -2180,10 +2181,9 @@ ipcMain.on('insert_employee_designation', (_event, args) => {
 
     db.serialize(() => {
       db.run(
-        `INSERT OR replace INTO emp_designation (id, designation, designation_details) VALUES (?, ?, ?)`,
-        [id, designation, designation_details],
+        `INSERT OR replace INTO emp_designation (id, designation, designation_details, isWaiter, isChef, isManager) VALUES (?, ?, ?, ?, ?, ?)`,
+        [id, designation, designation_details, isWaiter, isChef, isManager],
         (err: ErrorType) => {
-          console.log('hello', err);
           err
             ? mainWindow.webContents.send(
                 'insert_employee_designation_response',
@@ -2208,11 +2208,14 @@ ipcMain.on('insert_employee_designation', (_event, args) => {
           'id' INTEGER PRIMARY KEY AUTOINCREMENT,
           'designation' varchar(150),
           'designation_details' varchar(100)
+          'isWaiter' INT,
+          'isChef' INT,
+          'isManager' INT,
         )`
       ).run(
-        `INSERT OR REPLACE INTO emp_designation (designation, designation_details)
-          VALUES (?, ?)`,
-        [designation, designation_details],
+        `INSERT OR REPLACE INTO emp_designation (designation, designation_details, isWaiter, isChef, isManager)
+          VALUES (?, ?, ?, ?, ?)`,
+        [designation, designation_details, isWaiter, isChef, isManager],
         (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
@@ -2240,7 +2243,7 @@ getListItems(
 deleteListItem(
   'delete_employee_designation',
   'delete_employee_designation_response',
-  'department'
+  'emp_designation'
 );
 
 /*********************
@@ -2883,7 +2886,6 @@ ipcMain.on('insert_customer_table', (_event, args) => {
 
     db.serialize(() => {
       db.run(
-        // `INSERT OR replace INTO floor (id, floorName) VALUES (?, ?)`,
         `UPDATE customer_table SET tablename = ?, person_capacity = ?, table_icon = ?, floor = ? WHERE id = ?`,
         [tablename, person_capacity, table_icon, floor, id],
         (err: ErrorType) => {
