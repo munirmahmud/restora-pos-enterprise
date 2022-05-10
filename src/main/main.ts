@@ -2175,7 +2175,7 @@ app
  ***********************************************/
 // INSERT DESIGNATION DATA
 ipcMain.on('insert_employee_designation', (_event, args) => {
-  let { id, designation, designation_details } = args;
+  let { id, designation, designation_details, waiter, chef, manager } = args;
 
   // Execute if the event has row ID / data ID. It is used to update a specific item
   if (args.id !== undefined) {
@@ -2183,10 +2183,9 @@ ipcMain.on('insert_employee_designation', (_event, args) => {
 
     db.serialize(() => {
       db.run(
-        `INSERT OR replace INTO emp_designation (id, designation, designation_details) VALUES (?, ?, ?)`,
-        [id, designation, designation_details],
+        `INSERT OR replace INTO emp_designation (id, designation, designation_details, waiter, chef, manager) VALUES (?, ?, ?, ?, ?, ?)`,
+        [id, designation, designation_details, waiter, chef, manager],
         (err: ErrorType) => {
-          console.log('hello', err);
           err
             ? mainWindow.webContents.send(
               'insert_employee_designation_response',
@@ -2210,12 +2209,15 @@ ipcMain.on('insert_employee_designation', (_event, args) => {
         `CREATE TABLE IF NOT EXISTS emp_designation (
           'id' INTEGER PRIMARY KEY AUTOINCREMENT,
           'designation' varchar(150),
-          'designation_details' varchar(100)
+          'designation_details' varchar(100),
+          'waiter' INT,
+          'chef' INT,
+          'manager' INT
         )`
       ).run(
-        `INSERT OR REPLACE INTO emp_designation (designation, designation_details)
-          VALUES (?, ?)`,
-        [designation, designation_details],
+        `INSERT OR REPLACE INTO emp_designation (designation, designation_details, waiter, chef, manager)
+          VALUES (?, ?, ?, ?, ?)`,
+        [designation, designation_details, waiter, chef, manager],
         (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
@@ -2243,7 +2245,7 @@ getListItems(
 deleteListItem(
   'delete_employee_designation',
   'delete_employee_designation_response',
-  'department'
+  'emp_designation'
 );
 
 /*********************
@@ -2512,9 +2514,7 @@ ipcMain.on('send_status_to_create_table', (_event, args) => {
     }
 
   }
-
-})
-
+});
 
 // INSERT EMPLOYEE
 ipcMain.on('insert_employee', (_event: Electron.IpcMainEvent, args:any) => {
@@ -2856,8 +2856,8 @@ ipcMain.on('insert_floor', (_event, args) => {
           err
             ? mainWindow.webContents.send('insert_floor_response', err.message)
             : mainWindow.webContents.send('insert_floor_response', {
-              status: 'updated',
-            });
+                status: 'updated',
+              });
         }
       );
     });
@@ -2879,8 +2879,8 @@ ipcMain.on('insert_floor', (_event, args) => {
           err
             ? mainWindow.webContents.send('insert_floor_response', err.message)
             : mainWindow.webContents.send('insert_floor_response', {
-              status: 'inserted',
-            });
+                status: 'inserted',
+              });
         }
       );
     });
@@ -2900,7 +2900,6 @@ ipcMain.on('insert_customer_table', (_event, args) => {
 
     db.serialize(() => {
       db.run(
-        // `INSERT OR replace INTO floor (id, floorName) VALUES (?, ?)`,
         `UPDATE customer_table SET tablename = ?, person_capacity = ?, table_icon = ?, floor = ? WHERE id = ?`,
         [tablename, person_capacity, table_icon, floor, id],
         (err: ErrorType) => {
@@ -2954,17 +2953,14 @@ ipcMain.on('get_waiter_names', (_event, args) => {
   if (args.status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
     let sql = `SELECT employees.id, employees.first_name, employees.last_name from employees
-    WHERE employees.designation = (SELECT id FROM emp_designation WHERE designation = 'Accounts')`
+    WHERE employees.designation = (SELECT id FROM emp_designation WHERE waiter = 1)`;
     db.serialize(() => {
-      db.all(sql, [], (_err:ErrorType, rows:any) => {
-        console.log('2927: ', rows[0]);
-
-        mainWindow.webContents.send('get_waiter_names_response', rows[0])
-      })
-    })
-
+      db.all(sql, [], (err, rows) => {
+        mainWindow.webContents.send('get_waiter_names_response', rows);
+      });
+    });
   }
-})
+});
 
 getListItems(
   'fetch_customer_table',
