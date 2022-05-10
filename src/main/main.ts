@@ -2456,7 +2456,6 @@ ipcMain.on('insert_salary_advance', (_event, args) => {
   }
 });
 
-// CREATE TABLE: emp_attendance_time, emp_types, emp_divisions, emp_designation, emp_designation, emp_pay_frequency, emp_duty_types, emp_rate_types
 ipcMain.on('send_status_to_create_table', (_event, args) => {
   if (args.status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
@@ -2976,3 +2975,42 @@ deleteListItem(
   'delete_customer_table_response',
   'customer_table'
 );
+
+// CREATE TABLE WHEN THE APP IS INSTALLED
+ipcMain.on('create_customer_type', (_event, args) => {
+  if (args.status) {
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+
+    db.serialize(() => {
+      db.run(
+        `CREATE TABLE IF NOT EXISTS customer_type (
+          "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+          "customertype" VARCHAR(100)
+          )`
+      ).all(`SELECT * FROM customer_type`, [], (_err: ErrorType, rows: any) => {
+        if (!rows.length) {
+          db.run(
+            `INSERT INTO customer_type(customertype) VALUES
+              ("Walk In"),
+              ("Online Customer"),
+              ("Third Party"),
+              ("Take Away")`
+          );
+          db.close();
+        } else {
+          db.all(
+            `SELECT * FROM customer_type`,
+            [],
+            (_err: ErrorType, rows: any) => {
+              console.log('rows', rows);
+
+              mainWindow.webContents.send('create_customer_type', rows);
+            }
+          );
+
+          db.close();
+        }
+      });
+    });
+  }
+});

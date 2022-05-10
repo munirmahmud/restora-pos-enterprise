@@ -270,7 +270,7 @@ sendDataThroughMiddleware(
   'get_waiter_names', //Event Name
   'get_waiter_names', // Channel Name
   'get_waiter_names_response' //Response
-)
+);
 
 sendDataThroughMiddlewareOn(
   'get_addons_and_variant', //Event Name
@@ -354,7 +354,7 @@ sendDataThroughMiddleware(
   'send_status_to_create_table',
   'send_status_to_create_table',
   'send_status_to_create_table_response'
-)
+);
 
 sendDataThroughMiddleware(
   'insert_employee_designation', //Event Name
@@ -457,6 +457,13 @@ sendDataThroughMiddleware(
   'delete_customer_table', //Event Name
   'delete_customer_table', // Channel Name
   'delete_customer_table_response' //Response
+);
+
+// CUSTOMER TYPE
+sendDataThroughMiddlewareOn(
+  'create_customer_type', //Event Name
+  'create_customer_type', // Channel Name
+  'create_customer_type_response' //Response
 );
 
 /*======================================================================
