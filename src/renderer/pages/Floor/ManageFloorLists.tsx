@@ -39,7 +39,7 @@ const ManageFloorLists = () => {
   const [addFloor, setAddFloor] = useState([]);
   const [reRender, setReRender] = useState(false);
   const [updateFloorData, setUpdateFloorData] = useState<FloorType>({});
-  const [floorListsData, setFloorListsData] = useState([]);
+  const [floorListsData, setFloorListsData] = useState<FloorType[]>([]);
 
   useEffect(() => {
     setAddFloor([
@@ -51,7 +51,7 @@ const ManageFloorLists = () => {
 
     window.fetch_floor.send('fetch_floor', { status: true });
     getDataFromDatabase('fetch_floor_response', window.fetch_floor).then(
-      (response: any) => {
+      (response) => {
         setFloorListsData(response);
       }
     );

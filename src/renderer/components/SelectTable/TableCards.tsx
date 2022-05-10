@@ -2,10 +2,15 @@ import { Row } from 'antd';
 import './PersonSelectiveModal.style.scss';
 import TableCard from './TableCard';
 
-const FamilyTable = () => {
+const TableCards = ({ defaultFloor }) => {
+  console.log('vdefaultFloor', defaultFloor);
+
   return (
     <div>
       <Row gutter={[20, 25]}>
+        <TableCard />
+        <TableCard />
+        <TableCard />
         <TableCard />
         <TableCard />
       </Row>
@@ -13,4 +18,4 @@ const FamilyTable = () => {
   );
 };
 
-export default FamilyTable;
+export default TableCards;
