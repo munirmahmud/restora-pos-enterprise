@@ -1430,7 +1430,7 @@ getListItems(
   FOOD VARIANT
 ==================================================================*/
 // Insert and update foods variant
-ipcMain.on('add_new_foods_variant', (event, args) => {
+ipcMain.on('add_new_foods_variant', (_event, args) => {
   let { food_id, food_variant, food_price, date_inserted } = args;
 
   if (args.id !== undefined) {
@@ -1441,7 +1441,7 @@ ipcMain.on('add_new_foods_variant', (event, args) => {
         `INSERT OR REPLACE INTO variants (id, food_id, variant_name, price, date_inserted)
         VALUES (?, ?, ?, ?, ?)`,
         [args.id, food_id, food_variant, Number(food_price), date_inserted],
-        (err) => {
+        (err:ErrorType) => {
           err
             ? mainWindow.webContents.send(
               'add_new_foods_variant_response',
@@ -1469,7 +1469,7 @@ ipcMain.on('add_new_foods_variant', (event, args) => {
         `INSERT OR REPLACE INTO variants (food_id, variant_name, price, date_inserted)
           VALUES (?, ?, ?, ?)`,
         [food_id, food_variant, Number(food_price), Date.now()],
-        (err) => {
+        (err:ErrorType) => {
           err
             ? mainWindow.webContents.send(
               'add_new_foods_variant_response',
@@ -1493,7 +1493,7 @@ ipcMain.on('variant_lists_channel', (event, args) => {
     FROM variants
     INNER JOIN item_foods ON variants.food_id=item_foods.id`;
     db.serialize(() => {
-      db.all(sql, [], (err, rows) => {
+      db.all(sql, [], (_err:ErrorType, rows:any) => {
         mainWindow.webContents.send('variant_lists_response', rows);
       });
     });
@@ -1555,7 +1555,7 @@ ipcMain.on('context_bridge_food_available_time', (event, args) => {
         `INSERT OR REPLACE INTO food_variable (food_id, avail_day, avail_time, is_active)
           VALUES (?, ?, ?, ?)`,
         [food_id, avail_day, avail_time, is_active],
-        (err) => {
+        (err:ErrorType) => {
           err
             ? mainWindow.webContents.send(
               'context_bridge_food_available_time_response',
@@ -1580,7 +1580,7 @@ ipcMain.on('get_food_availability_lists_channel', (event, args) => {
 
     let sql = `SELECT food_variable.*, item_foods.product_name FROM food_variable, item_foods WHERE food_variable.food_id == item_foods.id`;
     db.serialize(() => {
-      db.all(sql, [], (err, rows) => {
+      db.all(sql, [], (_err:ErrorType, rows:any) => {
         mainWindow.webContents.send(
           'get_food_availability_lists_channel_response',
           rows
@@ -1603,10 +1603,10 @@ deleteListItem(
   MENU TYPE
 ====================================================================*/
 // Insert Menu type
-ipcMain.on('context_bridge_menu_type', (event, args) => {
+ipcMain.on('context_bridge_menu_type', (_event, args) => {
   let { id, menu_type, menu_icon, is_active } = args;
 
-  let menu_type_icon;
+  let menu_type_icon:any;
 
   try {
     if (args.menu_icon) {
@@ -1649,7 +1649,7 @@ ipcMain.on('context_bridge_menu_type', (event, args) => {
             : menu_type_icon,
           is_active,
         ],
-        (err) => {
+        (err:ErrorType) => {
           err
             ? mainWindow.webContents.send(
               'context_bridge_menu_type_response',
