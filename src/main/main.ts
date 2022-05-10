@@ -2243,7 +2243,7 @@ getListItems(
 deleteListItem(
   'delete_employee_designation',
   'delete_employee_designation_response',
-  'department'
+  'emp_designation'
 );
 
 /*********************
