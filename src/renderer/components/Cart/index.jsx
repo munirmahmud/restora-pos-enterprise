@@ -41,8 +41,8 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
   window.get_customer_names.send('get_customer_names', { status: true });
   window.get_waiter_names.send('get_waiter_names', { status: true });
 
-  window.get_waiter_names.once('get_waiter_names_response', (args)=>{
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!',args);
+  window.get_waiter_names.once('get_waiter_names_response', (args) => {
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!', args);
   })
 
 
@@ -51,7 +51,6 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
   const [form] = Form.useForm();
   const [addCustomerName] = Form.useForm();
   const calcPrice = new CalculatePrice(settings, cartItems);
-
   const [addCustomerModal, setAddCustomerModal] = useState(false);
   const [confirmBtn, setConfirmBtn] = useState('');
   const [quantityValue, setQuantityValue] = useState(1);
@@ -67,11 +66,10 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
   const [quickOrderAdditionalData, setQuickOrderAdditionalData] =
     useState(null);
   const [foodNoteModal, setFoodNoteModal] = useState(false);
-
   const [customDiscount, setCustomDiscount] = useState(0);
   const [customServiceCharge, setCustomServiceCharge] = useState(0);
   const [addFoodNoteToItem, setAddFoodNoteToItem] = useState({});
-
+  
   useEffect(() => {
     if (settings?.discountrate) {
       setCustomDiscount(settings?.discountrate);
