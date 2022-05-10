@@ -37,7 +37,15 @@ const { Option } = Select;
 const { TextArea } = Input;
 
 const Cart = ({ settings, cartItems, setCartItems, state }) => {
+
   window.get_customer_names.send('get_customer_names', { status: true });
+  window.get_waiter_names.send('get_waiter_names', { status: true });
+
+  window.get_waiter_names.once('get_waiter_names_response', (args)=>{
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!',args);
+  })
+
+
 
   const format = 'HH:mm';
   const [form] = Form.useForm();
@@ -334,6 +342,7 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
                       size="large"
                       allowClear
                     >
+
                       <Option value="1">Walk In</Option>
                       <Option value="2">Online Customer</Option>
                       <Option value="3">Third Party</Option>

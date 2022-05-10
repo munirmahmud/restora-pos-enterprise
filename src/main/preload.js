@@ -266,6 +266,12 @@ sendDataThroughMiddleware(
   'get_customer_names_response' //Response
 );
 
+sendDataThroughMiddleware(
+  'get_waiter_names', //Event Name
+  'get_waiter_names', // Channel Name
+  'get_waiter_names_response' //Response
+)
+
 sendDataThroughMiddlewareOn(
   'get_addons_and_variant', //Event Name
   'get_addons_and_variant', // Channel Name
@@ -338,11 +344,17 @@ sendDataThroughMiddlewareOn(
 /****************HUMAN RESOURCE****************/
 
 // ADD EMPLOYEE
-sendDataThroughMiddlewareOn(
+sendDataThroughMiddleware(
   'insert_employee',
   'insert_employee',
   'insert_employee_response'
 );
+
+sendDataThroughMiddleware(
+  'send_status_to_create_table',
+  'send_status_to_create_table',
+  'send_status_to_create_table_response'
+)
 
 sendDataThroughMiddleware(
   'insert_employee_designation', //Event Name
