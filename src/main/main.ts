@@ -2820,7 +2820,7 @@ ipcMain.on('insert_customer_table', (_event, args) => {
     db.serialize(() => {
       db.run(
         // `INSERT OR replace INTO floor (id, floorName) VALUES (?, ?)`,
-        `UPDATE customer_table SET tablename = ? person_capacity = ? table_icon = ? floor = ? WHERE id = ?`,
+        `UPDATE customer_table SET tablename = ?, person_capacity = ?, table_icon = ?, floor = ? WHERE id = ?`,
         [tablename, person_capacity, table_icon, floor, id],
         (err: ErrorType) => {
           err

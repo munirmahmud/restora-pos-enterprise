@@ -73,8 +73,6 @@ const ManageTableLists = () => {
       'fetch_customer_table_response',
       window.fetch_customer_table
     ).then((response: any) => {
-      console.log('response', response);
-
       setTableDataLists(response);
     });
 
@@ -156,8 +154,8 @@ const ManageTableLists = () => {
   ];
 
   const handleEditTable = (data: DataType) => {
-    console.log('Edit data', data);
     setReRender((prevState) => !prevState);
+    setOpenModal(true);
     setUpdateTableData(data);
   };
 
@@ -202,7 +200,7 @@ const ManageTableLists = () => {
       window.insert_customer_table.send('insert_customer_table', {
         id: updateTableData?.id,
         person_capacity: parseInt(values?.person_capacity),
-        table_icon: imageSource?.imageSrc,
+        table_icon: (values.table_icon = imageSource?.imageSrc),
         ...values,
       });
 
@@ -283,7 +281,7 @@ const ManageTableLists = () => {
           bordered
           columns={columns}
           dataSource={tableDataLists}
-          rowKey={(record) => record.sl_no}
+          rowKey={(record) => record?.id}
           pagination={false}
         />
 
@@ -344,7 +342,17 @@ const ManageTableLists = () => {
                         width={50}
                       />
                     ) : (
-                      <p>No icon is selected</p>
+                      <>
+                        {updateTableData?.table_icon ? (
+                          <Image
+                            src={updateTableData?.table_icon}
+                            preview={false}
+                            width={50}
+                          />
+                        ) : (
+                          <p>No icon is selected</p>
+                        )}
+                      </>
                     )}
                   </Form.Item>
                 </Col>
