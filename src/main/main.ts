@@ -1075,7 +1075,7 @@ ipcMain.on('insert_order_info', (_event, args: any) => {
 });
 
 // Update order info after edit
-ipcMain.on('update_order_info_after_edit', (event, args) => {
+ipcMain.on('update_order_info_after_edit', (_event, args) => {
   let { order_info, order_id, discount, serviceCharge, vat, grand_total } =
     args;
   let order_info_to_string = JSON.stringify(order_info);
@@ -1265,7 +1265,7 @@ ipcMain.on(
 );
 
 // Get dashboard report
-ipcMain.on('get_dashboard_data', (event, args) => {
+ipcMain.on('get_dashboard_data', (_event, args) => {
   if (args.status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
     let sql = `SELECT creation_date FROM orders`;
@@ -1449,7 +1449,7 @@ getListItems(
   FOOD VARIANT
 ==================================================================*/
 // Insert and update foods variant
-ipcMain.on('add_new_foods_variant', (event, args) => {
+ipcMain.on('add_new_foods_variant', (_event, args) => {
   let { food_id, food_variant, food_price, date_inserted } = args;
 
   if (args.id !== undefined) {
@@ -1460,7 +1460,7 @@ ipcMain.on('add_new_foods_variant', (event, args) => {
         `INSERT OR REPLACE INTO variants (id, food_id, variant_name, price, date_inserted)
         VALUES (?, ?, ?, ?, ?)`,
         [args.id, food_id, food_variant, Number(food_price), date_inserted],
-        (err) => {
+        (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
                 'add_new_foods_variant_response',
@@ -1488,7 +1488,7 @@ ipcMain.on('add_new_foods_variant', (event, args) => {
         `INSERT OR REPLACE INTO variants (food_id, variant_name, price, date_inserted)
           VALUES (?, ?, ?, ?)`,
         [food_id, food_variant, Number(food_price), Date.now()],
-        (err) => {
+        (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
                 'add_new_foods_variant_response',
@@ -1505,14 +1505,14 @@ ipcMain.on('add_new_foods_variant', (event, args) => {
 });
 
 // get all variant list from DB
-ipcMain.on('variant_lists_channel', (event, args) => {
+ipcMain.on('variant_lists_channel', (_event, args) => {
   if (args.status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
     let sql = `SELECT variants.id, variants.variant_name, variants.price, variants.food_id, variants.date_inserted, item_foods.product_name
     FROM variants
     INNER JOIN item_foods ON variants.food_id=item_foods.id`;
     db.serialize(() => {
-      db.all(sql, [], (err, rows) => {
+      db.all(sql, [], (_err: ErrorType, rows: any) => {
         mainWindow.webContents.send('variant_lists_response', rows);
       });
     });
@@ -1532,7 +1532,7 @@ deleteListItem(
 ==================================================================*/
 // Insert Food availability data
 // Insert and update foods variant
-ipcMain.on('context_bridge_food_available_time', (event, args) => {
+ipcMain.on('context_bridge_food_available_time', (_event, args) => {
   let { food_id, avail_day, avail_time, is_active } = args;
 
   if (args.id !== undefined) {
@@ -1574,7 +1574,7 @@ ipcMain.on('context_bridge_food_available_time', (event, args) => {
         `INSERT OR REPLACE INTO food_variable (food_id, avail_day, avail_time, is_active)
           VALUES (?, ?, ?, ?)`,
         [food_id, avail_day, avail_time, is_active],
-        (err) => {
+        (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
                 'context_bridge_food_available_time_response',
@@ -1593,13 +1593,13 @@ ipcMain.on('context_bridge_food_available_time', (event, args) => {
   }
 });
 
-ipcMain.on('get_food_availability_lists_channel', (event, args) => {
+ipcMain.on('get_food_availability_lists_channel', (_event, args) => {
   if (args.status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
 
     let sql = `SELECT food_variable.*, item_foods.product_name FROM food_variable, item_foods WHERE food_variable.food_id == item_foods.id`;
     db.serialize(() => {
-      db.all(sql, [], (err, rows) => {
+      db.all(sql, [], (_err: ErrorType, rows: any) => {
         mainWindow.webContents.send(
           'get_food_availability_lists_channel_response',
           rows
@@ -1622,14 +1622,14 @@ deleteListItem(
   MENU TYPE
 ====================================================================*/
 // Insert Menu type
-ipcMain.on('context_bridge_menu_type', (event, args) => {
+ipcMain.on('context_bridge_menu_type', (_event, args) => {
   let { id, menu_type, menu_icon, is_active } = args;
 
-  let menu_type_icon;
+  let menu_type_icon: any;
 
   try {
-    if (args.menu_icon) {
-      menu_type_icon = JSON.parse(args.menu_icon);
+    if (menu_icon) {
+      menu_type_icon = JSON.parse(menu_icon);
     }
   } catch (error) {
     menu_type_icon = args.menu_icon;
@@ -1668,7 +1668,7 @@ ipcMain.on('context_bridge_menu_type', (event, args) => {
             : menu_type_icon,
           is_active,
         ],
-        (err) => {
+        (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
                 'context_bridge_menu_type_response',
@@ -1837,7 +1837,7 @@ getListItems(
   true
 );
 
-ipcMain.on('get_addons_list_for_pos', (event, args) => {
+ipcMain.on('get_addons_list_for_pos', (_event, args) => {
   let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
   let { status } = args;
   // let sql = `SELECT ${query} FROM ${table} ${
@@ -2460,116 +2460,62 @@ ipcMain.on('insert_salary_advance', (_event, args) => {
 ipcMain.on('send_status_to_create_table', (_event, args) => {
   if (args.status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
-    try {
-      db.serialize(() => {
-        db.all(`SELECT * FROM emp_types`, [], (err: ErrorType, rows: any) => {
-          console.log('2436: ', err);
-          console.log('2437: ', rows);
-          if (rows) {
-            console.log('2444: Table already exist');
-          } else {
-            console.log('2443: Table created');
-            db.serialize(() => {
-              db.run(
-                `CREATE TABLE IF NOT EXISTS emp_attendance_time (
-                "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-                "attendance_time" VARCHAR(100)
-                )`
-              )
-                .run(
-                  `CREATE TABLE IF NOT EXISTS emp_types (
-                  "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-                  "emp_type" VARCHAR(100)
-                  )`
-                )
-                .run(
-                  `CREATE TABLE IF NOT EXISTS emp_pay_frequency (
-                  "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-                  "frequency" VARCHAR(100)
-                  )`
-                )
-                .run(
-                  `CREATE TABLE IF NOT EXISTS emp_duty_types (
-                    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-                    "duty_type" VARCHAR(100)
-                    )`
-                )
-                .run(
-                  `CREATE TABLE IF NOT EXISTS emp_rate_types (
-                    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-                    "rate_type" VARCHAR(100)
-                    )`
-                )
-                .run(
-                  `INSERT INTO emp_attendance_time(attendance_time) VALUES("Attendance Time (15:30 - 20:30)"),("Attendance Time (15:30 - 20:30)")`
-                )
-                .run(
-                  `INSERT INTO emp_types(emp_type) VALUES("Full Time"),("Part Time")`
-                )
-                .run(
-                  `INSERT INTO emp_pay_frequency(frequency) VALUES("Weekly"),("Monthly"),("Annual")`
-                )
-                .run(
-                  `INSERT INTO emp_duty_types(duty_type) VALUES("Full Time"),("Part Time"),("Contractual")`
-                )
-                .run(
-                  `INSERT INTO emp_rate_types(rate_type) VALUES("Hourly"),("Monthly")`
-                );
-            });
-          }
-        });
-      });
-      db.close();
-    } catch (error) {
-      db.serialize(() => {
-        db.run(
-          `CREATE TABLE IF NOT EXISTS emp_attendance_time (
+
+    db.serialize(() => {
+      db.run(
+        `CREATE TABLE IF NOT EXISTS emp_attendance_time (
           "id" INTEGER PRIMARY KEY AUTOINCREMENT,
           "attendance_time" VARCHAR(100)
           )`
-        )
-          .run(
-            `CREATE TABLE IF NOT EXISTS emp_types (
+      )
+        .run(
+          `CREATE TABLE IF NOT EXISTS emp_types (
             "id" INTEGER PRIMARY KEY AUTOINCREMENT,
             "emp_type" VARCHAR(100)
             )`
-          )
-          .run(
-            `CREATE TABLE IF NOT EXISTS emp_pay_frequency (
+        )
+        .run(
+          `CREATE TABLE IF NOT EXISTS emp_pay_frequency (
             "id" INTEGER PRIMARY KEY AUTOINCREMENT,
             "frequency" VARCHAR(100)
             )`
-          )
-          .run(
-            `CREATE TABLE IF NOT EXISTS emp_duty_types (
+        )
+        .run(
+          `CREATE TABLE IF NOT EXISTS emp_duty_types (
               "id" INTEGER PRIMARY KEY AUTOINCREMENT,
               "duty_type" VARCHAR(100)
               )`
-          )
-          .run(
-            `CREATE TABLE IF NOT EXISTS emp_rate_types (
+        )
+        .run(
+          `CREATE TABLE IF NOT EXISTS emp_rate_types (
               "id" INTEGER PRIMARY KEY AUTOINCREMENT,
               "rate_type" VARCHAR(100)
               )`
-          )
-          .run(
-            `INSERT INTO emp_attendance_time(attendance_time) VALUES("Attendance Time (15:30 - 20:30)"),("Attendance Time (15:30 - 20:30)")`
-          )
-          .run(
-            `INSERT INTO emp_types(emp_type) VALUES("Full Time"),("Part Time")`
-          )
-          .run(
-            `INSERT INTO emp_pay_frequency(frequency) VALUES("Weekly"),("Monthly"),("Annual")`
-          )
-          .run(
-            `INSERT INTO emp_duty_types(duty_type) VALUES("Full Time"),("Part Time"),("Contractual")`
-          )
-          .run(
-            `INSERT INTO emp_rate_types(rate_type) VALUES("Hourly"),("Monthly")`
-          );
-      });
-      db.close();
-    }
+        )
+        .all(`SELECT * FROM emp_types`, [], (_err: ErrorType, rows: any) => {
+          if (!rows.length) {
+            db.run(
+              `INSERT INTO emp_attendance_time(attendance_time) VALUES("Attendance Time (15:30 - 20:30)"),("Attendance Time (15:30 - 20:30)")`
+            )
+              .run(
+                `INSERT INTO emp_types(emp_type) VALUES("Full Time"),("Part Time")`
+              )
+              .run(
+                `INSERT INTO emp_pay_frequency(frequency) VALUES("Weekly"),("Monthly"),("Annual")`
+              )
+              .run(
+                `INSERT INTO emp_duty_types(duty_type) VALUES("Full Time"),("Part Time"),("Contractual")`
+              )
+              .run(
+                `INSERT INTO emp_rate_types(rate_type) VALUES("Hourly"),("Monthly")`
+              );
+            db.close();
+          } else {
+            console.log('2470: ', rows.length);
+            db.close();
+          }
+        });
+    });
   }
 });
 
