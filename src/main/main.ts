@@ -1688,7 +1688,7 @@ ipcMain.on('context_bridge_menu_type', (event, args) => {
             : menu_type_icon,
           is_active,
         ],
-        (err) => {
+        (err:ErrorType) => {
           err
             ? mainWindow.webContents.send(
               'context_bridge_menu_type_response',
@@ -1731,7 +1731,7 @@ deleteListItem(
   MENU ADDONS
 ==================================================================*/
 // Insert menu addons
-ipcMain.on('context_bridge_menu_addons', (event, args) => {
+ipcMain.on('context_bridge_menu_addons', (_event, args) => {
   let { id, menu_id, add_on_id, is_active, date_inserted } = args;
 
   // Execute if the event has row ID / data ID. It is used to update a specific item
@@ -1743,7 +1743,7 @@ ipcMain.on('context_bridge_menu_addons', (event, args) => {
         `INSERT OR REPLACE INTO menu_add_on (id, menu_id, add_on_id, is_active, date_inserted)
         VALUES (?, ?, ?, ?, ?)`,
         [id, menu_id, add_on_id, is_active, date_inserted],
-        (err) => {
+        (err:ErrorType) => {
           err
             ? mainWindow.webContents.send(
               'context_bridge_menu_addons_response',
@@ -1775,7 +1775,7 @@ ipcMain.on('context_bridge_menu_addons', (event, args) => {
         `INSERT OR REPLACE INTO menu_add_on (menu_id, add_on_id, is_active, date_inserted)
           VALUES (?, ?, ?, ?)`,
         [menu_id, add_on_id, is_active, Date.now()],
-        (err) => {
+        (err:ErrorType) => {
           err
             ? mainWindow.webContents.send(
               'context_bridge_menu_addons_response',
@@ -1831,7 +1831,7 @@ ipcMain.on('get_addons_list_for_pos', (event, args) => {
 
   if (status) {
     db.serialize(() => {
-      db.all(sql, [], (err, rows) => {
+      db.all(sql, [], (_err:ErrorType, rows:any) => {
         mainWindow.webContents.send('get_addons_list_for_pos_response', rows);
       });
     });
@@ -1870,14 +1870,13 @@ insertData(
   New Customer Name in to POS
 =====================================================*/
 // Insert New Customer Info
-ipcMain.on('insert_customer_info', (event: string, args) => {
+ipcMain.on('insert_customer_info', (_event, args:any) => {
   let {
     id,
     customer_name,
     customer_email,
     customer_phone,
     customer_address,
-    is_active,
   } = args;
 
   // Execute if the event has row ID / data ID. It is used to update a specific item
@@ -1889,7 +1888,7 @@ ipcMain.on('insert_customer_info', (event: string, args) => {
         `INSERT OR REPLACE INTO customer_info (id, customer_name, customer_email, customer_phone, customer_address)
         VALUES (?, ?, ?, ?, ?)`,
         [id, customer_name, customer_email, customer_phone, customer_address],
-        (err) => {
+        (err:ErrorType) => {
           err
             ? mainWindow.webContents.send(
               'insert_customer_info_response',
@@ -1918,7 +1917,7 @@ ipcMain.on('insert_customer_info', (event: string, args) => {
         `INSERT OR REPLACE INTO customer_info (customer_name, customer_email, customer_phone, customer_address)
           VALUES (?, ?, ?, ?)`,
         [customer_name, customer_email, customer_phone, customer_address],
-        (err) => {
+        (err:ErrorType) => {
           err
             ? mainWindow.webContents.send(
               'insert_customer_info_response',
@@ -1998,7 +1997,7 @@ ipcMain.on('get_language', (_event, args) => {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
     let sql = `SELECT language.* FROM language`;
     db.serialize(() => {
-      db.all(sql, [], (_err, rows) => {
+      db.all(sql, [], (_err:ErrorType, rows:any) => {
         mainWindow.webContents.send('get_language_response', rows);
       });
     });
@@ -2017,7 +2016,7 @@ ipcMain.on('get_language', (_event, args) => {
  * @params string database table name
  * @params string event name
  */
-function insertData(eventName, eventResponse, table, columns) {
+function insertData(eventName:any, eventResponse:any, table:any, columns:any) {
   ipcMain.on(eventName, (_event, args) => {
     let { id, currency_name, currency_icon, position, currency_rate } = args;
 
@@ -2056,7 +2055,7 @@ function insertData(eventName, eventResponse, table, columns) {
           `INSERT OR REPLACE INTO ${table} (${columns})
             VALUES (?, ?, ?, ?)`,
           [currency_name, currency_icon, position, currency_rate],
-          (err) => {
+          (err:ErrorType) => {
             console.log('curr insert err', err);
             err
               ? mainWindow.webContents.send(eventResponse, err.message)
@@ -2136,7 +2135,7 @@ ipcMain.on('get_data_to_create_token', (_event, args) => {
       db.all(
         `SELECT * FROM orders ORDER BY order_id DESC LIMIT 1`,
         [],
-        (err, rows) => {
+        (_err:ErrorType, rows:any) => {
           if (rows) {
             mainWindow.webContents.send(
               'get_data_to_create_token_response',
@@ -2955,7 +2954,7 @@ ipcMain.on('get_waiter_names', (_event, args) => {
     let sql = `SELECT employees.id, employees.first_name, employees.last_name from employees
     WHERE employees.designation = (SELECT id FROM emp_designation WHERE waiter = 1)`;
     db.serialize(() => {
-      db.all(sql, [], (err, rows) => {
+      db.all(sql, [], (_err:ErrorType, rows:any) => {
         mainWindow.webContents.send('get_waiter_names_response', rows);
       });
     });
