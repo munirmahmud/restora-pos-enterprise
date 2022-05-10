@@ -23,6 +23,7 @@ import AddCustomerModal from '../AddCustomerModal';
 import Calculator from '../Calculator';
 import FoodNoteModal from '../FoodNoteModal';
 import PremiumVersion from '../partials/PremiumVersion';
+import PersonSelectiveModal from '../PersonSelectiveModal';
 import {
   CalculatePrice,
   getDataFromDatabase,
@@ -56,6 +57,7 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
   const [premiumVersion, setPremiumVersion] = useState(false);
   const [openCalculator, setOpenCalculator] = useState(false);
   const [addCustomerModal, setAddCustomerModal] = useState(false);
+  const [personSelectiveModal, setPersonSelectiveModal] = useState(false);
 
   const [cartData, setCartData] = useState({ cartItems });
   const [quickOrderAdditionalData, setQuickOrderAdditionalData] =
@@ -398,7 +400,12 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
                 </Col>
 
                 <Col lg={4} xl={3} xxl={3}>
-                  <Button size="large" type="primary" className="add_customer">
+                  <Button
+                    size="large"
+                    type="primary"
+                    className="add_customer"
+                    onClick={() => setPersonSelectiveModal(true)}
+                  >
                     Person
                   </Button>
                 </Col>
@@ -655,7 +662,6 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
         warmingModal={warmingModal}
       />
 
-      {/* {confirmOrder && ( */}
       <ConfirmOrderModal
         confirmOrder={confirmOrder}
         setConfirmOrder={setConfirmOrder}
@@ -665,7 +671,6 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
         quickOrderAdditionalData={quickOrderAdditionalData}
         state={state}
       />
-      {/* )} */}
 
       <PremiumVersion
         premiumVersion={premiumVersion}
@@ -679,6 +684,11 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
           addFoodNoteToItem={addFoodNoteToItem}
         />
       )}
+
+      <PersonSelectiveModal
+        personSelectiveModal={personSelectiveModal}
+        setPersonSelectiveModal={setPersonSelectiveModal}
+      />
 
       <Modal
         visible={openCalculator}
