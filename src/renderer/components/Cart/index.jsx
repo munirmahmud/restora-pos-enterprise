@@ -23,7 +23,7 @@ import AddCustomerModal from '../AddCustomerModal';
 import Calculator from '../Calculator';
 import FoodNoteModal from '../FoodNoteModal';
 import PremiumVersion from '../partials/PremiumVersion';
-import PersonSelectiveModal from '../PersonSelectiveModal';
+import SelectTable from '../SelectTable';
 import {
   CalculatePrice,
   getDataFromDatabase,
@@ -685,7 +685,7 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
         />
       )}
 
-      <PersonSelectiveModal
+      <SelectTable
         personSelectiveModal={personSelectiveModal}
         setPersonSelectiveModal={setPersonSelectiveModal}
       />
