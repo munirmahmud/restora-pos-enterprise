@@ -33,10 +33,6 @@ type DesignationType = {
 };
 
 const DesignationTable = () => {
-  window.get_employee_designation.send('get_employee_designation', {
-    status: true,
-  });
-
   window.delete_employee_designation.send('delete_employee_designation', {
     status: true,
   });
@@ -48,6 +44,7 @@ const DesignationTable = () => {
   const [updateDesignationData, setUpdateDesignationData] =
     useState<DesignationType>({});
   const [designationList, setDesignationList] = useState([]);
+  const [designationType, setDesignationType] = useState(0);
 
   const [reRender, setReRender] = useState(false);
 
@@ -63,6 +60,9 @@ const DesignationTable = () => {
       },
     ]);
 
+    window.get_employee_designation.send('get_employee_designation', {
+      status: true,
+    });
     getDataFromDatabase(
       'get_employee_designation_response',
       window.get_employee_designation
@@ -181,13 +181,21 @@ const DesignationTable = () => {
       });
 
       form.resetFields();
+      setDesignationType(0);
       setOpenDesignationModal(false);
 
       // return;
     } else {
+      const designation = {
+        ...values,
+        waiter: designationType === 1 ? 1 : 0,
+        chef: designationType === 2 ? 1 : 0,
+        manager: designationType === 3 ? 1 : 0,
+      };
+
       window.insert_employee_designation.send(
         'insert_employee_designation',
-        values
+        designation
       );
 
       setReRender((prevState) => !prevState);
@@ -203,23 +211,18 @@ const DesignationTable = () => {
       });
 
       form.resetFields();
+      setDesignationType(0);
       setOpenDesignationModal(false);
     }
   };
 
   const handleReset = () => {
     form.resetFields();
+    setDesignationType(0);
   };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
-  };
-
-  const [value, setValue] = useState();
-
-  const onChange = (e) => {
-    console.log('radio checked', e.target.value);
-    setValue(e.target.value);
   };
 
   return (
@@ -267,10 +270,13 @@ const DesignationTable = () => {
           </Form.Item>
 
           <Form.Item label="Select type">
-            <Radio.Group onChange={onChange} value={value}>
-              <Radio value={1}>isWaiter</Radio>
-              <Radio value={2}>isChef</Radio>
-              <Radio value={3}>isManager</Radio>
+            <Radio.Group
+              onChange={(e) => setDesignationType(e.target.value)}
+              value={designationType}
+            >
+              <Radio value={1}>waiter</Radio>
+              <Radio value={2}>chef</Radio>
+              <Radio value={3}>manager</Radio>
             </Radio.Group>
           </Form.Item>
 

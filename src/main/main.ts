@@ -2172,8 +2172,7 @@ app
  ***********************************************/
 // INSERT DESIGNATION DATA
 ipcMain.on('insert_employee_designation', (_event, args) => {
-  let { id, designation, designation_details, isWaiter, isChef, isManager } =
-    args;
+  let { id, designation, designation_details, waiter, chef, manager } = args;
 
   // Execute if the event has row ID / data ID. It is used to update a specific item
   if (args.id !== undefined) {
@@ -2181,8 +2180,8 @@ ipcMain.on('insert_employee_designation', (_event, args) => {
 
     db.serialize(() => {
       db.run(
-        `INSERT OR replace INTO emp_designation (id, designation, designation_details, isWaiter, isChef, isManager) VALUES (?, ?, ?, ?, ?, ?)`,
-        [id, designation, designation_details, isWaiter, isChef, isManager],
+        `INSERT OR replace INTO emp_designation (id, designation, designation_details, waiter, chef, manager) VALUES (?, ?, ?, ?, ?, ?)`,
+        [id, designation, designation_details, waiter, chef, manager],
         (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
@@ -2207,15 +2206,15 @@ ipcMain.on('insert_employee_designation', (_event, args) => {
         `CREATE TABLE IF NOT EXISTS emp_designation (
           'id' INTEGER PRIMARY KEY AUTOINCREMENT,
           'designation' varchar(150),
-          'designation_details' varchar(100)
-          'isWaiter' INT,
-          'isChef' INT,
-          'isManager' INT,
+          'designation_details' varchar(100),
+          'waiter' INT,
+          'chef' INT,
+          'manager' INT
         )`
       ).run(
-        `INSERT OR REPLACE INTO emp_designation (designation, designation_details, isWaiter, isChef, isManager)
+        `INSERT OR REPLACE INTO emp_designation (designation, designation_details, waiter, chef, manager)
           VALUES (?, ?, ?, ?, ?)`,
-        [designation, designation_details, isWaiter, isChef, isManager],
+        [designation, designation_details, waiter, chef, manager],
         (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
@@ -2942,8 +2941,6 @@ ipcMain.on('get_waiter_names', (_event, args) => {
     WHERE employees.designation = (SELECT id FROM emp_designation WHERE designation = 'Accounts')`;
     db.serialize(() => {
       db.all(sql, [], (err, rows) => {
-        // console.log('2927: ', rows);
-
         mainWindow.webContents.send('get_waiter_names_response', rows);
       });
     });
