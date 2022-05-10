@@ -1524,7 +1524,7 @@ ipcMain.on('context_bridge_food_available_time', (event, args) => {
         `INSERT OR REPLACE INTO food_variable (id, food_id, avail_day, avail_time, is_active)
         VALUES (?, ?, ?, ?, ?)`,
         [args.id, food_id, avail_day, avail_time, is_active],
-        (err) => {
+        (err:ErrorType) => {
           err
             ? mainWindow.webContents.send(
               'context_bridge_food_available_time_response',
