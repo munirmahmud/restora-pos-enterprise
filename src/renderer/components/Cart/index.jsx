@@ -37,40 +37,37 @@ const { Option } = Select;
 const { TextArea } = Input;
 
 const Cart = ({ settings, cartItems, setCartItems, state }) => {
-
+  window.fetch_customer_table.send('fetch_customer_table', { status: true });
   window.get_customer_names.send('get_customer_names', { status: true });
   window.get_waiter_names.send('get_waiter_names', { status: true });
-
-  window.get_waiter_names.once('get_waiter_names_response', (args)=>{
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!',args);
-  })
-
-
 
   const format = 'HH:mm';
   const [form] = Form.useForm();
   const [addCustomerName] = Form.useForm();
   const calcPrice = new CalculatePrice(settings, cartItems);
-
-  const [addCustomerModal, setAddCustomerModal] = useState(false);
-  const [confirmBtn, setConfirmBtn] = useState('');
-  const [quantityValue, setQuantityValue] = useState(1);
   const [warmingModal, setWarmingModal] = useState(false);
   const [confirmOrder, setConfirmOrder] = useState(false);
-  const [addCustomer, setAddCustomer] = useState([]);
-  const [customerList, setCustomerList] = useState([]);
-  const [reRender, setReRender] = useState(false);
+  const [foodNoteModal, setFoodNoteModal] = useState(false);
   const [premiumVersion, setPremiumVersion] = useState(false);
   const [openCalculator, setOpenCalculator] = useState(false);
-  const [customerId, setCustomerId] = useState(0);
+  const [addCustomerModal, setAddCustomerModal] = useState(false);
+
   const [cartData, setCartData] = useState({ cartItems });
   const [quickOrderAdditionalData, setQuickOrderAdditionalData] =
     useState(null);
-  const [foodNoteModal, setFoodNoteModal] = useState(false);
 
-  const [customDiscount, setCustomDiscount] = useState(0);
   const [customServiceCharge, setCustomServiceCharge] = useState(0);
   const [addFoodNoteToItem, setAddFoodNoteToItem] = useState({});
+  const [tableDataLists, setTableDataLists] = useState([]);
+  const [customDiscount, setCustomDiscount] = useState(0);
+  const [quantityValue, setQuantityValue] = useState(1);
+  const [customerList, setCustomerList] = useState([]);
+  const [waiterLists, setWaiterLists] = useState([]);
+  const [addCustomer, setAddCustomer] = useState([]);
+  const [confirmBtn, setConfirmBtn] = useState('');
+  const [customerId, setCustomerId] = useState(0);
+
+  const [reRender, setReRender] = useState(false);
 
   useEffect(() => {
     if (settings?.discountrate) {
@@ -111,6 +108,22 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
   useEffect(() => {
     setCartData({ ...cartData, cartItems });
   }, [cartItems]);
+
+  useEffect(() => {
+    getDataFromDatabase(
+      'get_waiter_names_response',
+      window.get_waiter_names
+    ).then((args = []) => {
+      setWaiterLists(args);
+    });
+
+    getDataFromDatabase(
+      'fetch_customer_table_response',
+      window.fetch_customer_table
+    ).then((response) => {
+      setTableDataLists(response);
+    });
+  }, []);
 
   const handleDiscount = (e) => {
     const { value } = e.target;
@@ -342,7 +355,6 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
                       size="large"
                       allowClear
                     >
-
                       <Option value="1">Walk In</Option>
                       <Option value="2">Online Customer</Option>
                       <Option value="3">Third Party</Option>
@@ -362,10 +374,11 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
                     name="waiter"
                   >
                     <Select placeholder="Select Waiter" size="large" allowClear>
-                      <Option value="1">Kabir</Option>
-                      <Option value="2">Junayed</Option>
-                      <Option value="3">Devid</Option>
-                      <Option value="4">Smith</Option>
+                      {waiterLists?.map((waiter) => (
+                        <Option key={waiter?.id} value={waiter?.id}>
+                          {waiter?.first_name}
+                        </Option>
+                      ))}
                     </Select>
                   </Form.Item>
                 </Col>
@@ -387,10 +400,11 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
                       size="large"
                       allowClear
                     >
-                      <Option value="1">1</Option>
-                      <Option value="2">2</Option>
-                      <Option value="3">3</Option>
-                      <Option value="4">4</Option>
+                      {tableDataLists?.map((tableData) => (
+                        <Option key={tableData?.id} value={tableData?.id}>
+                          {tableData?.tablename}
+                        </Option>
+                      ))}
                     </Select>
                   </Form.Item>
                 </Col>
