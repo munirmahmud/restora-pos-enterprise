@@ -45,7 +45,6 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
   const [form] = Form.useForm();
   const [addCustomerName] = Form.useForm();
   const calcPrice = new CalculatePrice(settings, cartItems);
-
   const [warmingModal, setWarmingModal] = useState(false);
   const [confirmOrder, setConfirmOrder] = useState(false);
   const [foodNoteModal, setFoodNoteModal] = useState(false);
