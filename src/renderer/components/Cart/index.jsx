@@ -45,13 +45,7 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
   window.get_waiter_names.send('get_waiter_names', { status: true });
   window.create_customer_type.send('create_customer_type', { status: true });
 
-  window.create_customer_type.once(
-    'create_customer_type_response',
-    (event, args) => {
-      console.log('data read', event);
-      setCustomerTypes(args);
-    }
-  );
+
 
   const format = 'HH:mm';
   const [form] = Form.useForm();
@@ -136,6 +130,13 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
     ).then((response) => {
       setTableDataLists(response);
     });
+
+    getDataFromDatabase(
+      'create_customer_type_response',
+      window.create_customer_type)
+      .then((response) => {
+        setCustomerTypes(response);
+      })
   }, []);
 
   const handleDiscount = (e) => {

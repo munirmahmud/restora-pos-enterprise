@@ -2456,6 +2456,7 @@ ipcMain.on('insert_salary_advance', (_event, args) => {
   }
 });
 
+
 ipcMain.on('send_status_to_create_table', (_event, args) => {
   if (args.status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
@@ -3002,9 +3003,7 @@ ipcMain.on('create_customer_type', (_event, args) => {
             `SELECT * FROM customer_type`,
             [],
             (_err: ErrorType, rows: any) => {
-              console.log('rows', rows);
-
-              mainWindow.webContents.send('create_customer_type', rows);
+              mainWindow.webContents.send('create_customer_type_response', rows);
             }
           );
 
