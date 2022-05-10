@@ -37,9 +37,14 @@ const { Option } = Select;
 const { TextArea } = Input;
 
 const Cart = ({ settings, cartItems, setCartItems, state }) => {
+  const [customerTypes, setCustomerTypes] = useState([]);
+
   window.fetch_customer_table.send('fetch_customer_table', { status: true });
   window.get_customer_names.send('get_customer_names', { status: true });
   window.get_waiter_names.send('get_waiter_names', { status: true });
+  window.create_customer_type.send('create_customer_type', { status: true });
+
+
 
   const format = 'HH:mm';
   const [form] = Form.useForm();
@@ -123,6 +128,13 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
     ).then((response) => {
       setTableDataLists(response);
     });
+
+    getDataFromDatabase(
+      'create_customer_type_response',
+      window.create_customer_type)
+      .then((response) => {
+        setCustomerTypes(response);
+      })
   }, []);
 
   const handleDiscount = (e) => {
@@ -355,10 +367,12 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
                       size="large"
                       allowClear
                     >
-                      <Option value="1">Walk In</Option>
-                      <Option value="2">Online Customer</Option>
-                      <Option value="3">Third Party</Option>
-                      <Option value="4">Take Way</Option>
+                      {customerTypes?.length > 0 &&
+                        customerTypes.map((type) => (
+                          <Option key={`type-${type.id}`} value={type.id}>
+                            {type.customertype}
+                          </Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </Col>
