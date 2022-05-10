@@ -234,6 +234,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@electron/remote": "^2.0.8",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-brands-svg-icons": "^5.15.4",
     "@fortawesome/free-regular-svg-icons": "^5.15.4",
