@@ -86,8 +86,8 @@ const ManageTableLists = () => {
         value: updateTableData?.person_capacity,
       },
       {
-        name: ['floor'],
-        value: updateTableData?.floor,
+        name: ['floorId'],
+        value: updateTableData?.floorId,
       },
       {
         name: ['table_icon'],
@@ -102,6 +102,12 @@ const ManageTableLists = () => {
       dataIndex: 'id',
       key: 'id',
       width: '7%',
+    },
+    {
+      title: 'Floor Name',
+      dataIndex: 'floorName',
+      key: 'floorName',
+      width: '30%',
     },
     {
       title: 'Table Name',
@@ -202,6 +208,7 @@ const ManageTableLists = () => {
         person_capacity: parseInt(values?.person_capacity),
         table_icon: (values.table_icon = imageSource?.imageSrc),
         ...values,
+        floorId: values.floor,
       });
 
       setReRender((prevState) => !prevState);
@@ -222,6 +229,7 @@ const ManageTableLists = () => {
     } else {
       window.insert_customer_table.send('insert_customer_table', {
         ...values,
+        floorId: values.floor,
         person_capacity: parseInt(values.person_capacity),
         table_icon: imageSource?.imageSrc,
         status: 0,

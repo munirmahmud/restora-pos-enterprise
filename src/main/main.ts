@@ -2894,7 +2894,7 @@ deleteListItem('delete_floor', 'delete_floor_response', 'floor');
 
 // INSERT TABLE DATA
 ipcMain.on('insert_customer_table', (_event, args) => {
-  let { id, tablename, person_capacity, table_icon, floor, status } = args;
+  let { id, tablename, person_capacity, table_icon, floorId, status } = args;
 
   // Execute if the event has row ID / data ID. It is used to update a specific item
   if (args.id !== undefined) {
@@ -2902,8 +2902,8 @@ ipcMain.on('insert_customer_table', (_event, args) => {
 
     db.serialize(() => {
       db.run(
-        `UPDATE customer_table SET tablename = ?, person_capacity = ?, table_icon = ?, floor = ? WHERE id = ?`,
-        [tablename, person_capacity, table_icon, floor, id],
+        `UPDATE customer_table SET tablename = ?, person_capacity = ?, table_icon = ?, floorId = ? WHERE id = ?`,
+        [tablename, person_capacity, table_icon, floorId, id],
         (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
@@ -2927,13 +2927,13 @@ ipcMain.on('insert_customer_table', (_event, args) => {
           'tablename' varchar(50) NOT NULL,
           'person_capacity' INT NOT NULL,
           'table_icon' TEXT,
-          'floor' INT,
+          'floorId' INT,
           'status' INT NOT NULL,
           'created_at' INT
         )`
       ).run(
-        `INSERT OR REPLACE INTO customer_table (tablename, person_capacity, table_icon, floor, status, created_at) VALUES (?, ?, ?, ?, ?, ?)`,
-        [tablename, person_capacity, table_icon, floor, status, Date.now()],
+        `INSERT OR REPLACE INTO customer_table (tablename, person_capacity, table_icon, floorId, status, created_at) VALUES (?, ?, ?, ?, ?, ?)`,
+        [tablename, person_capacity, table_icon, floorId, status, Date.now()],
         (err: ErrorType) => {
           err
             ? mainWindow.webContents.send(
@@ -2964,12 +2964,28 @@ ipcMain.on('get_waiter_names', (_event, args) => {
   }
 });
 
-getListItems(
-  'fetch_customer_table',
-  'fetch_customer_table_response',
-  'customer_table',
-  'id, tablename, person_capacity, table_icon, floor'
-);
+ipcMain.on('fetch_customer_table', (_event: Electron.IpcMainEvent, args) => {
+  let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+  let { status } = args;
+  let sql = `SELECT customer_table.id, customer_table.tablename, customer_table.person_capacity, customer_table.table_icon, customer_table.floorId, customer_table.status, floor.floorName FROM customer_table INNER JOIN floor ON customer_table.floorId = floor.id`;
+
+  if (status) {
+    db.serialize(() => {
+      db.all(sql, [], (_err: ErrorType, rows: any) => {
+        mainWindow.webContents.send('fetch_customer_table_response', rows);
+      });
+    });
+  }
+
+  db.close();
+});
+
+// getListItems(
+//   'fetch_customer_table',
+//   'fetch_customer_table_response',
+//   'customer_table',
+//   'id, tablename, person_capacity, table_icon, floor'
+// );
 deleteListItem(
   'delete_customer_table',
   'delete_customer_table_response',
