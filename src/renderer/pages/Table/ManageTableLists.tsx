@@ -131,12 +131,6 @@ const ManageTableLists = () => {
       width: '25%',
     },
     {
-      title: 'Floor Name',
-      dataIndex: 'floorName',
-      key: 'floorName',
-      width: '15%',
-    },
-    {
       title: 'Capacity',
       dataIndex: 'person_capacity',
       key: 'person_capacity',

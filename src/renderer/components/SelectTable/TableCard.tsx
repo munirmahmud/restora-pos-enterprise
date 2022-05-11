@@ -4,12 +4,12 @@ import { useState } from 'react';
 import TableImage from '../../../../assets/table_icon.png';
 import './PersonSelectiveModal.style.scss';
 
-const TableCard = () => {
+const TableCard = ({ table }: any) => {
+  const [addPerson, setAddPerson] = useState();
+
   function onChange(e: any) {
     console.log(`checked = ${e.target.checked}`);
   }
-
-  const [addPerson, setAddPerson] = useState();
 
   const handleChangeTablePerson = () => {
     console.log('changed', addPerson);
@@ -20,15 +20,21 @@ const TableCard = () => {
       <div className="flex content_between item_center">
         <div className="select_table">
           <Checkbox onChange={onChange}>Select This Table</Checkbox>
+
           <div className="table_info">
             <p>
-              Table <span>VIP-2</span>
+              Table <span>{table?.tablename}</span>
             </p>
             <p>
-              Seat <span>6</span>
+              Seat <span>{table?.person_capacity}</span>
             </p>
             <p>
-              Available <span>4</span>
+              Available{' '}
+              <span>
+                {addPerson
+                  ? table?.person_capacity - addPerson
+                  : table?.person_capacity}
+              </span>
             </p>
           </div>
         </div>
@@ -65,7 +71,7 @@ const TableCard = () => {
       <div className="input_number flex content_between">
         <div>
           <InputNumber
-            min={1}
+            min={0}
             onChange={(value) => setAddPerson(value)}
             placeholder="Add person"
             style={{ width: '150px' }}
