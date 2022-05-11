@@ -54,7 +54,7 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
   const [premiumVersion, setPremiumVersion] = useState(false);
   const [openCalculator, setOpenCalculator] = useState(false);
   const [addCustomerModal, setAddCustomerModal] = useState(false);
-  const [personSelectiveModal, setPersonSelectiveModal] = useState(false);
+  const [personSelectModal, setPersonSelectModal] = useState(false);
 
   const [cartData, setCartData] = useState({ cartItems });
   const [quickOrderAdditionalData, setQuickOrderAdditionalData] =
@@ -402,7 +402,7 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
                     size="large"
                     type="primary"
                     className="add_customer"
-                    onClick={() => setPersonSelectiveModal(true)}
+                    onClick={() => setPersonSelectModal(true)}
                   >
                     Person
                   </Button>
@@ -683,10 +683,10 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
         />
       )}
 
-      {personSelectiveModal && (
+      {personSelectModal && (
         <SelectTable
-          personSelectiveModal={personSelectiveModal}
-          setPersonSelectiveModal={setPersonSelectiveModal}
+          personSelectModal={personSelectModal}
+          setPersonSelectModal={setPersonSelectModal}
         />
       )}
 

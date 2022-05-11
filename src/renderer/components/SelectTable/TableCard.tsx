@@ -1,5 +1,6 @@
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Col, Image, InputNumber } from 'antd';
+import { useState } from 'react';
 import TableImage from '../../../../assets/table_icon.png';
 import './PersonSelectiveModal.style.scss';
 
@@ -8,8 +9,10 @@ const TableCard = () => {
     console.log(`checked = ${e.target.checked}`);
   }
 
-  const handleChangeTablePerson = (value: any) => {
-    console.log('changed', value);
+  const [addPerson, setAddPerson] = useState();
+
+  const handleChangeTablePerson = () => {
+    console.log('changed', addPerson);
   };
 
   return (
@@ -63,12 +66,16 @@ const TableCard = () => {
         <div>
           <InputNumber
             min={1}
-            onChange={handleChangeTablePerson}
+            onChange={(value) => setAddPerson(value)}
             placeholder="Add person"
             style={{ width: '150px' }}
           />
 
-          <Button type="primary" style={{ marginLeft: '0.5rem' }}>
+          <Button
+            type="primary"
+            style={{ marginLeft: '0.5rem' }}
+            onClick={handleChangeTablePerson}
+          >
             <PlusOutlined />
           </Button>
         </div>

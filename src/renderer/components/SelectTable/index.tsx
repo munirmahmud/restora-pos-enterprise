@@ -9,10 +9,7 @@ type FloorTypes = {
   floorName: string;
 };
 
-const SelectTable = ({
-  personSelectiveModal,
-  setPersonSelectiveModal,
-}: any) => {
+const SelectTable = ({ personSelectModal, setPersonSelectModal }: any) => {
   window.fetch_floor.send('fetch_floor', { status: true });
 
   const [floorListsData, setFloorListsData] = useState<FloorTypes[]>([]);
@@ -34,13 +31,13 @@ const SelectTable = ({
 
   return (
     <Modal
-      visible={personSelectiveModal}
-      onOk={() => setPersonSelectiveModal(false)}
-      onCancel={() => setPersonSelectiveModal(false)}
+      visible={personSelectModal}
+      onOk={() => setPersonSelectModal(false)}
+      onCancel={() => setPersonSelectModal(false)}
       footer={null}
       width={1200}
     >
-      {/* // TODO: Person select table */}
+      {/* TODO: Person select table */}
       <div className="table_wrapper">
         <Space style={{ marginBottom: '1rem' }}>
           {floorListsData.map((table) => (
@@ -61,7 +58,7 @@ const SelectTable = ({
           <Button
             type="primary"
             danger
-            onClick={() => setPersonSelectiveModal(false)}
+            onClick={() => setPersonSelectModal(false)}
           >
             Cancel
           </Button>

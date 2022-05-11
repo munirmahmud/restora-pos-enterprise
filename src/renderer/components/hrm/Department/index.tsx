@@ -21,6 +21,7 @@ type UpdateDepartmentType = {
   id: number;
   department_name: string;
 };
+
 type DepartmentType = {
   name: string | number | (string | number)[];
   touched?: boolean;
