@@ -107,20 +107,26 @@ const ManageTableLists = () => {
       title: 'Table Name',
       dataIndex: 'tablename',
       key: 'tablename',
-      width: '30%',
+      width: '25%',
+    },
+    {
+      title: 'Floor Name',
+      dataIndex: 'floorName',
+      key: 'floorName',
+      width: '15%',
     },
     {
       title: 'Capacity',
       dataIndex: 'person_capacity',
       key: 'person_capacity',
-      width: '25%',
+      width: '20%',
     },
     {
       title: 'Icon',
       dataIndex: 'table_icon',
       key: 'table_icon',
-      width: '20%',
-      render: (_text, record: any) => (
+      width: '15%',
+      render: (_text: string, record: any) => (
         <Image
           src={record.table_icon ? record.table_icon : ''}
           width={50}
@@ -218,6 +224,7 @@ const ManageTableLists = () => {
 
       setOpenModal(false);
       setImageSource('');
+      setUpdateTableData('');
       form.resetFields();
     } else {
       window.insert_customer_table.send('insert_customer_table', {

@@ -14,6 +14,7 @@ const SelectTable = ({
   setPersonSelectiveModal,
 }: any) => {
   window.fetch_floor.send('fetch_floor', { status: true });
+
   const [floorListsData, setFloorListsData] = useState<FloorTypes[]>([]);
   const [defaultFloor, setDefaultFloor] = useState(0);
 
@@ -28,7 +29,7 @@ const SelectTable = ({
 
   const handleFloorButton = (table: any) => {
     console.log('table', table);
-    setDefaultFloor(table.id);
+    setDefaultFloor(table?.id);
   };
 
   return (

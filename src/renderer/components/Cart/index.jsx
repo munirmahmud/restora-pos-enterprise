@@ -38,19 +38,16 @@ const { Option } = Select;
 const { TextArea } = Input;
 
 const Cart = ({ settings, cartItems, setCartItems, state }) => {
-  const [customerTypes, setCustomerTypes] = useState([]);
-
   window.fetch_customer_table.send('fetch_customer_table', { status: true });
+  window.create_customer_type.send('create_customer_type', { status: true });
   window.get_customer_names.send('get_customer_names', { status: true });
   window.get_waiter_names.send('get_waiter_names', { status: true });
-  window.create_customer_type.send('create_customer_type', { status: true });
-
-
 
   const format = 'HH:mm';
   const [form] = Form.useForm();
   const [addCustomerName] = Form.useForm();
   const calcPrice = new CalculatePrice(settings, cartItems);
+
   const [warmingModal, setWarmingModal] = useState(false);
   const [confirmOrder, setConfirmOrder] = useState(false);
   const [foodNoteModal, setFoodNoteModal] = useState(false);
@@ -63,17 +60,18 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
   const [quickOrderAdditionalData, setQuickOrderAdditionalData] =
     useState(null);
 
-  const [customServiceCharge, setCustomServiceCharge] = useState(0);
   const [addFoodNoteToItem, setAddFoodNoteToItem] = useState({});
   const [tableDataLists, setTableDataLists] = useState([]);
-  const [customDiscount, setCustomDiscount] = useState(0);
-  const [quantityValue, setQuantityValue] = useState(1);
+  const [customerTypes, setCustomerTypes] = useState([]);
   const [customerList, setCustomerList] = useState([]);
   const [waiterLists, setWaiterLists] = useState([]);
   const [addCustomer, setAddCustomer] = useState([]);
+
+  const [customServiceCharge, setCustomServiceCharge] = useState(0);
+  const [customDiscount, setCustomDiscount] = useState(0);
+  const [quantityValue, setQuantityValue] = useState(1);
   const [confirmBtn, setConfirmBtn] = useState('');
   const [customerId, setCustomerId] = useState(0);
-
   const [reRender, setReRender] = useState(false);
 
   useEffect(() => {
@@ -133,10 +131,10 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
 
     getDataFromDatabase(
       'create_customer_type_response',
-      window.create_customer_type)
-      .then((response) => {
-        setCustomerTypes(response);
-      })
+      window.create_customer_type
+    ).then((response) => {
+      setCustomerTypes(response);
+    });
   }, []);
 
   const handleDiscount = (e) => {
@@ -685,10 +683,12 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
         />
       )}
 
-      <SelectTable
-        personSelectiveModal={personSelectiveModal}
-        setPersonSelectiveModal={setPersonSelectiveModal}
-      />
+      {personSelectiveModal && (
+        <SelectTable
+          personSelectiveModal={personSelectiveModal}
+          setPersonSelectiveModal={setPersonSelectiveModal}
+        />
+      )}
 
       <Modal
         visible={openCalculator}
