@@ -1,12 +1,16 @@
-import { DeleteOutlined } from '@ant-design/icons';
-import { Checkbox, Col, Image } from 'antd';
-import TableImage from '../../../../assets/006-terrace.png';
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Col, Image, InputNumber } from 'antd';
+import TableImage from '../../../../assets/table_icon.png';
 import './PersonSelectiveModal.style.scss';
 
 const TableCard = () => {
   function onChange(e: any) {
     console.log(`checked = ${e.target.checked}`);
   }
+
+  const handleChangeTablePerson = (value: any) => {
+    console.log('changed', value);
+  };
 
   return (
     <Col lg={8}>
@@ -27,7 +31,7 @@ const TableCard = () => {
         </div>
 
         <div className="table_image">
-          <Image src={TableImage} preview={false} width={50} />
+          <Image src={TableImage} preview={false} width={70} />
         </div>
       </div>
 
@@ -53,6 +57,27 @@ const TableCard = () => {
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <div className="input_number flex content_between">
+        <div>
+          <InputNumber
+            min={1}
+            onChange={handleChangeTablePerson}
+            placeholder="Add person"
+            style={{ width: '150px' }}
+          />
+
+          <Button type="primary" style={{ marginLeft: '0.5rem' }}>
+            <PlusOutlined />
+          </Button>
+        </div>
+
+        <div>
+          <Button type="primary" danger>
+            Clear
+          </Button>
+        </div>
       </div>
     </Col>
   );
