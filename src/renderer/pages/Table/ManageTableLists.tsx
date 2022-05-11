@@ -28,17 +28,26 @@ import { getDataFromDatabase } from './../../../helpers';
 const { Option } = Select;
 const { confirm } = Modal;
 
-type DataType = {
-  id: number;
-  sl_no: number;
-  table_name: string;
-  capacity: number;
-  icon: string;
-};
-
 type TableDataTypes = {
   id: string;
   imageSrc: string;
+};
+
+type ManageTablesType = {
+  name: string | number | (string | number)[];
+  touched?: boolean;
+  validating?: boolean;
+  value?: any;
+  errors?: string[];
+  warnings?: string[];
+};
+
+type DataType = {
+  id: number;
+  tablename: string;
+  person_capacity: string;
+  table_icon: string;
+  floor: string;
 };
 
 const customImageCSS = {
@@ -53,12 +62,18 @@ const ManageTableLists = () => {
 
   const [form] = Form.useForm();
   const [openModal, setOpenModal] = useState(false);
-  const [addTable, setAddTable] = useState([]);
+  const [addTable, setAddTable] = useState<ManageTablesType[]>([]);
   const [openTableImageModal, setOpenTableImageModal] = useState(false);
   const [floorListsData, setFloorListsData] = useState([]);
   const [imageSource, setImageSource] = useState({});
   const [reRender, setReRender] = useState(false);
-  const [updateTableData, setUpdateTableData] = useState({});
+  const [updateTableData, setUpdateTableData] = useState<DataType>({
+    id: null,
+    tablename: '',
+    person_capacity: '',
+    table_icon: '',
+    floor: '',
+  });
   const [tableDataLists, setTableDataLists] = useState([]);
 
   useEffect(() => {
@@ -113,19 +128,19 @@ const ManageTableLists = () => {
       title: 'Table Name',
       dataIndex: 'tablename',
       key: 'tablename',
-      width: '30%',
+      width: '25%',
     },
     {
       title: 'Capacity',
       dataIndex: 'person_capacity',
       key: 'person_capacity',
-      width: '25%',
+      width: '20%',
     },
     {
       title: 'Icon',
       dataIndex: 'table_icon',
       key: 'table_icon',
-      width: '20%',
+      width: '15%',
       render: (_text: string, record: any) => (
         <Image
           src={record.table_icon ? record.table_icon : ''}
@@ -160,6 +175,8 @@ const ManageTableLists = () => {
   ];
 
   const handleEditTable = (data: DataType) => {
+    console.log('data', data);
+
     setReRender((prevState) => !prevState);
     setOpenModal(true);
     setUpdateTableData(data);
@@ -225,6 +242,7 @@ const ManageTableLists = () => {
 
       setOpenModal(false);
       setImageSource('');
+      setUpdateTableData('');
       form.resetFields();
     } else {
       window.insert_customer_table.send('insert_customer_table', {

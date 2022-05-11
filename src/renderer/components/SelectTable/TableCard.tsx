@@ -1,31 +1,44 @@
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Col, Image, InputNumber } from 'antd';
+import moment from 'moment';
+import { useState } from 'react';
 import TableImage from '../../../../assets/table_icon.png';
 import './PersonSelectiveModal.style.scss';
 
-const TableCard = () => {
+const TableCard = ({ table }: any) => {
+  const [addPerson, setAddPerson] = useState();
+
   function onChange(e: any) {
     console.log(`checked = ${e.target.checked}`);
   }
 
-  const handleChangeTablePerson = (value: any) => {
-    console.log('changed', value);
+  const handleChangeTablePerson = () => {
+    console.log('changed', addPerson);
   };
+
+  const format = 'YYYY-MM-DD';
+  const today = new Date();
 
   return (
     <Col lg={8}>
       <div className="flex content_between item_center">
         <div className="select_table">
           <Checkbox onChange={onChange}>Select This Table</Checkbox>
+
           <div className="table_info">
             <p>
-              Table <span>VIP-2</span>
+              Table <span>{table?.tablename}</span>
             </p>
             <p>
-              Seat <span>6</span>
+              Seat <span>{table?.person_capacity}</span>
             </p>
             <p>
-              Available <span>4</span>
+              Available{' '}
+              <span>
+                {addPerson
+                  ? table?.person_capacity - addPerson
+                  : table?.person_capacity}
+              </span>
             </p>
           </div>
         </div>
@@ -49,7 +62,7 @@ const TableCard = () => {
           <tbody>
             <tr>
               <td>215</td>
-              <td>2022-05-05</td>
+              <td>{moment(today).format(format)}</td>
               <td>2</td>
               <td>
                 <DeleteOutlined />
@@ -62,13 +75,17 @@ const TableCard = () => {
       <div className="input_number flex content_between">
         <div>
           <InputNumber
-            min={1}
-            onChange={handleChangeTablePerson}
+            min={0}
+            onChange={(value) => setAddPerson(value)}
             placeholder="Add person"
             style={{ width: '150px' }}
           />
 
-          <Button type="primary" style={{ marginLeft: '0.5rem' }}>
+          <Button
+            type="primary"
+            style={{ marginLeft: '0.5rem' }}
+            onClick={handleChangeTablePerson}
+          >
             <PlusOutlined />
           </Button>
         </div>
