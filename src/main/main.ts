@@ -37,6 +37,8 @@ declare global {
     insert_customer_table: any;
     fetch_customer_table: any;
     delete_customer_table: any;
+    fetch_table_based_on_floor_id: any;
+    fetch_table_based_on_floor_id_response: any;
   }
 }
 
@@ -2980,12 +2982,6 @@ ipcMain.on('fetch_customer_table', (_event: Electron.IpcMainEvent, args) => {
   db.close();
 });
 
-// getListItems(
-//   'fetch_customer_table',
-//   'fetch_customer_table_response',
-//   'customer_table',
-//   'id, tablename, person_capacity, table_icon, floor'
-// );
 deleteListItem(
   'delete_customer_table',
   'delete_customer_table_response',
@@ -3031,3 +3027,26 @@ ipcMain.on('create_customer_type', (_event, args) => {
     });
   }
 });
+
+// FETCH FLOOR & TABLE INFO
+ipcMain.on(
+  'fetch_table_based_on_floor_id',
+  (_event: Electron.IpcMainEvent, args) => {
+    const { floorId } = args;
+
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+
+    let sql = `SELECT customer_table.id, customer_table.tablename, customer_table.person_capacity, customer_table.status, customer_table.floorId FROM customer_table WHERE floorId = ${floorId}`;
+
+    db.serialize(() => {
+      db.all(sql, [], (_err: ErrorType, rows: any) => {
+        mainWindow.webContents.send(
+          'fetch_table_based_on_floor_id_response',
+          rows
+        );
+      });
+    });
+
+    db.close();
+  }
+);

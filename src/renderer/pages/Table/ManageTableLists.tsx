@@ -126,7 +126,7 @@ const ManageTableLists = () => {
       dataIndex: 'table_icon',
       key: 'table_icon',
       width: '20%',
-      render: (_text, record: any) => (
+      render: (_text: string, record: any) => (
         <Image
           src={record.table_icon ? record.table_icon : ''}
           width={50}

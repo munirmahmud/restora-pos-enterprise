@@ -15,12 +15,12 @@ const SelectTable = ({
 }: any) => {
   window.fetch_floor.send('fetch_floor', { status: true });
   const [floorListsData, setFloorListsData] = useState<FloorTypes[]>([]);
-  const [defaultFloor, setDefaultFloor] = useState(0);
+  const [floorId, setFloorId] = useState(0);
 
   useEffect(() => {
     getDataFromDatabase('fetch_floor_response', window.fetch_floor).then(
       (response) => {
-        setDefaultFloor(response[0].id);
+        setFloorId(response[0].id);
         setFloorListsData(response);
       }
     );
@@ -28,7 +28,7 @@ const SelectTable = ({
 
   const handleFloorButton = (table: any) => {
     console.log('table', table);
-    setDefaultFloor(table.id);
+    setFloorId(table.id);
   };
 
   return (
@@ -53,7 +53,7 @@ const SelectTable = ({
           ))}
         </Space>
 
-        {defaultFloor && <TableCards defaultFloor={defaultFloor} />}
+        {floorId && <TableCards floorId={floorId} />}
 
         <Space className="flex content_end">
           <Button type="primary">Add</Button>
