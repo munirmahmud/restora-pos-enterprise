@@ -1,5 +1,6 @@
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Col, Image, InputNumber } from 'antd';
+import moment from 'moment';
 import { useState } from 'react';
 import TableImage from '../../../../assets/table_icon.png';
 import './PersonSelectiveModal.style.scss';
@@ -14,6 +15,9 @@ const TableCard = ({ table }: any) => {
   const handleChangeTablePerson = () => {
     console.log('changed', addPerson);
   };
+
+  const format = 'YYYY-MM-DD';
+  const today = new Date();
 
   return (
     <Col lg={8}>
@@ -58,7 +62,7 @@ const TableCard = ({ table }: any) => {
           <tbody>
             <tr>
               <td>215</td>
-              <td>2022-05-05</td>
+              <td>{moment(today).format(format)}</td>
               <td>2</td>
               <td>
                 <DeleteOutlined />
