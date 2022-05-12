@@ -1060,8 +1060,8 @@ ipcMain.on('insert_order_info', (_event, args: any) => {
               : 1,
             waiter_id,
             customer_type_id,
-            floor_id,
-            table_id,
+            JSON.stringify(floor_id),
+            JSON.stringify(table_id),
             cooking_time,
             booked,
             Date.now()
@@ -1107,8 +1107,8 @@ ipcMain.on('insert_order_info', (_event, args: any) => {
             1,
             waiter_id,
             customer_type_id,
-            floor_id,
-            table_id,
+            JSON.stringify(floor_id),
+            JSON.stringify(table_id),
             cooking_time,
             booked,
             Date.now()
@@ -1118,6 +1118,20 @@ ipcMain.on('insert_order_info', (_event, args: any) => {
       db.close();
     });
 });
+
+// get table data for orders
+ipcMain.on('get_table_data', (event, args) => {
+  if (args.status) {
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+    db.serialize(() => {
+      db.all(`SELECT orders.order_id, orders.creation_date, orders.floor_id, orders.table_id, orders.booked FROM orders`, [], (_err: ErrorType, rows: any) => {
+        console.log('1128: ', rows);
+        mainWindow.webContents.send('get_table_data_response', rows)
+      })
+    })
+    db.close()
+  }
+})
 
 // Update order info after edit
 ipcMain.on('update_order_info_after_edit', (_event, args) => {
