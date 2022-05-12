@@ -984,19 +984,8 @@ const tokenGenaretor = () => {
 
 // Insert order
 ipcMain.on('insert_order_info', (_event, args: any) => {
-  let {
-    cartItems,
-    customer_id,
-    grandTotal,
-    discount,
-    serviceCharge,
-    vat,
-    customer_type_id,
-    floor_id,
-    table_id,
-    cooking_time,
-    booked,
-  } = args;
+  let { cartItems, customer_id, grandTotal, discount, serviceCharge, vat } =
+    args;
 
   tokenGenaretor()
     .then((results: any) => {
@@ -1022,26 +1011,21 @@ ipcMain.on('insert_order_info', (_event, args: any) => {
         "order_id" INTEGER PRIMARY KEY AUTOINCREMENT,
         "order_info" varchar(255),
         "customer_id" INT,
+        "creation_date" DATETIME,
         "discount" REAL,
         "serviceCharge" REAL,
         "vat" REAL,
         "grand_total" REAL,
         "token_no" INT,
-        "waiter" INT,
-        "customer_type_id" INT,
-        "floor_id" INT,
-        "table_id" INT,
-        "cooking_time" varchar(50),
-        "booked" INT,
         "status" INT NOT NULL DEFAULT 1
-        "creation_date" DATETIME
     )`
         ).run(
-          `INSERT INTO orders (order_info, customer_id, creation_date, discount, serviceCharge, vat, grand_total, token_no, waiter, customer_type_id, floor_id, table_id, cooking_time, booked)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          `INSERT INTO orders (order_info, customer_id, creation_date, discount, serviceCharge, vat, grand_total, token_no)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             JSON.stringify(cartItems),
             customer_id,
+            Date.now(),
             discount,
             serviceCharge,
             vat,
@@ -1051,12 +1035,6 @@ ipcMain.on('insert_order_info', (_event, args: any) => {
                 ? results[0].token_no + 1
                 : 1
               : 1,
-            customer_type_id,
-            floor_id,
-            table_id,
-            cooking_time,
-            booked,
-            Date.now(),
           ]
         );
       });
@@ -1071,37 +1049,26 @@ ipcMain.on('insert_order_info', (_event, args: any) => {
             "order_id" INTEGER PRIMARY KEY AUTOINCREMENT,
             "order_info" varchar(255),
             "customer_id" INT,
+            "creation_date" DATETIME,
             "discount" REAL,
             "serviceCharge" REAL,
             "vat" REAL,
             "grand_total" REAL,
             "token_no" INT,
-            "waiter" INT,
-            "customer_type_id" INT,
-            "floor_id" INT,
-            "table_id" INT,
-            "cooking_time" varchar(50),
-            "booked" INT,
             "status" INT NOT NULL DEFAULT 1
-            "creation_date" DATETIME
     )`
         ).run(
-          `INSERT INTO orders (order_info, customer_id, discount, serviceCharge, vat, grand_total, token_no, customer_type_id, floor_id, table_id, cooking_time, booked, creation_date)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          `INSERT INTO orders (order_info, customer_id, creation_date, discount, serviceCharge, vat, grand_total, token_no)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             JSON.stringify(cartItems),
             customer_id,
+            Date.now(),
             discount,
             serviceCharge,
             vat,
             grandTotal,
-            customer_type_id,
-            floor_id,
-            table_id,
-            cooking_time,
-            booked,
             1,
-            Date.now(),
           ]
         );
       });
