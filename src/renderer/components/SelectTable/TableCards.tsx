@@ -9,7 +9,6 @@ const TableCards = ({ floorId }: { floorId: number }) => {
     floorId: floorId,
   });
 
-  console.log('vfloorId', floorId);
   const [floorTableLists, setFloorTableLists] = useState([]);
 
   useEffect(() => {
@@ -17,7 +16,6 @@ const TableCards = ({ floorId }: { floorId: number }) => {
       'fetch_table_based_on_floor_id_response',
       window.fetch_table_based_on_floor_id
     ).then((data) => {
-      console.log('data', data);
       setFloorTableLists(data);
     });
   }, [floorId]);
@@ -28,10 +26,6 @@ const TableCards = ({ floorId }: { floorId: number }) => {
         {floorTableLists?.map((table) => (
           <TableCard table={table} key={table?.id} />
         ))}
-        {/* <TableCard />
-        <TableCard />
-        <TableCard />
-        <TableCard /> */}
       </Row>
     </div>
   );

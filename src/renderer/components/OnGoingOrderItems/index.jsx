@@ -1,5 +1,5 @@
 import { Row } from 'antd';
-import OnGoingOrderCart from './../OnGoingOrderCart';
+import OnGoingOrderCard from './../OnGoingOrderCard';
 
 const OnGoingOrderItems = ({
   ongoingOrders,
@@ -30,7 +30,7 @@ const OnGoingOrderItems = ({
     <Row gutter={[20, 20]} style={{ display: 'flex', flexWrap: 'wrap' }}>
       {ongoingOrders.length > 0
         ? ongoingOrders?.map((orderCard) => (
-            <OnGoingOrderCart
+            <OnGoingOrderCard
               setActiveInactiveBtn={setActiveInactiveBtn}
               key={orderCard?.order_id}
               selectedItem={selectedItem}
