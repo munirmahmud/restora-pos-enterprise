@@ -1,5 +1,5 @@
 import { Row } from 'antd';
-import OnGoingOrderCart from './../OnGoingOrderCart';
+import OnGoingOrderCard from './../OnGoingOrderCard';
 
 const OnGoingOrderItems = ({
   ongoingOrders,
@@ -28,21 +28,17 @@ const OnGoingOrderItems = ({
 
   return (
     <Row gutter={[20, 20]} style={{ display: 'flex', flexWrap: 'wrap' }}>
-      {ongoingOrders.length > 0 ? (
-        ongoingOrders?.map((orderCard) => (
-          <OnGoingOrderCart
-            setActiveInactiveBtn={setActiveInactiveBtn}
-            key={orderCard?.order_id}
-            selectedItem={selectedItem}
-            orderCard={orderCard}
-            setOrderComplete={setOrderComplete}
-          />
-        ))
-      ) : (
-        <div>
-          <p style={{ textAlign: 'center' }}>No order found</p>
-        </div>
-      )}
+      {ongoingOrders.length > 0
+        ? ongoingOrders?.map((orderCard) => (
+            <OnGoingOrderCard
+              setActiveInactiveBtn={setActiveInactiveBtn}
+              key={orderCard?.order_id}
+              selectedItem={selectedItem}
+              orderCard={orderCard}
+              setOrderComplete={setOrderComplete}
+            />
+          ))
+        : 'Sorry'}
     </Row>
   );
 };
