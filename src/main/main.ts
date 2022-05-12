@@ -1120,7 +1120,7 @@ ipcMain.on('insert_order_info', (_event, args: any) => {
 });
 
 // get table data for orders
-ipcMain.on('get_table_data', (event, args) => {
+ipcMain.on('get_table_data', (_event, args) => {
   if (args.status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
     db.serialize(() => {
