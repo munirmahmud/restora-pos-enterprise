@@ -9,10 +9,19 @@ type FloorTypes = {
   floorName: string;
 };
 
-const SelectTable = ({ personSelectModal, setPersonSelectModal }: any) => {
+const SelectTable = ({
+  personSelectModal,
+  setPersonSelectModal,
+  personSelectedData,
+  setPersonSelectedData,
+  setTableInfo,
+  tableInfo,
+  setReRender,
+}: any) => {
   window.fetch_floor.send('fetch_floor', { status: true });
 
   const [floorListsData, setFloorListsData] = useState<FloorTypes[]>([]);
+
   const [floorId, setFloorId] = useState(0);
 
   useEffect(() => {
@@ -25,8 +34,14 @@ const SelectTable = ({ personSelectModal, setPersonSelectModal }: any) => {
   }, []);
 
   const handleFloorButton = (table: any) => {
-    console.log('table', table);
-    setFloorId(table.id);
+    setFloorId(table?.id);
+    // setPersonSelectedData([]);
+  };
+
+  const handleSubmitTablePerson = () => {
+    // console.log('personSelectedData', personSelectedData);
+    setReRender((prevState) => !prevState);
+    setPersonSelectModal(false);
   };
 
   return (
@@ -37,7 +52,6 @@ const SelectTable = ({ personSelectModal, setPersonSelectModal }: any) => {
       footer={null}
       width={1200}
     >
-      {/* TODO: Person select table */}
       <div className="table_wrapper">
         <Space style={{ marginBottom: '1rem' }}>
           {floorListsData.map((table) => (
@@ -51,10 +65,20 @@ const SelectTable = ({ personSelectModal, setPersonSelectModal }: any) => {
           ))}
         </Space>
 
-        {floorId && <TableCards floorId={floorId} />}
+        {floorId && (
+          <TableCards
+            setPersonSelectedData={setPersonSelectedData}
+            personSelectedData={personSelectedData}
+            floorId={floorId}
+            setTableInfo={setTableInfo}
+            tableInfo={tableInfo}
+          />
+        )}
 
-        <Space className="flex content_end">
-          <Button type="primary">Add</Button>
+        <Space className="flex content_end" style={{ marginTop: '2rem' }}>
+          <Button type="primary" onClick={() => handleSubmitTablePerson()}>
+            Add
+          </Button>
           <Button
             type="primary"
             danger
