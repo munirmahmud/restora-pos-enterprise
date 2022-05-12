@@ -5,19 +5,80 @@ import { useState } from 'react';
 import TableImage from '../../../../assets/table_icon.png';
 import './PersonSelectiveModal.style.scss';
 
-const TableCard = ({ table }: any) => {
-  const [addPerson, setAddPerson] = useState();
+const TableCard = ({
+  table,
+  floorId,
+  setPersonSelectedData,
+  personSelectedData,
+  setTableInfo,
+  tableInfo,
+}: any) => {
+  const format = 'YYYY-MM-DD';
+  const today = new Date();
+  const [addPerson, setAddPerson] = useState(0);
 
   function onChange(e: any) {
     console.log(`checked = ${e.target.checked}`);
   }
 
   const handleChangeTablePerson = () => {
-    console.log('changed', addPerson);
+    const floor_id = [];
+    const table_id = [];
+    const booked_person = [];
+
+    floor_id.push(floorId);
+    table_id.push(table?.id);
+    booked_person.push(addPerson);
+
+    console.log('booked_person', booked_person);
+
+    setTableInfo({
+      floor_id: floor_id,
+      table_id: table_id,
+      booked: booked_person,
+    });
+
+    // setPersonSelectedData([
+    //   ...personSelectedData,
+    //   {
+    //     total_person: addPerson,
+    //     table_id: table?.id,
+    //     floorId: floorId,
+    //   },
+    // ]);
   };
 
-  const format = 'YYYY-MM-DD';
-  const today = new Date();
+  const [selectPerson, setSelectPerson] = useState([
+    {
+      id: 1,
+      order_id: 2,
+      order_time: moment(today).format(format),
+      person: 5,
+    },
+    {
+      id: 2,
+      order_id: 6,
+      order_time: moment(today).format(format),
+      person: 4,
+    },
+    {
+      id: 3,
+      order_id: 5,
+      order_time: moment(today).format(format),
+      person: 6,
+    },
+  ]);
+
+  const handleDelete = (tableData: any) => {
+    const selectData = selectPerson.filter(
+      (item) => item?.id !== tableData?.id
+    );
+    setSelectPerson(selectData);
+  };
+
+  const handleRemoveSelectPerson = () => {
+    setSelectPerson([]);
+  };
 
   return (
     <Col lg={8}>
@@ -60,14 +121,16 @@ const TableCard = ({ table }: any) => {
           </thead>
 
           <tbody>
-            <tr>
-              <td>215</td>
-              <td>{moment(today).format(format)}</td>
-              <td>2</td>
-              <td>
-                <DeleteOutlined />
-              </td>
-            </tr>
+            {selectPerson?.map((item) => (
+              <tr key={item?.id}>
+                <td>{item?.order_id}</td>
+                <td>{item?.order_time}</td>
+                <td>{item?.person}</td>
+                <td>
+                  <DeleteOutlined onClick={() => handleDelete(item)} />
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
@@ -91,7 +154,7 @@ const TableCard = ({ table }: any) => {
         </div>
 
         <div>
-          <Button type="primary" danger>
+          <Button type="primary" danger onClick={handleRemoveSelectPerson}>
             Clear
           </Button>
         </div>

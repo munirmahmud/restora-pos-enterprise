@@ -60,12 +60,21 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
   const [quickOrderAdditionalData, setQuickOrderAdditionalData] =
     useState(null);
 
+  const [personSelectedData, setPersonSelectedData] = useState([]);
+
   const [addFoodNoteToItem, setAddFoodNoteToItem] = useState({});
   const [tableDataLists, setTableDataLists] = useState([]);
   const [customerTypes, setCustomerTypes] = useState([]);
   const [customerList, setCustomerList] = useState([]);
   const [waiterLists, setWaiterLists] = useState([]);
   const [addCustomer, setAddCustomer] = useState([]);
+  const [additionalOrderInfo, setAdditionalOrderInfo] = useState({});
+
+  const [tableInfo, setTableInfo] = useState({
+    floor_id: [],
+    table_id: [],
+    booked: [],
+  });
 
   const [customServiceCharge, setCustomServiceCharge] = useState(0);
   const [customDiscount, setCustomDiscount] = useState(0);
@@ -108,6 +117,9 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
         name: ['customer_address'],
       },
     ]);
+
+    console.log('personSelectedData', personSelectedData);
+    console.log('tableInfo', tableInfo);
   }, [reRender, settings]);
 
   useEffect(() => {
@@ -230,9 +242,32 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
           localStorage.removeItem('order_id');
         }
       } else if (data === 'placeOrder') {
+        // console.log('data cart', {
+        //   cartItems,
+        //   customer_id: customerId,
+
+        //   waiter: additionalOrderInfo?.waiter,
+        //   customer_type_id: additionalOrderInfo?.customer_type_id,
+        //   cooking_time: additionalOrderInfo?.cooking_time
+        //     ? additionalOrderInfo?.cooking_time
+        //     : '',
+        //   table: [],
+
+        //   ...orderCalculateInfo,
+        // });
+
+        // return;
         window.insert_order_info.send('insert_order_info', {
           cartItems,
           customer_id: customerId,
+
+          waiter: additionalOrderInfo?.waiter,
+          customer_type_id: additionalOrderInfo?.customer_type_id,
+          cooking_time: additionalOrderInfo?.cooking_time
+            ? additionalOrderInfo?.cooking_time
+            : '',
+          table: [],
+
           ...orderCalculateInfo,
         });
 
@@ -296,6 +331,13 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
 
   const handleSelectCustomer = (value) => {
     setCustomerId(value);
+  };
+
+  const handleChangeCustomerType = (value) => {
+    setAdditionalOrderInfo({ ...additionalOrderInfo, customer_type_id: value });
+  };
+  const handleChangeWaiter = (value) => {
+    setAdditionalOrderInfo({ ...additionalOrderInfo, waiter: value });
   };
 
   const handleFoodNoteModal = (foodItem) => {
@@ -366,11 +408,12 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
                       placeholder="Select a Customer Type"
                       size="large"
                       allowClear
+                      onChange={handleChangeCustomerType}
                     >
                       {customerTypes?.length > 0 &&
                         customerTypes.map((type) => (
-                          <Option key={`type-${type.id}`} value={type.id}>
-                            {type.customertype}
+                          <Option key={`type-${type?.id}`} value={type?.id}>
+                            {type?.customertype}
                           </Option>
                         ))}
                     </Select>
@@ -387,7 +430,12 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
                     className="custom_level"
                     name="waiter"
                   >
-                    <Select placeholder="Select Waiter" size="large" allowClear>
+                    <Select
+                      placeholder="Select Waiter"
+                      size="large"
+                      allowClear
+                      onChange={handleChangeWaiter}
+                    >
                       {waiterLists?.map((waiter) => (
                         <Option key={waiter?.id} value={waiter?.id}>
                           {waiter?.first_name}
@@ -436,7 +484,12 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
                   >
                     <TimePicker
                       size="large"
-                      onChange={selectTime}
+                      onChange={(value, timeString) =>
+                        setAdditionalOrderInfo({
+                          ...additionalOrderInfo,
+                          cooking_time: timeString,
+                        })
+                      }
                       format={format}
                     />
                   </Form.Item>
@@ -687,6 +740,11 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
         <SelectTable
           personSelectModal={personSelectModal}
           setPersonSelectModal={setPersonSelectModal}
+          personSelectedData={personSelectedData}
+          setPersonSelectedData={setPersonSelectedData}
+          setReRender={setReRender}
+          setTableInfo={setTableInfo}
+          tableInfo={tableInfo}
         />
       )}
 
