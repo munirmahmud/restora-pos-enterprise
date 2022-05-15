@@ -24,26 +24,26 @@ const TableCards = ({
       'fetch_table_based_on_floor_id_response',
       window.fetch_table_based_on_floor_id
     ).then((data) => {
+      console.log('data', data);
+
       setFloorTableLists(data);
     });
   }, [floorId]);
 
   return (
-    <div>
-      <Row gutter={[20, 25]}>
-        {floorTableLists?.map((table) => (
-          <TableCard
-            setPersonSelectedData={setPersonSelectedData}
-            personSelectedData={personSelectedData}
-            table={table}
-            floorId={floorId}
-            key={table?.id}
-            setTableInfo={setTableInfo}
-            tableInfo={tableInfo}
-          />
-        ))}
-      </Row>
-    </div>
+    <Row gutter={[20, 25]}>
+      {floorTableLists?.map((table) => (
+        <TableCard
+          setPersonSelectedData={setPersonSelectedData}
+          personSelectedData={personSelectedData}
+          table={table}
+          floorId={floorId}
+          key={table?.id}
+          setTableInfo={setTableInfo}
+          tableInfo={tableInfo}
+        />
+      ))}
+    </Row>
   );
 };
 

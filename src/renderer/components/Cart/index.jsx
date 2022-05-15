@@ -83,6 +83,8 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
   const [customerId, setCustomerId] = useState(0);
   const [reRender, setReRender] = useState(false);
 
+  console.log('tableInfo', tableInfo);
+
   useEffect(() => {
     if (settings?.discountrate) {
       setCustomDiscount(settings?.discountrate);

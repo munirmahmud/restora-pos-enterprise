@@ -1,5 +1,5 @@
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Col, Image, InputNumber } from 'antd';
+import { Button, Checkbox, Col, Image, InputNumber, message } from 'antd';
 import moment from 'moment';
 import { useState } from 'react';
 import TableImage from '../../../../assets/table_icon.png';
@@ -15,33 +15,66 @@ const TableCard = ({
 }: any) => {
   const format = 'YYYY-MM-DD';
   const today = new Date();
-  const [addPerson, setAddPerson] = useState(0);
+  const [countPerson, setCountPerson] = useState(0);
 
   function onChange(e: any) {
     console.log(`checked = ${e.target.checked}`);
   }
 
+  // console.log('tableInfo', tableInfo);
+
   const handleChangeTablePerson = () => {
-    const floor_id = [];
-    const table_id = [];
-    const booked_person = [];
+    console.log('table', table);
+    console.log('count Person', countPerson);
 
-    floor_id.push(floorId);
-    table_id.push(table?.id);
-    booked_person.push(addPerson);
+    if (countPerson > table.person_capacity) {
+      message.warning({
+        content: 'Table capacity overflow',
+        className: 'custom-class',
+        duration: 1,
+        style: { marginTop: '5vh', float: 'right' },
+      });
 
-    console.log('booked_person', booked_person);
+      return;
+    }
+    if (countPerson === 0) {
+      message.warning({
+        content: 'No person capacity added',
+        className: 'custom-class',
+        duration: 1,
+        style: { marginTop: '5vh', float: 'right' },
+      });
 
-    setTableInfo({
-      floor_id: floor_id,
-      table_id: table_id,
-      booked: booked_person,
-    });
+      return;
+    }
+
+    // setTableInfo((prevTableData: any) => {
+    //   console.log('prevTableData', prevTableData);
+
+    //   if (prevTableData.table_id.find((item) => item === table.id)) {
+    //     console.log('find');
+    //   } else {
+    //     console.log('not found');
+    //   }
+    //   console.log(table_id);
+
+    //   console.log('table_id asdfasd', table_id);
+
+    //   return {
+    //     ...prevTableData,
+    //     table_id,
+    //   };
+
+    // });
+
+    // prevTableData.booked
+    // prevTableData.floor_id
+    // table_id
 
     // setPersonSelectedData([
     //   ...personSelectedData,
     //   {
-    //     total_person: addPerson,
+    //     total_person: countPerson,
     //     table_id: table?.id,
     //     floorId: floorId,
     //   },
@@ -96,8 +129,8 @@ const TableCard = ({
             <p>
               Available{' '}
               <span>
-                {addPerson
-                  ? table?.person_capacity - addPerson
+                {countPerson
+                  ? table?.person_capacity - countPerson
                   : table?.person_capacity}
               </span>
             </p>
@@ -139,7 +172,7 @@ const TableCard = ({
         <div>
           <InputNumber
             min={0}
-            onChange={(value) => setAddPerson(value)}
+            onChange={(value) => setCountPerson(value)}
             placeholder="Add person"
             style={{ width: '150px' }}
           />
