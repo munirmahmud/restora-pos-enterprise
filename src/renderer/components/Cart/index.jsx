@@ -5,14 +5,31 @@ import {
 } from '@ant-design/icons';
 import { faCalculator, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Col, Form, Input, InputNumber, message, Modal, Row, Select, Space, TimePicker } from 'antd';
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  message,
+  Modal,
+  Row,
+  Select,
+  Space,
+  TimePicker,
+} from 'antd';
 import { useEffect, useState } from 'react';
 import AddCustomerModal from '../AddCustomerModal';
 import Calculator from '../Calculator';
 import FoodNoteModal from '../FoodNoteModal';
 import PremiumVersion from '../partials/PremiumVersion';
 import SelectTable from '../SelectTable';
-import { CalculatePrice, getDataFromDatabase, getDiscountAmount, getServiceCharge } from './../../../helpers';
+import {
+  CalculatePrice,
+  getDataFromDatabase,
+  getDiscountAmount,
+  getServiceCharge,
+} from './../../../helpers';
 import './cart.styles.scss';
 import ConfirmOrderModal from './ConfirmOrderModal';
 import WarmingModal from './WarmingModal';
@@ -216,34 +233,22 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
           localStorage.removeItem('order_id');
         }
       } else if (data === 'placeOrder') {
-        // console.log('data cart', {
-        //   cartItems,
-        //   customer_id: customerId,
-
-        //   waiter: additionalOrderInfo?.waiter,
-        //   customer_type_id: additionalOrderInfo?.customer_type_id,
-        //   cooking_time: additionalOrderInfo?.cooking_time
-        //     ? additionalOrderInfo?.cooking_time
-        //     : '',
-        //   table: [],
-
-        //   ...orderCalculateInfo,
-        // });
-
-        // return;
-        window.insert_order_info.send('insert_order_info', {
+        const orderData = {
           cartItems,
           customer_id: customerId,
 
-          waiter: additionalOrderInfo?.waiter,
+          waiter_id: additionalOrderInfo?.waiter,
           customer_type_id: additionalOrderInfo?.customer_type_id,
           cooking_time: additionalOrderInfo?.cooking_time
             ? additionalOrderInfo?.cooking_time
             : '',
-          table: [],
-
+          floor_id: customerTable.floor_id,
+          table_id: customerTable.table_id,
+          booked: customerTable.booked,
           ...orderCalculateInfo,
-        });
+        };
+
+        window.insert_order_info.send('insert_order_info', orderData);
 
         setConfirmBtn(data);
         setConfirmOrder(true);
@@ -425,8 +430,10 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
                     type="primary"
                     className="add_customer"
                     onClick={() => {
-                      window.get_table_data.send('get_table_data', { 'status': true })
-                      setPersonSelectModal(true)
+                      window.get_table_data.send('get_table_data', {
+                        status: true,
+                      });
+                      setPersonSelectModal(true);
                     }}
                   >
                     Person
