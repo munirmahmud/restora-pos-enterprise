@@ -146,7 +146,7 @@ const DueInvoiceModal = ({ orderData, printDueInvoice, settings }: any) => {
           <p style={headingStyles}>Billing To: customerName</p>
         </div>
 
-        <h3 style={{ ...paragraphStyles, fontWeight: '700', fontSize: '14px' }}>
+        <h3 style={{ ...paragraphStyles, fontWeight: 700, fontSize: '14px' }}>
           Thank you very mush
         </h3>
         <div style={{ border: '1px solid #000' }}></div>

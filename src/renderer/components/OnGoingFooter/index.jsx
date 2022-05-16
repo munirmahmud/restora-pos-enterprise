@@ -255,6 +255,7 @@ const OnGoingFooter = ({
       )}
 
       <TokenModal orderData={orderData} tokenPrint={tokenPrint} />
+
       <DueInvoiceModal
         orderData={orderData}
         printDueInvoice={printDueInvoice}
