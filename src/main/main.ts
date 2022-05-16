@@ -984,18 +984,30 @@ const tokenGenaretor = () => {
 
 // Insert order
 ipcMain.on('insert_order_info', (_event, args: any) => {
-  console.log(args);
+  console.log('insert_order', args);
 
-  let { cartItems, customer_id, grandTotal, discount, serviceCharge, vat } =
-    args;
+  let {
+    cartItems,
+    customer_id,
+    grandTotal,
+    discount,
+    serviceCharge,
+    waiter_id,
+    customer_type_id,
+    cooking_time,
+    floor_id,
+    table_id,
+    booked,
+    vat,
+  } = args;
 
-  let waiter_id = 1;
-  let customer_type_id = 2;
-  let cooking_time = 2022;
+  // let waiter_id = 1;
+  // let customer_type_id = 2;
+  // let cooking_time = 2022;
 
-  let floor_id = [1, 2, 3];
-  let table_id = [1, 2, 3];
-  let booked = 3;
+  // let floor_id = [6, 4];
+  // let table_id = [1, 2, 3];
+  // let booked = [3,5,8];
 
   tokenGenaretor()
     .then((results: any) => {
@@ -1053,12 +1065,12 @@ ipcMain.on('insert_order_info', (_event, args: any) => {
                 ? results[0].token_no + 1
                 : 1
               : 1,
-            waiter_id,
+            waiter_id ? waiter_id : 'Munir',
             customer_type_id,
             JSON.stringify(floor_id),
             JSON.stringify(table_id),
             cooking_time,
-            booked,
+            JSON.stringify(booked),
             Date.now(),
           ]
         );
@@ -1106,7 +1118,7 @@ ipcMain.on('insert_order_info', (_event, args: any) => {
             JSON.stringify(floor_id),
             JSON.stringify(table_id),
             cooking_time,
-            booked,
+            JSON.stringify(booked),
             Date.now(),
           ]
         );
@@ -1158,7 +1170,6 @@ ipcMain.on('update_order_info_after_edit', (_event, args) => {
   });
   db.close();
 });
-
 
 // SELECT orders.*, (employees.first_name ||' ' || employees.last_name)AS waiter_name, customer_type.customertype AS customer_type
 // FROM orders
