@@ -15,6 +15,7 @@ import PremiumVersion from '../partials/PremiumVersion';
 import TokenModal from '../TokenModal';
 import { ContextData } from './../../contextApi';
 import QuickOrderModal from './../Cart/QuickOrderModal';
+import CancelOrderModal from './CancelOrderModal';
 import './OnGoingFooter.style.scss';
 
 const OnGoingFooter = ({
@@ -23,17 +24,17 @@ const OnGoingFooter = ({
   openSearchInput,
   setOpenSearchInput,
   activeInactiveBtn,
-  setReRender,
   ongoingOrders,
   setOngoingOrders,
+  setReRender,
 }) => {
   let redirect = useNavigate();
   const { cartItems, setCartItems } = useContext(ContextData);
   const [premiumVersion, setPremiumVersion] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [orderData, setOrderData] = useState({});
   const [tokenPrint, setTokenPrint] = useState('printToken');
   const [printDueInvoice, setPrintDueInvoice] = useState('dueInvoicePrint');
-  const [orderData, setOrderData] = useState({});
 
   useEffect(() => {
     if (orderComplete?.order_info) {
@@ -57,6 +58,8 @@ const OnGoingFooter = ({
           marginTop: '15vh',
         },
       });
+
+      setReRender((prevState) => !prevState);
 
       return;
     }
@@ -145,6 +148,13 @@ const OnGoingFooter = ({
     setOpenSearchInput(!openSearchInput);
   };
 
+  const [cancelOrderModal, setCancelOrderModal] = useState(false);
+  const cancelOrder = (orderData) => {
+    console.log('Cancel orderData', orderData);
+    setReRender((prevState) => !prevState);
+    setCancelOrderModal(true);
+  };
+
   return (
     <>
       <div className="on_going_footer">
@@ -162,8 +172,12 @@ const OnGoingFooter = ({
 
                 <Button
                   type="primary"
-                  className="on_going_btn cancel_btn premium_btn"
-                  onClick={() => setPremiumVersion(true)}
+                  className={
+                    activeInactiveBtn?.status === 1
+                      ? 'on_going_btn cancel_btn'
+                      : 'on_going_btn cancel_btn premium_btn'
+                  }
+                  onClick={() => cancelOrder(orderData)}
                 >
                   <DeleteOutlined /> Cancel
                 </Button>
@@ -261,6 +275,14 @@ const OnGoingFooter = ({
         printDueInvoice={printDueInvoice}
         settings={settings}
       />
+
+      {cancelOrderModal && (
+        <CancelOrderModal
+          orderData={orderData}
+          cancelOrderModal={cancelOrderModal}
+          setCancelOrderModal={setCancelOrderModal}
+        />
+      )}
     </>
   );
 };

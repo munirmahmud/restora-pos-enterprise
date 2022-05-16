@@ -3,9 +3,9 @@ import { useContext, useEffect, useState } from 'react';
 import InVoiceGenerate from 'renderer/components/InVoiceGenerate';
 import OnGoingOrderItems from 'renderer/components/OnGoingOrderItems';
 import { ContextData } from 'renderer/contextApi';
+import { getDataFromDatabase } from '../../../helpers';
 import OnGoingFooter from '../../components/OnGoingFooter';
-import { getDataFromDatabase } from './../../../helpers';
-import Header from './../../components/partials/Header';
+import Header from '../../components/partials/Header';
 
 const OnGoingOrder = ({ settings }) => {
   window.get_all_order_info_ongoing.send('get_all_order_info_ongoing', {
@@ -13,14 +13,14 @@ const OnGoingOrder = ({ settings }) => {
   });
 
   const { cartItems, setCartItems } = useContext(ContextData);
+
   const [activeInactiveBtn, setActiveInactiveBtn] = useState({});
-  const [openSearchInput, setOpenSearchInput] = useState(false);
+  const [ongoingOrders, setOngoingOrders] = useState([]);
   const [orderComplete, setOrderComplete] = useState({});
   const [searchValue, setSearchValue] = useState('');
-  const [reRender, setReRender] = useState(false);
-  const [ongoingOrders, setOngoingOrders] = useState([]);
-
   const [invoicePrintDivId, setInvoicePrintDivId] = useState(null);
+  const [openSearchInput, setOpenSearchInput] = useState(false);
+  const [reRender, setReRender] = useState(false);
 
   useEffect(() => {
     getDataFromDatabase(
