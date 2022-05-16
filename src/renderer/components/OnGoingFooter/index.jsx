@@ -10,6 +10,7 @@ import {
 import { Button, Col, message, Row } from 'antd';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import DueInvoiceModal from '../DueInvoiceModal';
 import PremiumVersion from '../partials/PremiumVersion';
 import TokenModal from '../TokenModal';
 import { ContextData } from './../../contextApi';
@@ -31,6 +32,7 @@ const OnGoingFooter = ({
   const [premiumVersion, setPremiumVersion] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [tokenPrint, setTokenPrint] = useState('printToken');
+  const [printDueInvoice, setPrintDueInvoice] = useState('dueInvoicePrint');
   const [orderData, setOrderData] = useState({});
 
   useEffect(() => {
@@ -76,11 +78,13 @@ const OnGoingFooter = ({
       return;
     }
 
-    // localStorage.setItem('order_id', orderData.order_id);
-    // const orderItems = JSON.parse(orderData.order_info);
+    var printContents = document.getElementById(printDueInvoice).innerHTML;
+    var originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
 
-    // setCartItems(orderItems);
-    redirect('/', { state: { ...orderData, order_info: orderItems } });
+    // After printing reload the page
+    window.location.reload();
   };
 
   const kitchenOrderToken = (orderDetails) => {
@@ -187,7 +191,7 @@ const OnGoingFooter = ({
                       ? 'on_going_btn due_invoice_btn '
                       : 'on_going_btn due_invoice_btn premium_btn'
                   }
-                  onClick={() => generateDueInvoice(orderComplete)}
+                  onClick={() => generateDueInvoice(orderData)}
                 >
                   <DeliveredProcedureOutlined /> Due Invoice
                 </Button>
@@ -251,6 +255,11 @@ const OnGoingFooter = ({
       )}
 
       <TokenModal orderData={orderData} tokenPrint={tokenPrint} />
+      <DueInvoiceModal
+        orderData={orderData}
+        printDueInvoice={printDueInvoice}
+        settings={settings}
+      />
     </>
   );
 };
