@@ -24,6 +24,14 @@ const TableCards = ({
     ).then((data) => {
       setFloorsList(data);
     });
+
+    getDataFromDatabase(
+      'get_table_data_response',
+      window.get_table_data
+    ).then((data) => {
+      console.log(data);
+    })
+
   }, [floorId]);
 
   return (

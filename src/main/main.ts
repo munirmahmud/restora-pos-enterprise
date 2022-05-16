@@ -984,8 +984,18 @@ const tokenGenaretor = () => {
 
 // Insert order
 ipcMain.on('insert_order_info', (_event, args: any) => {
+  console.log(args);
+
   let { cartItems, customer_id, grandTotal, discount, serviceCharge, vat } =
     args;
+
+  let waiter_id = 1;
+  let customer_type_id = 2;
+  let cooking_time = 2022;
+
+  let floor_id = [1, 2, 3];
+  let table_id = [1, 2, 3];
+  let booked = 3;
 
   tokenGenaretor()
     .then((results: any) => {
@@ -1017,11 +1027,19 @@ ipcMain.on('insert_order_info', (_event, args: any) => {
         "vat" REAL,
         "grand_total" REAL,
         "token_no" INT,
-        "status" INT NOT NULL DEFAULT 1
+        "waiter_id" INT,
+        "customer_type_id" INT,
+        "floor_id" INT,
+        "table_id" INT,
+        "cooking_time" varchar(50),
+        "booked" INT,
+        "status" INT NOT NULL DEFAULT 1,
+        "creation_date" INT
     )`
         ).run(
-          `INSERT INTO orders (order_info, customer_id, creation_date, discount, serviceCharge, vat, grand_total, token_no)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+          `INSERT INTO orders (order_info, customer_id, discount, serviceCharge, vat, grand_total,
+            token_no, waiter_id, customer_type_id, floor_id, table_id, cooking_time, booked, creation_date)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             JSON.stringify(cartItems),
             customer_id,
@@ -1035,31 +1053,45 @@ ipcMain.on('insert_order_info', (_event, args: any) => {
                 ? results[0].token_no + 1
                 : 1
               : 1,
+            waiter_id,
+            customer_type_id,
+            JSON.stringify(floor_id),
+            JSON.stringify(table_id),
+            cooking_time,
+            booked,
+            Date.now(),
           ]
         );
       });
       db.close();
     })
     .catch((err) => {
-      console.log('err', err);
+      console.log('1066: err', err);
       let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
       db.serialize(() => {
         db.run(
           `CREATE TABLE IF NOT EXISTS orders(
-            "order_id" INTEGER PRIMARY KEY AUTOINCREMENT,
-            "order_info" varchar(255),
-            "customer_id" INT,
-            "creation_date" DATETIME,
-            "discount" REAL,
-            "serviceCharge" REAL,
-            "vat" REAL,
-            "grand_total" REAL,
-            "token_no" INT,
-            "status" INT NOT NULL DEFAULT 1
+        "order_id" INTEGER PRIMARY KEY AUTOINCREMENT,
+        "order_info" varchar(255),
+        "customer_id" INT,
+        "discount" REAL,
+        "serviceCharge" REAL,
+        "vat" REAL,
+        "grand_total" REAL,
+        "token_no" INT,
+        "waiter_id" INT,
+        "customer_type_id" INT,
+        "floor_id" INT,
+        "table_id" INT,
+        "cooking_time" varchar(50),
+        "booked" INT,
+        "status" INT NOT NULL DEFAULT 1,
+        "creation_date" INT
     )`
         ).run(
-          `INSERT INTO orders (order_info, customer_id, creation_date, discount, serviceCharge, vat, grand_total, token_no)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+          `INSERT INTO orders (order_info, customer_id, discount, serviceCharge, vat, grand_total,
+            token_no, waiter_id, customer_type_id, floor_id, table_id, cooking_time, booked, creation_date)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             JSON.stringify(cartItems),
             customer_id,
@@ -1069,11 +1101,36 @@ ipcMain.on('insert_order_info', (_event, args: any) => {
             vat,
             grandTotal,
             1,
+            waiter_id,
+            customer_type_id,
+            JSON.stringify(floor_id),
+            JSON.stringify(table_id),
+            cooking_time,
+            booked,
+            Date.now(),
           ]
         );
       });
       db.close();
     });
+});
+
+// get table data for orders
+ipcMain.on('get_table_data', (_event, args) => {
+  if (args.status) {
+    let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
+    db.serialize(() => {
+      db.all(
+        `SELECT orders.order_id, orders.creation_date, orders.floor_id, orders.table_id, orders.booked FROM orders`,
+        [],
+        (_err: ErrorType, rows: any) => {
+          console.log('1128: ', rows);
+          mainWindow.webContents.send('get_table_data_response', rows);
+        }
+      );
+    });
+    db.close();
+  }
 });
 
 // Update order info after edit

@@ -465,10 +465,18 @@ sendDataThroughMiddlewareOn(
   'create_customer_type', // Channel Name
   'create_customer_type_response' //Response
 );
+
 sendDataThroughMiddlewareOn(
   'fetch_table_based_on_floor_id', //Event Name
   'fetch_table_based_on_floor_id', // Channel Name
   'fetch_table_based_on_floor_id_response' //Response
+);
+
+// get table data for orders
+sendDataThroughMiddlewareOn(
+  'get_table_data', //Event Name
+  'get_table_data', // Channel Name
+  'get_table_data_response' //Response
 );
 
 /*======================================================================

@@ -441,7 +441,10 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
                     size="large"
                     type="primary"
                     className="add_customer"
-                    onClick={() => setPersonSelectModal(true)}
+                    onClick={() => {
+                      window.get_table_data.send('get_table_data', { 'status': true })
+                      setPersonSelectModal(true)
+                    }}
                   >
                     Person
                   </Button>
