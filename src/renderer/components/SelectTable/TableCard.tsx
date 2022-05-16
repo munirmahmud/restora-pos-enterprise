@@ -5,17 +5,16 @@ import { useState } from 'react';
 import TableImage from '../../../../assets/table_icon.png';
 import './PersonSelectiveModal.style.scss';
 
-const TableCard = ({
-  table,
-  floorId,
-  setPersonSelectedData,
-  personSelectedData,
-  setTableInfo,
-  tableInfo,
-}: any) => {
+const TableCard = ({ table, floorId, setTableInfo, tableInfo }: any) => {
   const format = 'YYYY-MM-DD';
   const today = new Date();
   const [countPerson, setCountPerson] = useState(0);
+
+  const [testtableInfo, settestTableInfo] = useState({
+    floor_id: [],
+    table_id: [],
+    booked: [],
+  });
 
   function onChange(e: any) {
     console.log(`checked = ${e.target.checked}`);
@@ -23,10 +22,7 @@ const TableCard = ({
 
   // console.log('tableInfo', tableInfo);
 
-  const handleChangeTablePerson = () => {
-    console.log('table', table);
-    console.log('count Person', countPerson);
-
+  const handleClickToAddPerson = () => {
     if (countPerson > table.person_capacity) {
       message.warning({
         content: 'Table capacity overflow',
@@ -48,37 +44,13 @@ const TableCard = ({
       return;
     }
 
-    // setTableInfo((prevTableData: any) => {
-    //   console.log('prevTableData', prevTableData);
-
-    //   if (prevTableData.table_id.find((item) => item === table.id)) {
-    //     console.log('find');
-    //   } else {
-    //     console.log('not found');
-    //   }
-    //   console.log(table_id);
-
-    //   console.log('table_id asdfasd', table_id);
-
-    //   return {
-    //     ...prevTableData,
-    //     table_id,
-    //   };
-
-    // });
-
-    // prevTableData.booked
-    // prevTableData.floor_id
-    // table_id
-
-    // setPersonSelectedData([
-    //   ...personSelectedData,
-    //   {
-    //     total_person: countPerson,
-    //     table_id: table?.id,
-    //     floorId: floorId,
-    //   },
-    // ]);
+    setTableInfo((prevData) => {
+      return {
+        floor_id: [...prevData.floor_id, table.floorId],
+        table_id: [...prevData.table_id, table.id],
+        booked: [...prevData.booked, table.person_capacity],
+      };
+    });
   };
 
   const [selectPerson, setSelectPerson] = useState([
@@ -180,7 +152,7 @@ const TableCard = ({
           <Button
             type="primary"
             style={{ marginLeft: '0.5rem' }}
-            onClick={handleChangeTablePerson}
+            onClick={handleClickToAddPerson}
           >
             <PlusOutlined />
           </Button>
