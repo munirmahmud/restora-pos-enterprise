@@ -249,10 +249,25 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
           ...orderCalculateInfo,
         };
 
-        window.insert_order_info.send('insert_order_info', orderData);
-
-        setConfirmBtn(data);
-        setConfirmOrder(true);
+        if (
+          additionalOrderInfo?.waiter &&
+          additionalOrderInfo?.customer_type_id
+        ) {
+          window.insert_order_info.send('insert_order_info', orderData);
+          setConfirmBtn(data);
+          setConfirmOrder(true);
+        } else {
+          message.error({
+            content:
+              additionalOrderInfo?.waiter &&
+              additionalOrderInfo?.customer_type_id
+                ? 'Please, Select Customer type or waiter'
+                : 'Please, Select Customer type',
+            className: 'custom-class',
+            duration: 1,
+            style: { marginTop: '5vh', float: 'right' },
+          });
+        }
       }
     }
   };
