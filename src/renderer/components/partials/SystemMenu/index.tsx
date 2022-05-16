@@ -1,15 +1,17 @@
-import { ConfigProvider, Header, Layout, Menu } from 'antd';
+import { ConfigProvider, Layout, Menu } from 'antd';
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
+import { SettingsProps } from '../../../types';
 import './systemMenu.styles.scss';
 
-const { SubMenu, Item } = Menu;
-const { Header, Content, Footer } = Layout;
+type SystemMenuTypes = {
+  settings: SettingsProps;
+};
 
-const SystemMenu = ({ settings }) => {
-  const getExternalLink = (url) => {
-    // shell.openExternal(url);
-  };
+const { SubMenu } = Menu;
+const { Header } = Layout;
 
+const SystemMenu: FC<SystemMenuTypes> = ({ settings }) => {
   return (
     <ConfigProvider direction={settings.site_align}>
       <Header className="header">

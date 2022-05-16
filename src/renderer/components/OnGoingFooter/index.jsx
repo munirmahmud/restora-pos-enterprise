@@ -10,10 +10,12 @@ import {
 import { Button, Col, message, Row } from 'antd';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import DueInvoiceModal from '../DueInvoiceModal';
 import PremiumVersion from '../partials/PremiumVersion';
 import TokenModal from '../TokenModal';
 import { ContextData } from './../../contextApi';
 import QuickOrderModal from './../Cart/QuickOrderModal';
+import CancelOrderModal from './CancelOrderModal';
 import './OnGoingFooter.style.scss';
 
 const OnGoingFooter = ({
@@ -22,16 +24,17 @@ const OnGoingFooter = ({
   openSearchInput,
   setOpenSearchInput,
   activeInactiveBtn,
-  setReRender,
   ongoingOrders,
   setOngoingOrders,
+  setReRender,
 }) => {
   let redirect = useNavigate();
   const { cartItems, setCartItems } = useContext(ContextData);
   const [premiumVersion, setPremiumVersion] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const [tokenPrint, setTokenPrint] = useState('printToken');
   const [orderData, setOrderData] = useState({});
+  const [tokenPrint, setTokenPrint] = useState('printToken');
+  const [printDueInvoice, setPrintDueInvoice] = useState('dueInvoicePrint');
 
   useEffect(() => {
     if (orderComplete?.order_info) {
@@ -56,6 +59,8 @@ const OnGoingFooter = ({
         },
       });
 
+      setReRender((prevState) => !prevState);
+
       return;
     }
 
@@ -76,11 +81,13 @@ const OnGoingFooter = ({
       return;
     }
 
-    // localStorage.setItem('order_id', orderData.order_id);
-    // const orderItems = JSON.parse(orderData.order_info);
+    var printContents = document.getElementById(printDueInvoice).innerHTML;
+    var originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
 
-    // setCartItems(orderItems);
-    redirect('/', { state: { ...orderData, order_info: orderItems } });
+    // After printing reload the page
+    window.location.reload();
   };
 
   const kitchenOrderToken = (orderDetails) => {
@@ -141,6 +148,13 @@ const OnGoingFooter = ({
     setOpenSearchInput(!openSearchInput);
   };
 
+  const [cancelOrderModal, setCancelOrderModal] = useState(false);
+  const cancelOrder = (orderData) => {
+    console.log('Cancel orderData', orderData);
+    setReRender((prevState) => !prevState);
+    setCancelOrderModal(true);
+  };
+
   return (
     <>
       <div className="on_going_footer">
@@ -158,8 +172,12 @@ const OnGoingFooter = ({
 
                 <Button
                   type="primary"
-                  className="on_going_btn cancel_btn premium_btn"
-                  onClick={() => setPremiumVersion(true)}
+                  className={
+                    activeInactiveBtn?.status === 1
+                      ? 'on_going_btn cancel_btn'
+                      : 'on_going_btn cancel_btn premium_btn'
+                  }
+                  onClick={() => cancelOrder(orderData)}
                 >
                   <DeleteOutlined /> Cancel
                 </Button>
@@ -187,7 +205,7 @@ const OnGoingFooter = ({
                       ? 'on_going_btn due_invoice_btn '
                       : 'on_going_btn due_invoice_btn premium_btn'
                   }
-                  onClick={() => generateDueInvoice(orderComplete)}
+                  onClick={() => generateDueInvoice(orderData)}
                 >
                   <DeliveredProcedureOutlined /> Due Invoice
                 </Button>
@@ -251,6 +269,20 @@ const OnGoingFooter = ({
       )}
 
       <TokenModal orderData={orderData} tokenPrint={tokenPrint} />
+
+      <DueInvoiceModal
+        orderData={orderData}
+        printDueInvoice={printDueInvoice}
+        settings={settings}
+      />
+
+      {cancelOrderModal && (
+        <CancelOrderModal
+          orderData={orderData}
+          cancelOrderModal={cancelOrderModal}
+          setCancelOrderModal={setCancelOrderModal}
+        />
+      )}
     </>
   );
 };
