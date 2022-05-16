@@ -6,8 +6,6 @@ import TableCard from './TableCard';
 
 const TableCards = ({
   floorId,
-  personSelectedData,
-  setPersonSelectedData,
   setTableInfo,
   tableInfo,
 }: {
@@ -17,14 +15,14 @@ const TableCards = ({
     floorId: floorId,
   });
 
-  const [floorTableLists, setFloorTableLists] = useState([]);
+  const [floorsList, setFloorsList] = useState([]);
 
   useEffect(() => {
     getDataFromDatabase(
       'fetch_table_based_on_floor_id_response',
       window.fetch_table_based_on_floor_id
     ).then((data) => {
-      setFloorTableLists(data);
+      setFloorsList(data);
     });
 
     getDataFromDatabase(
@@ -37,21 +35,17 @@ const TableCards = ({
   }, [floorId]);
 
   return (
-    <div>
-      <Row gutter={[20, 25]}>
-        {floorTableLists?.map((table) => (
-          <TableCard
-            setPersonSelectedData={setPersonSelectedData}
-            personSelectedData={personSelectedData}
-            table={table}
-            floorId={floorId}
-            key={table?.id}
-            setTableInfo={setTableInfo}
-            tableInfo={tableInfo}
-          />
-        ))}
-      </Row>
-    </div>
+    <Row gutter={[20, 25]}>
+      {floorsList?.map((table) => (
+        <TableCard
+          key={table?.id}
+          table={table}
+          floorId={floorId}
+          setTableInfo={setTableInfo}
+          tableInfo={tableInfo}
+        />
+      ))}
+    </Row>
   );
 };
 

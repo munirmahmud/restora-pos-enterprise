@@ -12,15 +12,17 @@ type FloorTypes = {
 const SelectTable = ({
   personSelectModal,
   setPersonSelectModal,
-  personSelectedData,
-  setPersonSelectedData,
-  setTableInfo,
-  tableInfo,
+  setcustomerTable,
   setReRender,
 }: any) => {
   window.fetch_floor.send('fetch_floor', { status: true });
 
   const [floorListsData, setFloorListsData] = useState<FloorTypes[]>([]);
+  const [tableInfo, setTableInfo] = useState({
+    floor_id: [],
+    table_id: [],
+    booked: [],
+  });
 
   const [floorId, setFloorId] = useState(0);
 
@@ -39,9 +41,16 @@ const SelectTable = ({
   };
 
   const handleSubmitTablePerson = () => {
-    // console.log('personSelectedData', personSelectedData);
-    setReRender((prevState) => !prevState);
-    setPersonSelectModal(false);
+    const floorIDs = [...new Set(tableInfo.floor_id)];
+    const tableIDs = [...new Set(tableInfo.table_id)];
+
+    setcustomerTable({
+      floor_id: floorIDs,
+      table_id: tableIDs,
+      booked: tableInfo.booked,
+    });
+
+    setReRender((prevState: boolean) => !prevState);
   };
 
   return (
@@ -67,8 +76,6 @@ const SelectTable = ({
 
         {floorId && (
           <TableCards
-            setPersonSelectedData={setPersonSelectedData}
-            personSelectedData={personSelectedData}
             floorId={floorId}
             setTableInfo={setTableInfo}
             tableInfo={tableInfo}
