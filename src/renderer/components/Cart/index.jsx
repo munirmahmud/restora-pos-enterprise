@@ -60,7 +60,6 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
   const [quickOrderAdditionalData, setQuickOrderAdditionalData] =
     useState(null);
 
-  const [personSelectedData, setPersonSelectedData] = useState([]);
   const [addFoodNoteToItem, setAddFoodNoteToItem] = useState({});
   const [tableDataLists, setTableDataLists] = useState([]);
   const [customerTypes, setCustomerTypes] = useState([]);
@@ -69,11 +68,7 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
   const [addCustomer, setAddCustomer] = useState([]);
   const [additionalOrderInfo, setAdditionalOrderInfo] = useState({});
 
-  const [tableInfo, setTableInfo] = useState({
-    floor_id: [],
-    table_id: [],
-    booked: [],
-  });
+  const [customerTable, setcustomerTable] = useState({});
 
   const [customServiceCharge, setCustomServiceCharge] = useState(0);
   const [customDiscount, setCustomDiscount] = useState(0);
@@ -117,9 +112,6 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
         name: ['customer_address'],
       },
     ]);
-
-    console.log('personSelectedData', personSelectedData);
-    console.log('tableInfo', tableInfo);
   }, [reRender, settings]);
 
   useEffect(() => {
@@ -242,37 +234,22 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
           localStorage.removeItem('order_id');
         }
       } else if (data === 'placeOrder') {
-        // const submitData = {
-        //   cartItems,
-        //   customer_id: customerId,
-
-        //   waiter: additionalOrderInfo?.waiter,
-        //   customer_type_id: additionalOrderInfo?.customer_type_id,
-        //   cooking_time: additionalOrderInfo?.cooking_time
-        //     ? additionalOrderInfo?.cooking_time
-        //     : '',
-        //   table: [],
-
-        //   ...orderCalculateInfo,
-        // };
-
-        // console.log('submitData', submitData);
-
-        // return;
-
-        window.insert_order_info.send('insert_order_info', {
+        const orderData = {
           cartItems,
           customer_id: customerId,
 
-          waiter: additionalOrderInfo?.waiter,
+          waiter_id: additionalOrderInfo?.waiter,
           customer_type_id: additionalOrderInfo?.customer_type_id,
           cooking_time: additionalOrderInfo?.cooking_time
             ? additionalOrderInfo?.cooking_time
             : '',
-          table: [],
-
+          floor_id: customerTable.floor_id,
+          table_id: customerTable.table_id,
+          booked: customerTable.booked,
           ...orderCalculateInfo,
-        });
+        };
+
+        window.insert_order_info.send('insert_order_info', orderData);
 
         setConfirmBtn(data);
         setConfirmOrder(true);
@@ -857,11 +834,8 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
         <SelectTable
           personSelectModal={personSelectModal}
           setPersonSelectModal={setPersonSelectModal}
-          personSelectedData={personSelectedData}
-          setPersonSelectedData={setPersonSelectedData}
+          setcustomerTable={setcustomerTable}
           setReRender={setReRender}
-          setTableInfo={setTableInfo}
-          tableInfo={tableInfo}
         />
       )}
 

@@ -984,6 +984,7 @@ const tokenGenaretor = () => {
 
 // Insert order
 ipcMain.on('insert_order_info', (_event, args: any) => {
+<<<<<<< HEAD
   let { cartItems, customer_id, grandTotal, discount, serviceCharge, vat } =
     args;
 
@@ -994,6 +995,32 @@ ipcMain.on('insert_order_info', (_event, args: any) => {
   let floor_id = [1, 2, 3];
   let table_id = [1, 2, 3];
   let booked = 3;
+=======
+  console.log('insert_order', args);
+
+  let {
+    cartItems,
+    customer_id,
+    grandTotal,
+    discount,
+    serviceCharge,
+    waiter_id,
+    customer_type_id,
+    cooking_time,
+    floor_id,
+    table_id,
+    booked,
+    vat,
+  } = args;
+
+  // let waiter_id = 1;
+  // let customer_type_id = 2;
+  // let cooking_time = 2022;
+
+  // let floor_id = [6, 4];
+  // let table_id = [1, 2, 3];
+  // let booked = [3,5,8];
+>>>>>>> master
 
   tokenGenaretor()
     .then((results: any) => {
@@ -1019,6 +1046,7 @@ ipcMain.on('insert_order_info', (_event, args: any) => {
         "order_id" INTEGER PRIMARY KEY AUTOINCREMENT,
         "order_info" varchar(255),
         "customer_id" INT,
+        "creation_date" DATETIME,
         "discount" REAL,
         "serviceCharge" REAL,
         "vat" REAL,
@@ -1040,6 +1068,7 @@ ipcMain.on('insert_order_info', (_event, args: any) => {
           [
             JSON.stringify(cartItems),
             customer_id,
+            Date.now(),
             discount,
             serviceCharge,
             vat,
@@ -1049,12 +1078,16 @@ ipcMain.on('insert_order_info', (_event, args: any) => {
                 ? results[0].token_no + 1
                 : 1
               : 1,
-            waiter_id,
+            waiter_id ? waiter_id : 'Munir',
             customer_type_id,
             JSON.stringify(floor_id),
             JSON.stringify(table_id),
             cooking_time,
+<<<<<<< HEAD
             booked,
+=======
+            JSON.stringify(booked),
+>>>>>>> master
             Date.now(),
           ]
         );
@@ -1091,6 +1124,7 @@ ipcMain.on('insert_order_info', (_event, args: any) => {
           [
             JSON.stringify(cartItems),
             customer_id,
+            Date.now(),
             discount,
             serviceCharge,
             vat,
@@ -1101,7 +1135,11 @@ ipcMain.on('insert_order_info', (_event, args: any) => {
             JSON.stringify(floor_id),
             JSON.stringify(table_id),
             cooking_time,
+<<<<<<< HEAD
             booked,
+=======
+            JSON.stringify(booked),
+>>>>>>> master
             Date.now(),
           ]
         );
