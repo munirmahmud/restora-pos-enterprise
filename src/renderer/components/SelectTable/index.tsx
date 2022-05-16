@@ -12,8 +12,7 @@ type FloorTypes = {
 const SelectTable = ({
   personSelectModal,
   setPersonSelectModal,
-  personSelectedData,
-  setPersonSelectedData,
+  setcustomerTable,
   setReRender,
 }: any) => {
   window.fetch_floor.send('fetch_floor', { status: true });
@@ -42,16 +41,16 @@ const SelectTable = ({
   };
 
   const handleSubmitTablePerson = () => {
-    console.log('tableInfo', tableInfo);
-
     const floorIDs = [...new Set(tableInfo.floor_id)];
     const tableIDs = [...new Set(tableInfo.table_id)];
 
-    console.log('floorIDs', floorIDs);
-    console.log('tableIDs', tableIDs);
+    setcustomerTable({
+      floor_id: floorIDs,
+      table_id: tableIDs,
+      booked: tableInfo.booked,
+    });
 
     setReRender((prevState: boolean) => !prevState);
-    // setPersonSelectModal(false);
   };
 
   return (

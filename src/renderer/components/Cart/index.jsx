@@ -68,6 +68,8 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
   const [addCustomer, setAddCustomer] = useState([]);
   const [additionalOrderInfo, setAdditionalOrderInfo] = useState({});
 
+  const [customerTable, setcustomerTable] = useState({});
+
   const [customServiceCharge, setCustomServiceCharge] = useState(0);
   const [customDiscount, setCustomDiscount] = useState(0);
   const [quantityValue, setQuantityValue] = useState(1);
@@ -729,6 +731,7 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
         <SelectTable
           personSelectModal={personSelectModal}
           setPersonSelectModal={setPersonSelectModal}
+          setcustomerTable={setcustomerTable}
           setReRender={setReRender}
         />
       )}
