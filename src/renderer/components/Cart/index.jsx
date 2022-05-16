@@ -5,14 +5,31 @@ import {
 } from '@ant-design/icons';
 import { faCalculator, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Col, Form, Input, InputNumber, message, Modal, Row, Select, Space, TimePicker } from 'antd';
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  message,
+  Modal,
+  Row,
+  Select,
+  Space,
+  TimePicker,
+} from 'antd';
 import { useEffect, useState } from 'react';
 import AddCustomerModal from '../AddCustomerModal';
 import Calculator from '../Calculator';
 import FoodNoteModal from '../FoodNoteModal';
 import PremiumVersion from '../partials/PremiumVersion';
 import SelectTable from '../SelectTable';
-import { CalculatePrice, getDataFromDatabase, getDiscountAmount, getServiceCharge } from './../../../helpers';
+import {
+  CalculatePrice,
+  getDataFromDatabase,
+  getDiscountAmount,
+  getServiceCharge,
+} from './../../../helpers';
 import './cart.styles.scss';
 import ConfirmOrderModal from './ConfirmOrderModal';
 import WarmingModal from './WarmingModal';
@@ -225,6 +242,24 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
           localStorage.removeItem('order_id');
         }
       } else if (data === 'placeOrder') {
+        // const submitData = {
+        //   cartItems,
+        //   customer_id: customerId,
+
+        //   waiter: additionalOrderInfo?.waiter,
+        //   customer_type_id: additionalOrderInfo?.customer_type_id,
+        //   cooking_time: additionalOrderInfo?.cooking_time
+        //     ? additionalOrderInfo?.cooking_time
+        //     : '',
+        //   table: [],
+
+        //   ...orderCalculateInfo,
+        // };
+
+        // console.log('submitData', submitData);
+
+        // return;
+
         window.insert_order_info.send('insert_order_info', {
           cartItems,
           customer_id: customerId,

@@ -4,7 +4,7 @@ const CancelOrderModal = ({
   orderData,
   cancelOrderModal,
   setCancelOrderModal,
-}) => {
+}: any) => {
   const [form] = Form.useForm();
 
   const handleSubmit = (value: any) => {
