@@ -1159,13 +1159,28 @@ ipcMain.on('update_order_info_after_edit', (_event, args) => {
   db.close();
 });
 
+
+// SELECT orders.*, (employees.first_name ||' ' || employees.last_name)AS waiter_name, customer_type.customertype AS customer_type
+// FROM orders
+// INNER JOIN employees
+// ON orders.waiter_id = employees.id
+// INNER JOIN customer_type
+// ON orders.customer_type_id = customer_type.id
+// WHERE orders.status = 1
+
 // Get all order info
 ipcMain.on('get_all_order_info_ongoing', (_event, args) => {
   let { status } = args;
 
   if (status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
-    let sql = `SELECT * FROM orders where status = 1`;
+    let sql = `SELECT orders.*, (employees.first_name ||' ' || employees.last_name)AS waiter_name, customer_type.customertype AS customer_type
+    FROM orders
+    INNER JOIN employees
+    ON orders.waiter_id = employees.id
+    INNER JOIN customer_type
+    ON orders.customer_type_id = customer_type.id
+    WHERE orders.status = 1`;
 
     db.serialize(() => {
       db.all(sql, [], (_err: ErrorType, rows: any) => {
