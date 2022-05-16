@@ -1055,7 +1055,6 @@ ipcMain.on('insert_order_info', (_event, args: any) => {
           [
             JSON.stringify(cartItems),
             customer_id,
-            Date.now(),
             discount,
             serviceCharge,
             vat,
@@ -1107,7 +1106,6 @@ ipcMain.on('insert_order_info', (_event, args: any) => {
           [
             JSON.stringify(cartItems),
             customer_id,
-            Date.now(),
             discount,
             serviceCharge,
             vat,
