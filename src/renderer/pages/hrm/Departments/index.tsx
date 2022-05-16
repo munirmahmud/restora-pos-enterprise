@@ -1,9 +1,15 @@
 import { Col, ConfigProvider, Row } from 'antd';
+import { FC } from 'react';
 import Department from 'renderer/components/hrm/Department';
 import Sidebar from 'renderer/components/partials/Sidebar';
 import Heading from '../../../components/Heading';
+import { SettingsProps } from '../../../types';
 
-const Departments = ({ settings }) => {
+type DepartmentsTypes = {
+  settings: SettingsProps;
+};
+
+const Departments: FC<DepartmentsTypes> = ({ settings }) => {
   return (
     <div className="main_wrapper">
       <div className="pos_system">

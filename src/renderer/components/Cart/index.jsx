@@ -72,6 +72,7 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
 
   const [customServiceCharge, setCustomServiceCharge] = useState(0);
   const [customDiscount, setCustomDiscount] = useState(0);
+  const [customerTypeId, setCustomerTypeId] = useState(1);
   const [quantityValue, setQuantityValue] = useState(1);
   const [confirmBtn, setConfirmBtn] = useState('');
   const [customerId, setCustomerId] = useState(0);
@@ -248,10 +249,25 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
           ...orderCalculateInfo,
         };
 
-        window.insert_order_info.send('insert_order_info', orderData);
-
-        setConfirmBtn(data);
-        setConfirmOrder(true);
+        if (
+          additionalOrderInfo?.waiter &&
+          additionalOrderInfo?.customer_type_id
+        ) {
+          window.insert_order_info.send('insert_order_info', orderData);
+          setConfirmBtn(data);
+          setConfirmOrder(true);
+        } else {
+          message.error({
+            content:
+              additionalOrderInfo?.waiter &&
+              additionalOrderInfo?.customer_type_id
+                ? 'Please, Select Customer type or waiter'
+                : 'Please, Select Customer type',
+            className: 'custom-class',
+            duration: 1,
+            style: { marginTop: '5vh', float: 'right' },
+          });
+        }
       }
     }
   };
@@ -314,6 +330,7 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
 
   const handleChangeCustomerType = (value) => {
     setAdditionalOrderInfo({ ...additionalOrderInfo, customer_type_id: value });
+    setCustomerTypeId(value);
   };
   const handleChangeWaiter = (value) => {
     setAdditionalOrderInfo({ ...additionalOrderInfo, waiter: value });
@@ -332,6 +349,11 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
     );
   }
 
+  const handleChangeCompany = (value) => {
+    console.log('value', value);
+    // setAdditionalOrderInfo({ ...additionalOrderInfo, company_delivery: value });
+  };
+
   return (
     <div className="cart_wrapper">
       <Form
@@ -349,6 +371,9 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
                   label="Customer Name"
                   className="custom_level"
                   name="customer_name"
+                  rules={[
+                    { required: true, message: 'Customer Name is required' },
+                  ]}
                 >
                   <Select
                     placeholder="Select a Customer Name"
@@ -356,6 +381,7 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
                     allowClear
                     defaultValue={'Walk In'}
                     onChange={handleSelectCustomer}
+                    rules={[{ required: true }]}
                   >
                     <Option value="0">Walk In</Option>
                     {customerList?.map((customer) => (
@@ -401,84 +427,183 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
               )}
             </Row>
 
-            {window.innerWidth > 1315 && (
-              <Row gutter={30}>
-                <Col lg={8} xl={7} xxl={7}>
-                  <Form.Item
-                    label="Waiter"
-                    className="custom_level"
-                    name="waiter"
-                  >
-                    <Select
-                      placeholder="Select Waiter"
-                      size="large"
-                      allowClear
-                      onChange={handleChangeWaiter}
-                    >
-                      {waiterLists?.map((waiter) => (
-                        <Option key={waiter?.id} value={waiter?.id}>
-                          {waiter?.first_name}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
+            {customerTypeId === 1 && (
+              <>
+                {window.innerWidth > 1315 && (
+                  <Row gutter={30}>
+                    <Col lg={8} xl={7} xxl={7}>
+                      <Form.Item
+                        label="Waiter"
+                        className="custom_level"
+                        name="waiter"
+                      >
+                        <Select
+                          placeholder="Select Waiter"
+                          size="large"
+                          allowClear
+                          onChange={handleChangeWaiter}
+                        >
+                          {waiterLists?.map((waiter) => (
+                            <Option key={waiter?.id} value={waiter?.id}>
+                              {waiter?.first_name}
+                            </Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
 
-                <Col lg={4} xl={3} xxl={3}>
-                  <Button
-                    size="large"
-                    type="primary"
-                    className="add_customer"
-                    onClick={() => {
-                      window.get_table_data.send('get_table_data', {
-                        status: true,
-                      });
-                      setPersonSelectModal(true);
-                    }}
-                  >
-                    Person
-                  </Button>
-                </Col>
+                    <Col lg={4} xl={3} xxl={3}>
+                      <Button
+                        size="large"
+                        type="primary"
+                        className="add_customer"
+                        onClick={() => {
+                          window.get_table_data.send('get_table_data', {
+                            status: true,
+                          });
+                          setPersonSelectModal(true);
+                        }}
+                      >
+                        Person
+                      </Button>
+                    </Col>
 
-                <Col lg={6} xl={7} xxl={7}>
-                  <Form.Item
-                    label="Table"
-                    className="custom_level"
-                    name="table_no"
-                  >
-                    <Select
-                      placeholder="Select Table No"
-                      size="large"
-                      allowClear
-                    >
-                      {tableDataLists?.map((tableData) => (
-                        <Option key={tableData?.id} value={tableData?.id}>
-                          {tableData?.tablename}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
+                    <Col lg={6} xl={7} xxl={7}>
+                      <Form.Item
+                        label="Table"
+                        className="custom_level"
+                        name="table_no"
+                      >
+                        <Select
+                          placeholder="Select Table No"
+                          size="large"
+                          allowClear
+                        >
+                          {tableDataLists?.map((tableData) => (
+                            <Option key={tableData?.id} value={tableData?.id}>
+                              {tableData?.tablename}
+                            </Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
 
-                <Col lg={6} xl={7} xxl={7}>
-                  <Form.Item
-                    label="Cooking Time"
-                    className="custom_level"
-                    name="cookingTime"
-                  >
-                    <TimePicker
-                      size="large"
-                      onChange={(value, timeString) =>
-                        setAdditionalOrderInfo({
-                          ...additionalOrderInfo,
-                          cooking_time: timeString,
-                        })
-                      }
-                      format={format}
-                    />
-                  </Form.Item>
-                </Col>
-              </Row>
+                    <Col lg={6} xl={7} xxl={7}>
+                      <Form.Item
+                        label="Cooking Time"
+                        className="custom_level"
+                        name="cookingTime"
+                      >
+                        <TimePicker
+                          size="large"
+                          onChange={(value, timeString) =>
+                            setAdditionalOrderInfo({
+                              ...additionalOrderInfo,
+                              cooking_time: timeString,
+                            })
+                          }
+                          format={format}
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                )}
+              </>
+            )}
+
+            {(customerTypeId === 2 || customerTypeId === 4) && (
+              <>
+                {window.innerWidth > 1315 && (
+                  <Row gutter={20}>
+                    <Col lg={12}>
+                      <Form.Item
+                        label="Waiter"
+                        className="custom_level"
+                        name="waiter"
+                      >
+                        <Select
+                          placeholder="Select Waiter"
+                          size="large"
+                          allowClear
+                          onChange={handleChangeWaiter}
+                        >
+                          {waiterLists?.map((waiter) => (
+                            <Option key={waiter?.id} value={waiter?.id}>
+                              {waiter?.first_name}
+                            </Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+
+                    <Col lg={12}>
+                      <Form.Item
+                        label="Cooking Time"
+                        className="custom_level"
+                        name="cookingTime"
+                      >
+                        <TimePicker
+                          size="large"
+                          onChange={(value, timeString) =>
+                            setAdditionalOrderInfo({
+                              ...additionalOrderInfo,
+                              cooking_time: timeString,
+                            })
+                          }
+                          format={format}
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                )}
+              </>
+            )}
+
+            {customerTypeId === 3 && (
+              <>
+                {window.innerWidth > 1315 && (
+                  <Row gutter={20}>
+                    <Col lg={12}>
+                      <Form.Item
+                        label="Delivery Company"
+                        className="custom_level"
+                        name="delivery_company"
+                        rules={[
+                          {
+                            required: true,
+                            message: 'Delivery company field is required',
+                          },
+                        ]}
+                      >
+                        <Select
+                          placeholder="Select Option"
+                          size="large"
+                          allowClear
+                          onChange={handleChangeCompany}
+                        >
+                          <Option value="1">Food Panda</Option>
+                          <Option value="2">Pathao Food</Option>
+                          <Option value="3">Hungry Food</Option>
+                          <Option value="4">Sultan Dine</Option>
+                        </Select>
+                      </Form.Item>
+                    </Col>
+
+                    <Col lg={12}>
+                      <Form.Item
+                        label="Third-party Order ID"
+                        className="custom_level"
+                        name="third_party_order_id"
+                      >
+                        <Input
+                          size="large"
+                          placeholder="Third-party Order ID"
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                )}
+              </>
             )}
           </div>
         </div>

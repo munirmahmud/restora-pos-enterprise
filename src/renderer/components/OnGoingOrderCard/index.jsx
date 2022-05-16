@@ -13,8 +13,6 @@ const OnGoingOrderCard = ({
     setActiveInactiveBtn(foodData);
   };
 
-  console.log('orderCard', orderCard);
-
   return (
     <Col lg={6} xl={4} xxl={4}>
       <div className="on_going_menu_item">
@@ -25,11 +23,11 @@ const OnGoingOrderCard = ({
             borderColor: orderCard.isSelected ? '#0088f2' : '#caf6f7',
           }}
         >
-          <li>Waiter: {orderCard.order_id}</li>
-          <li>Order Number: {orderCard.order_id}</li>
-          <li>Running Time: {orderCard.order_id}</li>
-          <li>Customer Type: {orderCard.order_id}</li>
-          {orderCard.is_active === 1 && <li>Status: Pending</li>}
+          <li>Waiter: {orderCard?.waiter_name}</li>
+          <li>Order Number: {orderCard?.order_id}</li>
+          <li>Running Time: {orderCard?.order_id}</li>
+          <li>Customer Type: {orderCard?.customer_type}</li>
+          {orderCard?.is_active === 1 && <li>Status: Pending</li>}
         </div>
       </div>
     </Col>
