@@ -30,8 +30,10 @@ const OnGoingFooter = ({
 }) => {
   let redirect = useNavigate();
   const { cartItems, setCartItems } = useContext(ContextData);
+  const [cancelOrderModal, setCancelOrderModal] = useState(false);
   const [premiumVersion, setPremiumVersion] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+
   const [orderData, setOrderData] = useState({});
   const [tokenPrint, setTokenPrint] = useState('printToken');
   const [printDueInvoice, setPrintDueInvoice] = useState('dueInvoicePrint');
@@ -148,10 +150,9 @@ const OnGoingFooter = ({
     setOpenSearchInput(!openSearchInput);
   };
 
-  const [cancelOrderModal, setCancelOrderModal] = useState(false);
   const cancelOrder = (orderData) => {
     console.log('Cancel orderData', orderData);
-    setReRender((prevState) => !prevState);
+    // setReRender((prevState) => !prevState);
     setCancelOrderModal(true);
   };
 

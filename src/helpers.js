@@ -193,3 +193,33 @@ export const getServiceCharge = (
 
   return parseFloat(amount);
 };
+
+/* eslint-disable*/
+import { message } from 'antd';
+export const getErrorNotification = (
+  content,
+  duration = 3,
+  style = { marginTop: '5vh', float: 'right' },
+  className = 'custom-class'
+) => {
+  message.error({
+    content,
+    className,
+    duration,
+    style,
+  });
+};
+
+export const getSuccessNotification = (
+  content,
+  duration = 3,
+  style = { marginTop: '5vh', float: 'right' },
+  className = 'custom-class'
+) => {
+  message.success({
+    content,
+    className,
+    duration,
+    style,
+  });
+};
