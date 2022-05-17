@@ -28,6 +28,7 @@ import {
   CalculatePrice,
   getDataFromDatabase,
   getDiscountAmount,
+  getErrorNotification,
   getServiceCharge,
 } from './../../../helpers';
 import './cart.styles.scss';
@@ -68,7 +69,7 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
   const [addCustomer, setAddCustomer] = useState([]);
   const [additionalOrderInfo, setAdditionalOrderInfo] = useState({});
 
-  const [customerTable, setcustomerTable] = useState({});
+  const [customerTable, setCustomerTable] = useState({});
 
   const [customServiceCharge, setCustomServiceCharge] = useState(0);
   const [customDiscount, setCustomDiscount] = useState(0);
@@ -257,16 +258,11 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
           setConfirmBtn(data);
           setConfirmOrder(true);
         } else {
-          message.error({
-            content:
-              additionalOrderInfo?.waiter &&
-              additionalOrderInfo?.customer_type_id
-                ? 'Please, Select Customer type or waiter'
-                : 'Please, Select Customer type',
-            className: 'custom-class',
-            duration: 1,
-            style: { marginTop: '5vh', float: 'right' },
-          });
+          if (!additionalOrderInfo?.customer_type_id) {
+            getErrorNotification('Please, Select Customer type');
+          } else if (!additionalOrderInfo?.waiter) {
+            getErrorNotification('Please, Select waiter');
+          }
         }
       }
     }
@@ -849,7 +845,7 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
         <SelectTable
           personSelectModal={personSelectModal}
           setPersonSelectModal={setPersonSelectModal}
-          setcustomerTable={setcustomerTable}
+          setCustomerTable={setCustomerTable}
           setReRender={setReRender}
         />
       )}
