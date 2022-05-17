@@ -404,6 +404,7 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
                     label="Customer Type"
                     className="custom_level"
                     name="customer_type"
+                    rules={[{ required: true }]}
                   >
                     <Select
                       placeholder="Select a Customer Type"
@@ -432,6 +433,7 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
                         label="Waiter"
                         className="custom_level"
                         name="waiter"
+                        rules={[{ required: true }]}
                       >
                         <Select
                           placeholder="Select Waiter"
@@ -460,7 +462,13 @@ const Cart = ({ settings, cartItems, setCartItems, state }) => {
                           setPersonSelectModal(true);
                         }}
                       >
-                        Person
+                        {customerTable?.booked?.length > 0
+                          ? customerTable?.booked?.reduce(
+                              (prevValue, currentValue) =>
+                                prevValue + currentValue,
+                              0
+                            )
+                          : 'Person'}
                       </Button>
                     </Col>
 

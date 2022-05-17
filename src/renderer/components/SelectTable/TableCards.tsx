@@ -10,6 +10,8 @@ const TableCards = ({
   tableInfo,
 }: {
   floorId: number;
+  tableInfo: object;
+  setTableInfo: boolean;
 }) => {
   window.fetch_table_based_on_floor_id.send('fetch_table_based_on_floor_id', {
     floorId: floorId,
@@ -25,13 +27,11 @@ const TableCards = ({
       setFloorsList(data);
     });
 
-    getDataFromDatabase(
-      'get_table_data_response',
-      window.get_table_data
-    ).then((data) => {
-      console.log(data);
-    })
-
+    getDataFromDatabase('get_table_data_response', window.get_table_data).then(
+      (data) => {
+        console.log('88888888888888888888', data);
+      }
+    );
   }, [floorId]);
 
   return (

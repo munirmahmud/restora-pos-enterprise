@@ -51,6 +51,7 @@ const SelectTable = ({
     });
 
     setReRender((prevState: boolean) => !prevState);
+    setPersonSelectModal(false);
   };
 
   return (

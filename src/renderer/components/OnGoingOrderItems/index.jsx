@@ -38,7 +38,7 @@ const OnGoingOrderItems = ({
               setOrderComplete={setOrderComplete}
             />
           ))
-        : 'Sorry'}
+        : 'No order found'}
     </Row>
   );
 };

@@ -39,6 +39,7 @@ declare global {
     delete_customer_table: any;
     fetch_table_based_on_floor_id: any;
     fetch_table_based_on_floor_id_response: any;
+    get_table_data: any;
   }
 }
 
