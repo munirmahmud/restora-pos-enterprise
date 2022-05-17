@@ -1,5 +1,4 @@
 import { Button, Form, message, Steps } from 'antd';
-import { getDataFromDatabase } from 'helpers';
 import { useState } from 'react';
 import './AddEmployeeInfo.style.scss';
 import AdditionalAddress from './AdditionalAddress';
@@ -15,9 +14,22 @@ import Supervisor from './Supervisor';
 
 const { Step } = Steps;
 
-type EmployeeInfoTypes = {};
+type EmployeeInfoTypes = {
+  first_name: string;
+  last_name?: string;
+  email: string;
+  phone: string;
+  name?: string;
+  city?: string;
+  state?: string;
+  zip_code?: string;
+  attendance_time?: string;
+  employee_type?: string;
+};
 
-window.send_status_to_create_table.send('send_status_to_create_table', {"status": true})
+window.send_status_to_create_table.send('send_status_to_create_table', {
+  status: true,
+});
 
 const AddEmployeeInfo = () => {
   const [current, setCurrent] = useState(0);
@@ -192,7 +204,6 @@ const AddEmployeeInfo = () => {
   ];
 
   const handleSubmit = () => {
-    console.log('employeeInfo', employeeInfo);
     window.insert_employee.send('insert_employee', employeeInfo);
 
     message.success({
@@ -216,6 +227,16 @@ const AddEmployeeInfo = () => {
 
   const prev = () => {
     setCurrent(current - 1);
+  };
+
+  const handleNextForm = () => {
+    console.log('employeeInfo', employeeInfo.first_name);
+
+    if (!employeeInfo.first_name) {
+      return;
+    }
+
+    next();
   };
 
   return (
@@ -262,7 +283,7 @@ const AddEmployeeInfo = () => {
             <Button
               // className="submit_btn"
               type="primary"
-              onClick={() => next()}
+              onClick={() => handleNextForm()}
             >
               Next
             </Button>
@@ -273,8 +294,8 @@ const AddEmployeeInfo = () => {
   );
 };
 
-window.insert_employee.once('insert_employee_response', (arg)=>{
+window.insert_employee.once('insert_employee_response', (arg) => {
   console.log(arg);
-})
+});
 
 export default AddEmployeeInfo;
