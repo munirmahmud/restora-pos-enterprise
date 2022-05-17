@@ -40,6 +40,7 @@ declare global {
     fetch_table_based_on_floor_id: any;
     fetch_table_based_on_floor_id_response: any;
     send_status_to_create_table: any;
+    get_table_data: any;
   }
 }
 
