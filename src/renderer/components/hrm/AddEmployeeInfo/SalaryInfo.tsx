@@ -9,7 +9,7 @@ const SalaryInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
             label="Basic Salary"
             name="basic_salary"
             rules={[
-              { required: true, message: 'Please input your basic salary!' },
+              { required: true, message: 'Basic salary amount is required!' },
             ]}
           >
             <Input
@@ -17,7 +17,7 @@ const SalaryInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
               onChange={(e) =>
                 setEmployeeInfo({
                   ...employeeInfo,
-                  basic_salary: e.target.value,
+                  basic_salary: parseInt(e.target.value),
                 })
               }
               size="large"
@@ -49,7 +49,7 @@ const SalaryInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
                 })
               }
               size="large"
-              placeholder="Others"
+              placeholder="Others..."
             />
           </Form.Item>
         </Col>
@@ -83,16 +83,14 @@ const SalaryInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
           <Form.Item
             label="Gross Salary"
             name="gross_salary"
-            rules={[
-              { required: true, message: 'Please input your gross salary!' },
-            ]}
+            rules={[{ required: true, message: 'Gross salary is required!' }]}
           >
             <Input
               value={employeeInfo.gross_salary}
               onChange={(e) =>
                 setEmployeeInfo({
                   ...employeeInfo,
-                  gross_salary: e.target.value,
+                  gross_salary: parseInt(e.target.value),
                 })
               }
               size="large"
@@ -106,3 +104,6 @@ const SalaryInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
 };
 
 export default SalaryInfo;
+
+// 5 > 4 = true;
+// '5' > '4' = false
