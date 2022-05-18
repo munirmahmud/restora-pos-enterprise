@@ -5,16 +5,10 @@ import { useState } from 'react';
 import TableImage from '../../../../assets/table_icon.png';
 import './PersonSelectiveModal.style.scss';
 
-const TableCard = ({ table, floorId, setTableInfo, tableInfo }: any) => {
+const TableCard = ({ table, setTableInfo }: any) => {
   const format = 'YYYY-MM-DD';
   const today = new Date();
   const [countPerson, setCountPerson] = useState(0);
-
-  const [testtableInfo, settestTableInfo] = useState({
-    floor_id: [],
-    table_id: [],
-    booked: [],
-  });
 
   function onChange(e: any) {
     console.log(`checked = ${e.target.checked}`);
@@ -48,7 +42,7 @@ const TableCard = ({ table, floorId, setTableInfo, tableInfo }: any) => {
       return {
         floor_id: [...prevData.floor_id, table.floorId],
         table_id: [...prevData.table_id, table.id],
-        booked: [...prevData.booked, table.person_capacity],
+        booked: [...prevData.booked, countPerson],
       };
     });
   };
