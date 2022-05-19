@@ -14,12 +14,12 @@ const OnGoingOrder = ({ settings }) => {
 
   const { cartItems, setCartItems } = useContext(ContextData);
 
+  const [invoicePrintDivId, setInvoicePrintDivId] = useState(null);
   const [activeInactiveBtn, setActiveInactiveBtn] = useState({});
+  const [openSearchInput, setOpenSearchInput] = useState(false);
   const [ongoingOrders, setOngoingOrders] = useState([]);
   const [orderComplete, setOrderComplete] = useState({});
   const [searchValue, setSearchValue] = useState('');
-  const [invoicePrintDivId, setInvoicePrintDivId] = useState(null);
-  const [openSearchInput, setOpenSearchInput] = useState(false);
   const [reRender, setReRender] = useState(false);
 
   useEffect(() => {
