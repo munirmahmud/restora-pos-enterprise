@@ -274,9 +274,9 @@ const DesignationTable = () => {
               onChange={(e) => setDesignationType(e.target.value)}
               value={designationType}
             >
-              <Radio value={1}>waiter</Radio>
-              <Radio value={2}>chef</Radio>
-              <Radio value={3}>manager</Radio>
+              <Radio value={1}>Waiter</Radio>
+              <Radio value={2}>Chef</Radio>
+              <Radio value={3}>Manager</Radio>
             </Radio.Group>
           </Form.Item>
 
