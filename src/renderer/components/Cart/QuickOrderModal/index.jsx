@@ -60,6 +60,8 @@ const QuickOrderModal = ({
       setGrandTotal(parsedData.grandTotal);
     }
 
+    console.log('foodItems', foodItems);
+
     if (foodItems?.order_info) {
       if (typeof foodItems?.order_info !== 'string') {
         setFoodData(foodItems?.order_info);
@@ -148,6 +150,8 @@ const QuickOrderModal = ({
   };
 
   function posPrintInvoice() {
+    console.log('invoicePrintDivId', invoicePrintDivId.classList);
+    // return;
     var printContents = document.querySelector(
       `.${invoicePrintDivId.classList.value}`
     ).innerHTML;
@@ -157,6 +161,8 @@ const QuickOrderModal = ({
     window.print();
     window.location.reload();
   }
+
+  console.log('invoicePrintDivId', invoicePrintDivId);
 
   return (
     <>
@@ -368,7 +374,7 @@ const QuickOrderModal = ({
       <InVoiceGenerate
         settings={settings}
         foodItems={onGoingOrderData}
-        foodData={foodItems}
+        foodData={invoiceData}
         setInvoicePrintDivId={setInvoicePrintDivId}
         customerName={customerName}
         grandTotal={grandTotal}

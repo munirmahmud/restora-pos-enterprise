@@ -1,6 +1,5 @@
 import { Col, Input, Row } from 'antd';
 import { useContext, useEffect, useState } from 'react';
-import InVoiceGenerate from 'renderer/components/InVoiceGenerate';
 import OnGoingOrderItems from 'renderer/components/OnGoingOrderItems';
 import { ContextData } from 'renderer/contextApi';
 import { getDataFromDatabase } from '../../../helpers';
@@ -81,11 +80,11 @@ const OnGoingOrder = ({ settings }) => {
         />
       </div>
 
-      <InVoiceGenerate
+      {/* <InVoiceGenerate
         settings={settings}
-        foodItems={cartItems}
+        foodData={orderComplete}
         setInvoicePrintDivId={setInvoicePrintDivId}
-      />
+      /> */}
 
       <OnGoingFooter
         openSearchInput={openSearchInput}

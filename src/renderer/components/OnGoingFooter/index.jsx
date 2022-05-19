@@ -10,7 +10,7 @@ import {
 import { Button, Col, message, Row } from 'antd';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DueInvoiceModal from '../DueInvoiceModal';
+import InVoiceGenerate from '../InVoiceGenerate';
 import PremiumVersion from '../partials/PremiumVersion';
 import TokenModal from '../TokenModal';
 import { ContextData } from './../../contextApi';
@@ -36,17 +36,12 @@ const OnGoingFooter = ({
 
   const [orderData, setOrderData] = useState({});
   const [tokenPrint, setTokenPrint] = useState('printToken');
-  const [printDueInvoice, setPrintDueInvoice] = useState('dueInvoicePrint');
+  // const [printDueInvoice, setPrintDueInvoice] = useState(null);
+  const [invoicePrintDivId, setInvoicePrintDivId] = useState(null);
 
   useEffect(() => {
-    if (orderComplete?.order_info) {
-      const orderItems = JSON.parse(orderComplete.order_info);
-      const tokenWithOrders = {
-        ...orderComplete,
-        order_info: orderItems,
-      };
-
-      setOrderData(tokenWithOrders);
+    if (orderComplete?.order_info?.length) {
+      setOrderData(orderComplete);
     }
   }, [orderComplete]);
 
@@ -69,9 +64,9 @@ const OnGoingFooter = ({
     setOpenModal(true);
   }
 
-  const generateDueInvoice = (item) => {
-    console.log('item', item);
-
+  const generateDueInvoice = (orderItemObj) => {
+    console.log('orderData nnn', orderData);
+    console.log('orderItemObj mmm', orderItemObj);
     if (Object.keys(orderData).length === 0) {
       message.error({
         content: 'Sorry! No order is selected.',
@@ -81,11 +76,19 @@ const OnGoingFooter = ({
           marginTop: '15vh',
         },
       });
-
       return;
     }
 
-    var printContents = document.getElementById(printDueInvoice).innerHTML;
+    const newInvoiceData = {
+      ...orderItemObj,
+      grandTotal: orderItemObj.grand_total,
+    };
+
+    setOrderData(newInvoiceData);
+
+    var printContents = document.querySelector(
+      `.${invoicePrintDivId.classList.value}`
+    ).innerHTML;
     var originalContents = document.body.innerHTML;
     document.body.innerHTML = printContents;
     window.print();
@@ -273,11 +276,17 @@ const OnGoingFooter = ({
 
       <TokenModal orderData={orderData} tokenPrint={tokenPrint} />
 
-      <DueInvoiceModal
+      <InVoiceGenerate
+        foodData={orderData}
+        setInvoicePrintDivId={setInvoicePrintDivId}
+        settings={settings}
+      />
+
+      {/* <DueInvoiceModal
         orderData={orderData}
         printDueInvoice={printDueInvoice}
         settings={settings}
-      />
+      /> */}
 
       {cancelOrderModal && (
         <CancelOrderModal

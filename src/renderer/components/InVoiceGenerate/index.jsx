@@ -43,10 +43,11 @@ const InVoiceGenerate = (props) => {
 
   console.log('foodItems invoice gen', foodItems);
   console.log('foodData invoice gen', foodData);
+  // console.log('foodData order_info', foodData.order_info);
 
   useEffect(() => {
     setInvoicePrintDivId(invoiceWrapperRef.current);
-  }, [invoiceWrapperRef]);
+  }, []);
 
   return (
     <div
@@ -112,8 +113,8 @@ const InVoiceGenerate = (props) => {
             <h4 style={headingStyles}>Total</h4>
           </div>
 
-          {foodItems?.length > 0 &&
-            foodItems?.map((item, index) => (
+          {foodData?.order_info?.length > 0 &&
+            foodData?.order_info?.map((item, index) => (
               <div key={index} className="in_voice_info flex content_between">
                 <p style={spanStyles}>
                   {item.product_name} {item.quantity} x {item.price}
@@ -129,7 +130,7 @@ const InVoiceGenerate = (props) => {
           <div className="in_voice_info flex content_between">
             <h4 style={headingStyles}>Subtotal</h4>
             <h4 style={headingStyles}>
-              {settings.currency_icon} {grandTotal}
+              {settings.currency_icon} {foodData?.grand_total}
             </h4>
           </div>
 
@@ -145,14 +146,16 @@ const InVoiceGenerate = (props) => {
           <div className="in_voice_info flex content_between">
             <p style={spanStyles}>Service Charge</p>
             <p style={headingStyles}>
-              {settings.currency_icon} {serviceCharge}
+              {settings.currency_icon}{' '}
+              {serviceCharge ? serviceCharge : foodData?.serviceCharge}
             </p>
           </div>
 
           <div className="in_voice_info flex content_between">
             <p style={spanStyles}>Discount</p>
             <p style={headingStyles}>
-              {settings.currency_icon} {customDiscountAmount}
+              {settings.currency_icon}{' '}
+              {customDiscountAmount ? customDiscountAmount : foodData?.discount}
             </p>
           </div>
         </div>
@@ -163,7 +166,7 @@ const InVoiceGenerate = (props) => {
           <div className="in_voice_info flex content_between">
             <h4 style={headingStyles}>Total</h4>
             <h4 style={headingStyles}>
-              {settings.currency_icon} {grandTotal}
+              {settings.currency_icon} {foodData?.grand_total}
             </h4>
           </div>
         </div>

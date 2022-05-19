@@ -9,7 +9,11 @@ const OnGoingOrderCard = ({
 }) => {
   const handleCartItem = (foodData) => {
     selectedItem(foodData);
-    setOrderComplete(foodData);
+    const orderObj = {
+      ...foodData,
+      order_info: JSON.parse(foodData.order_info),
+    };
+    setOrderComplete(orderObj);
     setActiveInactiveBtn(foodData);
   };
 
