@@ -25,7 +25,7 @@ const OnGoingOrderCard = ({
         >
           <li>Waiter: {orderCard?.waiter_name}</li>
           <li>Order Number: {orderCard?.order_id}</li>
-          <li>Running Time: {orderCard?.order_id}</li>
+          <li>Cocking Time: {orderCard?.cooking_time} Minutes</li>
           <li>Customer Type: {orderCard?.customer_type}</li>
           {orderCard?.is_active === 1 && <li>Status: Pending</li>}
         </div>

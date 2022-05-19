@@ -1,5 +1,5 @@
-import { Button, Form, message, Steps } from 'antd';
-import { getDataFromDatabase } from 'helpers';
+import { Button, Form, Steps } from 'antd';
+import { getErrorNotification, getSuccessNotification } from 'helpers';
 import { useState } from 'react';
 import './AddEmployeeInfo.style.scss';
 import AdditionalAddress from './AdditionalAddress';
@@ -15,9 +15,91 @@ import Supervisor from './Supervisor';
 
 const { Step } = Steps;
 
-type EmployeeInfoTypes = {};
+type EmployeeInfoTypes = {
+  first_name: string;
+  last_name?: string;
+  email: string;
+  phone: string;
+  name?: string;
+  city?: string;
+  state?: string;
+  zip_code?: string;
+  attendance_time?: string;
+  employee_type?: string;
+  country?: string;
 
-window.send_status_to_create_table.send('send_status_to_create_table', {"status": true})
+  account_number: number;
+  bank_name: string;
+  bban_number: string;
+  branch_name: string;
+
+  basic_salary: number;
+  house_rent?: number;
+  medical?: number;
+  others_allowance?: number;
+  gross_salary: number;
+  tranport_allowance?: number;
+
+  division: string;
+  hire_date?: string;
+  pay_frequency_text: string;
+  home_department: string;
+  termination_date?: string;
+  termination_reason: string;
+  designation: string;
+  original_hire_date?: string;
+  voluntary_termination: string;
+  pay_frequency: string;
+  hourly_rate2: string;
+  department_text: string;
+  duty_type: string;
+  re_hire_date?: string;
+  rate_type: string;
+  rate: string;
+  hourly_rate3: string;
+
+  benefit_class_code?: string;
+  benefit_accrual_date?: string;
+  benefit_description?: string;
+  benefit_status?: string;
+
+  supervisor_name?: string;
+  supervisor_report?: string;
+  is_supervisor?: string;
+
+  date_of_birth: string;
+  eeo_class?: string;
+  work_in_state?: string;
+  gender: string;
+  ethnic_group?: string;
+  live_in_state?: string;
+  marital_status?: string;
+  ssn?: string;
+  citizenship?: string;
+  pp_image?: string;
+
+  home_email?: string;
+  home_phone?: string;
+  cell_phone: string;
+  business_email?: string;
+  business_phone?: string;
+
+  emergency_contact: number;
+  emergency_work_phone: number;
+  alter_emergency_contact?: number;
+  alt_emergency_work_phone?: number;
+  emergency_home_phone: number;
+  emergency_contact_relation?: string;
+  alt_emergency_home_phone?: string;
+
+  custom_field_name?: string;
+  custom_value?: string;
+  custom_field_type?: string;
+};
+
+window.send_status_to_create_table.send('send_status_to_create_table', {
+  status: true,
+});
 
 const AddEmployeeInfo = () => {
   const [current, setCurrent] = useState(0);
@@ -33,17 +115,17 @@ const AddEmployeeInfo = () => {
     attendance_time: '',
     employee_type: '',
 
-    account_number: '',
+    account_number: 0,
     bank_name: '',
     bban_number: '',
     branch_name: '',
 
-    basic_salary: '', // emp_salary
-    house_rent: '', // emp_salary
-    medical: '', // emp_salary
-    others_allowance: '', // emp_salary
-    gross_salary: '', // emp_salary
-    tranport_allowance: '', // emp_salary
+    basic_salary: 0, // emp_salary
+    house_rent: 0, // emp_salary
+    medical: 0, // emp_salary
+    others_allowance: 0, // emp_salary
+    gross_salary: 0, // emp_salary
+    tranport_allowance: 0, // emp_salary
 
     division: '',
     hire_date: '',
@@ -192,18 +274,9 @@ const AddEmployeeInfo = () => {
   ];
 
   const handleSubmit = () => {
-    console.log('employeeInfo', employeeInfo);
     window.insert_employee.send('insert_employee', employeeInfo);
 
-    message.success({
-      content: 'Employee information added successfully',
-      className: 'custom-class',
-      duration: 1,
-      style: {
-        marginTop: '5vh',
-        float: 'right',
-      },
-    });
+    getSuccessNotification('Employee information added successfully');
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -216,6 +289,125 @@ const AddEmployeeInfo = () => {
 
   const prev = () => {
     setCurrent(current - 1);
+  };
+
+  const handleNextForm = () => {
+    console.log('employeeInfo 111', employeeInfo);
+
+    // Basic info form
+    if (!employeeInfo.first_name) {
+      getErrorNotification('First name is required.');
+      return;
+    } else if (!employeeInfo.email) {
+      getErrorNotification('Email is required.');
+      return;
+    } else if (!employeeInfo.phone) {
+      getErrorNotification('Phone number is required.');
+      return;
+    }
+
+    next();
+
+    if (!employeeInfo.basic_salary) {
+      // Salary Info Form
+      getErrorNotification('Basic salary amount is required.');
+      return;
+    } else if (!employeeInfo.gross_salary) {
+      getErrorNotification('Gross salary amount is required.');
+      return;
+    } else if (employeeInfo.basic_salary > employeeInfo.gross_salary) {
+      getErrorNotification(
+        'Gross salary should not be less than basic salary.'
+      );
+      return;
+    }
+
+    next();
+
+    // Go to the next form
+    if (employeeInfo.basic_salary && employeeInfo.gross_salary) {
+      next();
+      return;
+    }
+
+    // Positional Info form
+    if (!employeeInfo.division) {
+      getErrorNotification('Department is required.');
+      return;
+    } else if (!employeeInfo.pay_frequency_text) {
+      getErrorNotification('Pay freequency text is required.');
+      return;
+    } else if (!employeeInfo.home_department) {
+      getErrorNotification('Home department is required.');
+      return;
+    } else if (!employeeInfo.termination_reason) {
+      getErrorNotification('Termination reason is required.');
+      return;
+    } else if (!employeeInfo.designation) {
+      getErrorNotification('Designation is required.');
+      return;
+    } else if (!employeeInfo.voluntary_termination) {
+      getErrorNotification('Voluntary termination is required.');
+      return;
+    } else if (!employeeInfo.pay_frequency) {
+      getErrorNotification('Pay frequency is required.');
+      return;
+    } else if (!employeeInfo.hourly_rate2) {
+      getErrorNotification('Hourly rate 2  is required.');
+      return;
+    } else if (!employeeInfo.department_text) {
+      getErrorNotification('Department text  is required.');
+      return;
+    } else if (!employeeInfo.duty_type) {
+      getErrorNotification('Duty type is required.');
+      return;
+    } else if (!employeeInfo.rate_type) {
+      getErrorNotification('Rate type is required.');
+      return;
+    } else if (!employeeInfo.rate) {
+      getErrorNotification('Rate is required.');
+      return;
+    } else if (!employeeInfo.hourly_rate3) {
+      getErrorNotification('Hourly rate 3 is required.');
+      return;
+    }
+    console.log('employeeInfo.designation', employeeInfo.designation);
+
+    // Go to the next form
+    next();
+
+    // Biography
+    if (!employeeInfo.date_of_birth) {
+      getErrorNotification('Date of birth is required.');
+      return;
+    } else if (!employeeInfo.gender) {
+      getErrorNotification('Gender is required.');
+      return;
+    }
+
+    // Go to the next form
+    next();
+
+    // Address
+    if (!employeeInfo.cell_phone) {
+      getErrorNotification('Cell phone is required.');
+      return;
+    }
+
+    // Go to the next form
+    next();
+
+    // Contact
+    if (!employeeInfo.emergency_contact) {
+      getErrorNotification('Emergency contact is required.');
+      return;
+    } else if (!employeeInfo.emergency_work_phone) {
+      getErrorNotification('Emergency work phone is required.');
+      return;
+    } else if (!employeeInfo.emergency_home_phone) {
+      getErrorNotification('Emergency home phone is required.');
+      return;
+    }
   };
 
   return (
@@ -262,7 +454,7 @@ const AddEmployeeInfo = () => {
             <Button
               // className="submit_btn"
               type="primary"
-              onClick={() => next()}
+              onClick={() => handleNextForm()}
             >
               Next
             </Button>
@@ -273,8 +465,8 @@ const AddEmployeeInfo = () => {
   );
 };
 
-window.insert_employee.once('insert_employee_response', (arg)=>{
+window.insert_employee.once('insert_employee_response', (arg) => {
   console.log(arg);
-})
+});
 
 export default AddEmployeeInfo;

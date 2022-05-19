@@ -1,6 +1,9 @@
 import { Col, DatePicker, Form, Input, Row, Select } from 'antd';
 import { useEffect, useState } from 'react';
-import { getDataFromDatabase } from './../../../../helpers';
+import {
+  getDataFromDatabase,
+  getErrorNotification,
+} from './../../../../helpers';
 import './AddEmployeeInfo.style.scss';
 const { Option } = Select;
 
@@ -52,6 +55,15 @@ const PositionalInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
   const handleChangeRateType = (value: string) => {
     setEmployeeInfo({ ...employeeInfo, rate_type: value });
   };
+
+  if (!employeeInfo.basic_salary) {
+    // Salary Info Form
+    getErrorNotification('Basic salary amount is required.');
+  } else if (!employeeInfo.gross_salary) {
+    getErrorNotification('Gross salary amount is required.');
+  } else if (employeeInfo.basic_salary > employeeInfo.gross_salary) {
+    getErrorNotification('Gross salary should not be less than basic salary.');
+  }
 
   return (
     <div className="information_wrapper">
