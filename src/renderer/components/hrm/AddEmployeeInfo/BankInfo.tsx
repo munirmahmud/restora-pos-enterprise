@@ -8,16 +8,14 @@ const BankInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
           <Form.Item
             label="Account Number"
             name="account_number"
-            rules={[
-              { required: true, message: 'Please input your account number!' },
-            ]}
+            rules={[{ required: true, message: 'Account number is required!' }]}
           >
             <Input
               value={employeeInfo.account_number}
               onChange={(e) =>
                 setEmployeeInfo({
                   ...employeeInfo,
-                  account_number: e.target.value,
+                  account_number: parseInt(e.target.value),
                 })
               }
               size="large"
@@ -28,9 +26,7 @@ const BankInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
           <Form.Item
             label="BBAN Number"
             name="bban_number"
-            rules={[
-              { required: true, message: 'Please input your bban number!' },
-            ]}
+            rules={[{ required: true, message: 'BBAN number is required!' }]}
           >
             <Input
               value={employeeInfo.bban_number}
@@ -50,9 +46,7 @@ const BankInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
           <Form.Item
             label="Bank Name"
             name="bank_name"
-            rules={[
-              { required: true, message: 'Please input your bank name!' },
-            ]}
+            rules={[{ required: true, message: 'Bank name is required!' }]}
           >
             <Input
               value={employeeInfo.bank_name}
@@ -67,9 +61,7 @@ const BankInfo = ({ employeeInfo, setEmployeeInfo }: any) => {
           <Form.Item
             label="Branch Address"
             name="branch_name"
-            rules={[
-              { required: true, message: 'Please input your branch name!' },
-            ]}
+            rules={[{ required: true, message: 'Branch address is required!' }]}
           >
             <Input
               value={employeeInfo.branch_name}

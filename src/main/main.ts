@@ -39,6 +39,7 @@ declare global {
     delete_customer_table: any;
     fetch_table_based_on_floor_id: any;
     fetch_table_based_on_floor_id_response: any;
+    send_status_to_create_table: any;
     get_table_data: any;
   }
 }
@@ -78,7 +79,7 @@ const installExtensions = async () => {
       extensions.map((name) => installer[name]),
       forceDownload
     )
-    .catch(console.log);
+    .catch((err: ErrorType) => console.log(err));
 };
 
 const createWindow = async () => {
@@ -985,8 +986,6 @@ const tokenGenaretor = () => {
 
 // Insert order
 ipcMain.on('insert_order_info', (_event, args: any) => {
-  console.log('insert_order', args);
-
   let {
     cartItems,
     customer_id,
@@ -1078,7 +1077,6 @@ ipcMain.on('insert_order_info', (_event, args: any) => {
       db.close();
     })
     .catch((err) => {
-      console.log('1066: err', err);
       let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
       db.serialize(() => {
         db.run(
@@ -1135,7 +1133,6 @@ ipcMain.on('get_table_data', (_event, args) => {
         `SELECT orders.order_id, orders.creation_date, orders.floor_id, orders.table_id, orders.booked FROM orders`,
         [],
         (_err: ErrorType, rows: any) => {
-          console.log('1128: ', rows);
           mainWindow.webContents.send('get_table_data_response', rows);
         }
       );
@@ -1184,7 +1181,8 @@ ipcMain.on('get_all_order_info_ongoing', (_event, args) => {
 
   if (status) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
-    let sql = `SELECT orders.*, (employees.first_name ||' ' || employees.last_name)AS waiter_name, customer_type.customertype AS customer_type
+    let sql = `SELECT orders.*, (employees.first_name ||' ' || CASE WHEN employees.last_name IS NOT NULL
+    THEN employees.last_name ELSE '' END) AS waiter_name, customer_type.customertype AS customer_type
     FROM orders
     INNER JOIN employees
     ON orders.waiter_id = employees.id
@@ -2159,7 +2157,6 @@ function insertData(
             VALUES (?, ?, ?, ?)`,
           [currency_name, currency_icon, position, currency_rate],
           (err: ErrorType) => {
-            console.log('curr insert err', err);
             err
               ? mainWindow.webContents.send(eventResponse, err.message)
               : mainWindow.webContents.send(eventResponse, {
@@ -2418,8 +2415,6 @@ deleteListItem('delete_department', 'delete_department_response', 'department');
 ipcMain.on('insert_sub_department', (_event, args) => {
   let { id, sub_department_name, department_id } = args;
 
-  console.log('args', args);
-
   // Execute if the event has row ID / data ID. It is used to update a specific item
   if (args.id !== undefined) {
     let db = new sqlite3.Database(`${dbPath}/restora-pos.db`);
@@ -2484,8 +2479,6 @@ deleteListItem(
 // INSERT SALARY ADVANCE DATA
 ipcMain.on('insert_salary_advance', (_event, args) => {
   let { id, employee_id, req_amount, release_amount, salary_month } = args;
-
-  console.log('args', args);
 
   // Execute if the event has row ID / data ID. It is used to update a specific item
   if (args.id !== undefined) {
@@ -2594,7 +2587,6 @@ ipcMain.on('send_status_to_create_table', (_event, args) => {
               );
             db.close();
           } else {
-            console.log('2470: ', rows.length);
             db.close();
           }
         });
@@ -2682,7 +2674,7 @@ ipcMain.on('insert_employee', (_event: Electron.IpcMainEvent, args: any) => {
       `CREATE TABLE IF NOT EXISTS employees (
       'id' INTEGER PRIMARY KEY AUTOINCREMENT,
       'first_name' VARCHAR(255) NOT NULL,
-      'last_name' VARCHAR(255),
+      'last_name' VARCHAR(255) DEFAULT NULL,
       'email' VARCHAR(255) NOT NULL,
       'phone' VARCHAR(50) NOT NULL,
       'country' INT,

@@ -70,6 +70,8 @@ const OnGoingFooter = ({
   }
 
   const generateDueInvoice = (item) => {
+    console.log('item', item);
+
     if (Object.keys(orderData).length === 0) {
       message.error({
         content: 'Sorry! No order is selected.',
@@ -89,7 +91,7 @@ const OnGoingFooter = ({
     window.print();
 
     // After printing reload the page
-    window.location.reload();
+    // window.location.reload();
   };
 
   const kitchenOrderToken = (orderDetails) => {

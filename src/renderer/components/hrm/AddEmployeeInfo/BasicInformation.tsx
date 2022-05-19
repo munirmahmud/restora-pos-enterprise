@@ -27,7 +27,7 @@ const BasicInformation = ({ employeeInfo, setEmployeeInfo }: any) => {
           <Form.Item
             label="First Name"
             name="first_name"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: 'First name is required.' }]}
           >
             <Input
               value={employeeInfo.first_name}
@@ -35,16 +35,14 @@ const BasicInformation = ({ employeeInfo, setEmployeeInfo }: any) => {
                 setEmployeeInfo({ ...employeeInfo, first_name: e.target.value })
               }
               size="large"
-              placeholder="first name"
+              placeholder="First Name"
             />
           </Form.Item>
 
           <Form.Item
             label="Email Address"
             name="email"
-            rules={[
-              { required: true, message: 'Please input your email address!' },
-            ]}
+            rules={[{ required: true, message: 'Email is required' }]}
           >
             <Input
               value={employeeInfo.email}
@@ -55,7 +53,7 @@ const BasicInformation = ({ employeeInfo, setEmployeeInfo }: any) => {
                 })
               }
               size="large"
-              placeholder="your email address"
+              placeholder="john@gmail.com"
             />
           </Form.Item>
 
@@ -94,7 +92,7 @@ const BasicInformation = ({ employeeInfo, setEmployeeInfo }: any) => {
           <Form.Item label="Attendance Time" name="attendance_time">
             <Select
               showSearch
-              placeholder="Select a Attendance Time"
+              placeholder="Attendance Time"
               allowClear
               size="large"
               style={{ textAlign: 'left' }}
@@ -117,14 +115,14 @@ const BasicInformation = ({ employeeInfo, setEmployeeInfo }: any) => {
                 setEmployeeInfo({ ...employeeInfo, last_name: e.target.value })
               }
               size="large"
-              placeholder="last Name"
+              placeholder="Last Name"
             />
           </Form.Item>
 
           <Form.Item
             label="Phone"
             name="phone"
-            rules={[{ required: true, message: 'Please input your phone!' }]}
+            rules={[{ required: true, message: 'Phone number is required' }]}
           >
             <Input
               value={employeeInfo.phone}
@@ -132,7 +130,7 @@ const BasicInformation = ({ employeeInfo, setEmployeeInfo }: any) => {
                 setEmployeeInfo({ ...employeeInfo, phone: e.target.value })
               }
               size="large"
-              placeholder="your phone number"
+              placeholder="Phone number"
             />
           </Form.Item>
 
@@ -160,7 +158,7 @@ const BasicInformation = ({ employeeInfo, setEmployeeInfo }: any) => {
                 setEmployeeInfo({ ...employeeInfo, zip_code: e.target.value })
               }
               size="large"
-              placeholder="your zip code"
+              placeholder="ZIP Code"
             />
           </Form.Item>
 

@@ -180,11 +180,7 @@ const ConfirmOrderModal = (props) => {
         />
       )}
 
-      <TokenModal
-        cartItems={cartItems}
-        orderData={orderData}
-        tokenPrint={tokenPrint}
-      />
+      <TokenModal orderData={orderData} tokenPrint={tokenPrint} />
     </>
   );
 };

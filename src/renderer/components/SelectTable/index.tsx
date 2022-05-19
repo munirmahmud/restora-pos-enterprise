@@ -50,6 +50,7 @@ const SelectTable = ({
       booked: tableInfo.booked,
     });
 
+    setPersonSelectModal(false);
     setReRender((prevState: boolean) => !prevState);
     setPersonSelectModal(false);
   };
