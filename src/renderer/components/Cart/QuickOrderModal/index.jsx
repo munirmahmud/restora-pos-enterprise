@@ -60,8 +60,6 @@ const QuickOrderModal = ({
       setGrandTotal(parsedData.grandTotal);
     }
 
-    console.log('foodItems', foodItems);
-
     if (foodItems?.order_info) {
       if (typeof foodItems?.order_info !== 'string') {
         setFoodData(foodItems?.order_info);
@@ -130,13 +128,6 @@ const QuickOrderModal = ({
     });
 
     posPrintInvoice();
-
-    // window.update_order_info_ongoing.once(
-    //   'update_order_info_ongoing_response',
-    //   (args) => {
-    //     console.log('))))))))))))))))))))))))))))))))))))))', args);
-    //   }
-    // );
   };
 
   const handleIncrement = () => {
@@ -150,7 +141,6 @@ const QuickOrderModal = ({
   };
 
   function posPrintInvoice() {
-    console.log('invoicePrintDivId', invoicePrintDivId.classList);
     // return;
     var printContents = document.querySelector(
       `.${invoicePrintDivId.classList.value}`
@@ -161,8 +151,6 @@ const QuickOrderModal = ({
     window.print();
     window.location.reload();
   }
-
-  console.log('invoicePrintDivId', invoicePrintDivId);
 
   return (
     <>

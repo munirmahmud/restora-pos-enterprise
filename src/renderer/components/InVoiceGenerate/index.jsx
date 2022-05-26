@@ -41,10 +41,6 @@ const InVoiceGenerate = (props) => {
   const calc = new CalculatePrice(settings, foodItems);
   const receiptNo = foodData?.order_id?.toString().length;
 
-  console.log('foodItems invoice gen', foodItems);
-  console.log('foodData invoice gen', foodData);
-  // console.log('foodData order_info', foodData.order_info);
-
   useEffect(() => {
     setInvoicePrintDivId(invoiceWrapperRef.current);
   }, []);
